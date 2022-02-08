@@ -60,41 +60,29 @@ colBlack    = "#161716"
 --                           CONFIG
 -- ############################################################################
 myConfig = def
-    { modMask    = mod4Mask      -- Rebind Mod to the Super key
-    , layoutHook = myLayout      -- Use custom layouts
-    , manageHook = myManageHook  -- Match on certain windows
-    , startupHook = myStartupHook
-    , normalBorderColor  = colBg
+    { modMask            = mod4Mask      
+    , layoutHook         = myLayout     
+    , manageHook         = myManageHook
+    , startupHook        = myStartupHook
+    , normalBorderColor  = colBrown
     , focusedBorderColor = colActive
     , borderWidth        = 2
-    }
-  `additionalKeysP` myKeys
+    } `additionalKeysP` myKeys
     
 -- ############################################################################
 --                           MANAGE HOOK
 -- ############################################################################
 myManageHook :: ManageHook
 myManageHook = composeAll
-    [ className =? "Gimp" --> doFloat
-    , className =? "SuperCollider"  --> doShift "4"
-    , className =? "1Password"      --> doCenterFloat
-    , className =? "xterm_gridSelect"    --> doRectFloat 
-                                        (W.RationalRect (1/4) (1/4) (1/2) (1/2))
-    , className =? "Thunderbird"    --> doShift "9"
-    , appName   =? "Calendar"       --> doRectFloat 
-                                        (W.RationalRect (1/4) (1/4) (1/2) (1/2))
-    , isFullscreen                  --> doFullFloat
-    , isDialog                      --> doCenterFloat
+    [ className =? "Gimp"              --> doFloat
+    , className =? "SuperCollider"     --> doShift "4"
+    , className =? "1Password"         --> doCenterFloat
+    , className =? "xterm_gridSelect"  --> doRectFloat (W.RationalRect (1/4) (1/4) (1/2) (1/2))
+    , className =? "Thunderbird"       --> doShift "9"
+    , appName   =? "Calendar"          --> doRectFloat (W.RationalRect (1/4) (1/4) (1/2) (1/2))
+    , isFullscreen                     --> doFullFloat
+    , isDialog                         --> doCenterFloat
     ]
-{--
-myIcons :: Query [String]
-myIcons = composeAll
-  [ className =? "discord" --> appIcon "\xfb6e"
-  , className =? "Discord" --> appIcon "\xf268"
-  , className =? "Firefox" --> appIcon "ll63288"
-  , className =? "Xterm" <||> className =? "xterm" --> appIcon "阮"
-  ]
---}
 
 -- ############################################################################
 --                           LAYOUTS
@@ -176,10 +164,8 @@ myKeys = [
     , ("M-S-=", unGrab *> spawn "scrot -s"        )
     , ("M-]"  , spawn "firefox"                   )
     , ("M-r"  , renameWorkspace def               )
-    , ("M-s"  , gridselect configSystem spawnSystem
-                    >>= spawn . fromMaybe ""      )
-    , ("M-a"  , gridselect configPrograms spawnPrograms
-                    >>= spawn . fromMaybe ""      )
+    , ("M-s"  , gridselect configSystem spawnSystem >>= spawn . fromMaybe ""      )
+    , ("M-a"  , gridselect configPrograms spawnPrograms >>= spawn . fromMaybe ""      )
     , ("M-d"  , goToSelected def                  )
     , ("M-x"  , withFocused $ sendMessage . maximizeRestore )
     , ("M-<L>", Cyc.moveTo Prev (Cyc.Not emptyWS  ) )
@@ -191,25 +177,24 @@ myKeys = [
 -- ############################################################################
 --                           XMOBAR SETTINGS
 -- ############################################################################
---myStatusBar = withSB (statusBarProp "xmobar" (iconsPP myIcons myXmobarPP)) 
 myStatusBar = withEasySB (statusBarProp "xmobar" myXmobarPP) defToggleStrutsKey
 
 myXmobarPP = workspaceNamesPP def
     { ppSep             = wrap " " " " $ xmobarColor colActive "" " "
     , ppTitleSanitize   = xmobarStrip
-    , ppCurrent         = xmobarColor colFg "" . wrap "" "" . xmobarBorder "Top" colSep 3
+    , ppCurrent         = xmobarColor colFg "" . wrap "" "" . xmobarBorder "Top" "#fffc3b" 3
     , ppVisible         = xmobarColor colFg "" . wrap "" "" . xmobarBorder "Top" colBrown 3
-    , ppLayout          = wrap "L : " "" . xmobarColor colFg ""
     , ppHidden          = xmobarColor colFg "" . wrap "" ""
     , ppHiddenNoWindows = xmobarColor colInactive "" . wrap "" ""
+    , ppLayout          = wrap "" "" . xmobarColor colFg ""
     , ppUrgent          = wrap "" "" . xmobarBorder "VBoth" colUrgent 2
     , ppOrder           = \[ws, l, _, wins] -> [ws, l, wins]
-    , ppExtras          = [onLogger (xmobarBorder "Top" colSep 2 ) windowTitles  ]
+    , ppExtras          = [ windowTitles ]
     } 
   where
     windowTitles    = logTitles formatFocused formatUnfocused
-    formatFocused   = xmobarColor colActive colBrown . wrap "  " "  " . ppWindow
-    formatUnfocused = wrap "  " "  " . ppWindow
+    formatFocused   = xmobarColor colBg colActive . wrap "  " "  " . ppWindow
+    formatUnfocused = xmobarColor colFg colBrown . wrap "  " "  " . ppWindow
 
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
