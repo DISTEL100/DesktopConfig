@@ -1,0 +1,27 @@
+XTerm.vt100.faceName: IBM Plex Mono:size=12
+XTerm.vt100.faceName: Misc Tamsyn:size=14
+XTerm.vt100.faceName: Terminus:size=14
+XTerm.vt100.faceName: Termsyn:size=12
+XTerm.termName: xterm-256color
+xterm*bellIsUrgent:true
+
+xterm*background: gray12
+xterm*foreground: snow2
+
+Xft.antialias:  true
+Xft.hinting:    true
+Xft.autohint:   0
+Xft.dpi:        96
+Xft.hintstyle:  hintslight
+Xft.lcdfilter:  lcddefault
+Xft.rgba:       rgb
+
+xterm*VT100.Translations: #override \
+                 Ctrl Shift <Key>V:    insert-selection(CLIPBOARD) \n\
+                 Ctrl Shift <Key>C:    copy-selection(CLIPBOARD)
+Xcursor.theme: FlatbedCursors-Orange
+Xcursor.size: 32
+
+dzen2.font:IBM Plex Mono:size=10:style=Bold Italic
+dzen2.foreground: Red
+dzen2.background: Black

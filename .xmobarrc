@@ -1,0 +1,26 @@
+Config { font = "xft:IBMPlexMono:size=9:style=text italic"
+       , bgColor = "gray12"
+       , fgColor = "snow2"
+       , lowerOnStart = True
+       , position = Top
+       , sepChar = "%"
+       , alignSep = "}{"
+       , commands = [
+                    Run Weather "EDDP" ["-t"," <rh>%, <pressure>hPa, <windKmh>km/h, <tempC>°C","-L","64","-H","77","--normal","green","--high","red","--low","lightblue"] 36000
+                    , Run XMonadLog
+                    , Run MultiCpu [ "-t", "<autovbar>", "-L","3","-H","50","--normal","blue","--high","red"] 10
+                    , Run Memory ["-t","Mem: <usedratio>%"] 10
+                    , Run MultiCoreTemp ["-t", "<avg>°C, <avgpc>%",
+                       "-L", "60", "-H", "80",
+                       "-l", "snow1", "-n", "orange", "-h", "red",
+                       "--", "--mintemp", "20", "--maxtemp", "100"] 50
+                    , Run DateZone "%A, %d.%m.%y, %H:%M:%S" "de_DE.UTF-8" "Europe/Berlin" "berlinTime" 10
+                    , Run DynNetwork [ "-t", "<dev>" ] 10
+                    , Run Wireless "wlan0" [ "-t", "<ssid>" ] 10
+                    , Run StdinReader
+                    , Run Battery [
+			"-t", "<acstatus> (<left>%)"
+                     ] 10 ]
+       , template = "%XMonadLog% }{<fc=DarkGoldenrod>•</fc> %battery% <fc=DarkGoldenrod>•</fc> %dynnetwork% <fc=DarkGoldenrod>•</fc> %wlan0wi% <fc=DarkGoldenrod>•</fc>%EDDP% <fc=DarkGoldenrod>•</fc> <fc=#ee9af0>%berlinTime%</fc>  "
+
+       }
