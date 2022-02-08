@@ -51,7 +51,7 @@ colInactive = "#45363d"
 colBrown    = "#5e3535"
 colUrgent   = "#f58402"
 colHigh     = "#ff0073"
-colSep      = "DarkGoldenrod" 
+colSep      = "#784a24" 
 colFg       = "snow2"
 colBg       = "#202922"
 colBlack    = "#161716"
@@ -180,21 +180,21 @@ myKeys = [
 myStatusBar = withEasySB (statusBarProp "xmobar" myXmobarPP) defToggleStrutsKey
 
 myXmobarPP = workspaceNamesPP def
-    { ppSep             = wrap " " " " $ xmobarColor colActive "" " "
+    { ppSep             = wrap "" "" $ xmobarColor colActive "" ""
     , ppTitleSanitize   = xmobarStrip
-    , ppCurrent         = xmobarColor colFg "" . wrap "" "" . xmobarBorder "Top" "#fffc3b" 3
-    , ppVisible         = xmobarColor colFg "" . wrap "" "" . xmobarBorder "Top" colBrown 3
-    , ppHidden          = xmobarColor colFg "" . wrap "" ""
-    , ppHiddenNoWindows = xmobarColor colInactive "" . wrap "" ""
-    , ppLayout          = wrap "" "" . xmobarColor colFg ""
+    , ppCurrent         = xmobarColor "LightBlue" colSep . wrap "" "" . xmobarBorder "Top" "LightBlue" 3
+    , ppVisible         = xmobarColor "Yellow" colSep . wrap "" "" . xmobarBorder "Top" "Yellow" 3
+    , ppHidden          = xmobarColor colFg colSep . wrap "" ""
+    , ppHiddenNoWindows = xmobarColor colInactive colSep . wrap "" ""
+    , ppLayout          =  wrap "  " "   " 
     , ppUrgent          = wrap "" "" . xmobarBorder "VBoth" colUrgent 2
-    , ppOrder           = \[ws, l, _, wins] -> [ws, l, wins]
-    , ppExtras          = [ windowTitles ]
+    , ppOrder           = \[ws, l, _, wins] -> [xmobarBorder "Full" colSep 1 $ xmobarColor colFg  colSep (" " ++ ws ++ "  "), l,wins]
+    , ppExtras          = [ onLogger (xmobarBorder "VBoth" "#40324a" 1 . xmobarColor "" "#40324a" ) windowTitles ]
     } 
   where
     windowTitles    = logTitles formatFocused formatUnfocused
-    formatFocused   = xmobarColor colBg colActive . wrap "  " "  " . ppWindow
-    formatUnfocused = xmobarColor colFg  "#40324a" . wrap "  " "  " . ppWindow
+    formatFocused   = xmobarBorder "Full" colActive 0 . xmobarColor colBg colActive . wrap "  " "  " . ppWindow
+    formatUnfocused = xmobarBorder "Full" "#40324a" 3 . xmobarColor colFg  "#40324a" . wrap "  " "  " . ppWindow
 
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
