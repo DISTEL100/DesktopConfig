@@ -194,7 +194,7 @@ myXmobarPP = workspaceNamesPP def
   where
     windowTitles    = logTitles formatFocused formatUnfocused
     formatFocused   = xmobarColor colBg colActive . wrap "  " "  " . ppWindow
-    formatUnfocused = xmobarColor colFg colBrown . wrap "  " "  " . ppWindow
+    formatUnfocused = xmobarColor colFg  "#40324a" . wrap "  " "  " . ppWindow
 
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
