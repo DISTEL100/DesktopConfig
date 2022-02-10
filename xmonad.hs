@@ -89,7 +89,7 @@ myManageHook = composeAll
 -- ############################################################################
 myLayout = onWorkspace "9" myFull
     $ lessBorders AllFloats 
-    $ myTall ||| myFull ||| my3Col
+    $ myTall ||| myTallNoMag ||| myFull ||| my3Col
 
 my3Col = renamed [ Replace "3Col" ]
     $ smartBorders
@@ -98,8 +98,12 @@ my3Col = renamed [ Replace "3Col" ]
     $ ThreeColMid 1 (3/100) (1/2)
 myTall = renamed [ Replace "Tall" ]
     $ smartBorders
-    $ magnifiercz 1.02 
+    $ magnifiercz 1.05 
     $ maximizeWithPadding 30
+    $ Tall 1 (3/100) (1/2)
+myTallNoMag = renamed [ Replace "TallNoMag" ]
+    $ smartBorders
+    $ maximizeWithPadding 15
     $ Tall 1 (3/100) (1/2)
 myFull = smartBorders
     $ Full
@@ -180,21 +184,25 @@ myKeys = [
 myStatusBar = withEasySB (statusBarProp "xmobar" myXmobarPP) defToggleStrutsKey
 
 myXmobarPP = workspaceNamesPP def
-    { ppSep             = wrap "" "" $ xmobarColor colActive "" ""
+    { ppSep             = xmobarColor colActive "" ""
     , ppTitleSanitize   = xmobarStrip
     , ppCurrent         = xmobarBorder "Full" "LightBlue mb=1" 4 . xmobarColor "LightBlue" colSep . wrap "  " "  " 
     , ppVisible         = xmobarBorder "Full" "Yellow mb=1   " 4 . xmobarColor "Yellow" colSep . wrap "  " "  " 
+    , ppUrgent          = wrap "  " "  " . xmobarBorder "VBoth" colUrgent 4 
     , ppHidden          = xmobarColor colFg colSep . wrap "  " "  "
     , ppHiddenNoWindows = \x -> ""
-    , ppLayout          = xmobarBorder "Full" colSep 2 . xmobarColor colFg colSep . wrap "" "  "
-    , ppUrgent          = wrap "" "" . xmobarBorder "VBoth" colUrgent 2
-    , ppOrder           = \[ws, l, _, wins] -> [ xmobarBorder "Full" colSep 0 $ xmobarColor colFg  colSep (" " ++ ws ++ "  "), l,wins]
-    , ppExtras          = [ onLogger (wrap "   " "" ) windowTitles ]
+    , ppLayout          = xmobarBorder "Full" colSep 2 . xmobarColor colFg colSep . wrap "" "   "
+    , ppOrder           = \[ws, l, _, wins] -> [   
+                                xmobarBorder "Full" colSep 0 $ xmobarColor colFg colSep ("  " ++ ws ++ "  ")
+                              , l
+                              , wins
+                            ]
+    , ppExtras          = [ onLogger (wrap "    " "" ) windowTitles ]
     } 
   where
     windowTitles    = logTitles formatFocused formatUnfocused
-    formatFocused   = xmobarBorder "Top" colActive 3 . xmobarColor colActive "" . wrap " " " " . ppWindow
-    formatUnfocused = xmobarColor colFg "" . wrap " " " " . ppWindow
+    formatFocused   = xmobarBorder "Top" colActive 2 . xmobarColor colActive "" . ppWindow
+    formatUnfocused = xmobarColor colBrown "" . wrap " " " " . ppWindow
 
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
