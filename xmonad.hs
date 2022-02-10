@@ -20,7 +20,7 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.Maximize
 import XMonad.Layout.PerWorkspace
-import XMonad.Layout.TabBarDecoration
+import XMonad.Layout.Spacing
 
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
@@ -48,13 +48,14 @@ main = xmonad
 -- ############################################################################
 colActive   = "LightGreen"
 colInactive = "#45363d"
-colBrown    = "#40324a"
+colBrown    = "#936e9c"
 colUrgent   = "#f58402"
 colHigh     = "#ff0073"
 colSep      = "#2b2b2b" 
 colFg       = "snow2"
 colBg       = "#202922"
 colBlack    = "#161716"
+colGray     = "#74807b"
 
 -- ############################################################################
 --                           CONFIG
@@ -82,6 +83,7 @@ myManageHook = composeAll
     , appName   =? "Calendar"          --> doRectFloat (W.RationalRect (1/4) (1/4) (1/2) (1/2))
     , isFullscreen                     --> doFullFloat
     , isDialog                         --> doCenterFloat
+    , className =? "Alert"             --> doCenterFloat
     ]
 
 -- ############################################################################
@@ -93,11 +95,13 @@ myLayout = onWorkspace "9" myFull
 
 my3Col = renamed [ Replace "3Col" ]
     $ smartBorders
+    $ spacingRaw False (Border 0 0 0 8) True (Border 8 0 8 0) True
     $ magnifiercz' 1.5 
     $ maximizeWithPadding 30
     $ ThreeColMid 1 (3/100) (1/2)
 myTall = renamed [ Replace "Tall" ]
     $ smartBorders
+    $ spacingRaw False (Border 0 0 0 8) True (Border 8 0 8 0) True
     $ magnifiercz 1.05 
     $ maximizeWithPadding 30
     $ Tall 1 (3/100) (1/2)
