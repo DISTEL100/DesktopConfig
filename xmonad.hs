@@ -65,7 +65,7 @@ myConfig = def
     , layoutHook         = myLayout     
     , manageHook         = myManageHook
     , startupHook        = myStartupHook
-    , normalBorderColor  = colBrown
+    , normalBorderColor  = colInactive
     , focusedBorderColor = colActive
     , borderWidth        = 2
     } `additionalKeysP` myKeys
@@ -91,17 +91,16 @@ myManageHook = composeAll
 -- ############################################################################
 myLayout = onWorkspace "9" myFull
     $ lessBorders AllFloats 
+    $ spacingRaw True (Border 2 0 2 0) True (Border 0 2 0 2) True
     $ myTall ||| myTallNoMag ||| myFull ||| my3Col
 
 my3Col = renamed [ Replace "3Col" ]
     $ smartBorders
-    $ spacingRaw False (Border 0 0 0 8) True (Border 8 0 8 0) True
     $ magnifiercz' 1.5 
     $ maximizeWithPadding 30
     $ ThreeColMid 1 (3/100) (1/2)
 myTall = renamed [ Replace "Tall" ]
     $ smartBorders
-    $ spacingRaw False (Border 0 0 0 8) True (Border 8 0 8 0) True
     $ magnifiercz 1.05 
     $ maximizeWithPadding 30
     $ Tall 1 (3/100) (1/2)

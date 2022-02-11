@@ -2,7 +2,7 @@ Config { font = "xft:IBMPlexMono:size=9:style=text italic"
        , bgColor = "#42403d"
        , fgColor = "#380736"
        , lowerOnStart = True
-       , position = Top
+       , position = TopP 2 2
        , sepChar = "%"
        , alignSep = "}{"
        , commands = [
