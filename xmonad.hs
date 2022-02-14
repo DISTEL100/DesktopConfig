@@ -179,6 +179,8 @@ toggleTag tag win = do b <- hasTag tag win
 myStartupHook = do
         spawnOnOnce "1" "xterm"
         spawnOnOnce "9" "thunderbird"
+        spawnOnOnce "9" "notion-snap"
+        spawnOnOnce "9" "slack"
         spawn "picom"
 
 -- ############################################################################

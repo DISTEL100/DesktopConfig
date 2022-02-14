@@ -1,6 +1,6 @@
 Config { font = "xft:IBMPlexMono:size=9:style=text italic"
        , bgColor = "#42403d"
-       , fgColor = "#ffd45e"
+       , fgColor = "#ff9cb9"
        , lowerOnStart = True
        , position = TopP 2 2
        , sepChar = "%"
@@ -15,7 +15,7 @@ Config { font = "xft:IBMPlexMono:size=9:style=text italic"
                        "-l", "snow1", "-n", "orange", "-h", "red",
                        "--", "--mintemp", "20", "--maxtemp", "100"] 50
                     , Run DateZone "%A, %d.%m.%y, %H:%M:%S" "de_DE.UTF-8" "Europe/Berlin" "berlinTime" 10
-                    , Run DynNetwork [ "-t", "<dev>" ] 10
+                    , Run DynNetwork [ "-t", "<dev>" ] 40
                     , Run Wireless "wlan0" [ "-t", "<ssid>" ] 10
                     , Run StdinReader
                     , Run Battery [
