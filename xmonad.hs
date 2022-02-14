@@ -20,7 +20,9 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.Maximize
 import XMonad.Layout.PerWorkspace
+import XMonad.Layout.WorkspaceDir
 import XMonad.Layout.Spacing
+import XMonad.Layout.Drawer
 
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
@@ -29,19 +31,12 @@ import XMonad.Hooks.DynamicIcons
 import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.GridSelect
 import XMonad.Actions.CycleWS as Cyc
+import XMonad.Actions.WindowGo
+import XMonad.Actions.CycleRecentWS
+import XMonad.Actions.TagWindows
 
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as M
-
-main :: IO ()
-main = xmonad
-     . ewmhFullscreen
-     . workspaceNamesEwmh
-     . setEwmhActivateHook doAskUrgent
-     . ewmh
-     . myStatusBar
-     $ withUrgencyHook NoUrgencyHook
-     $ myConfig
 
 -- ############################################################################
 --                           COLORS & FONTS
@@ -56,6 +51,19 @@ colFg       = "snow2"
 colBg       = "#202922"
 colBlack    = "#161716"
 colGray     = "#74807b"
+
+-- ############################################################################
+--                           MAIN
+-- ############################################################################
+main :: IO ()
+main = xmonad
+     . ewmhFullscreen
+     . workspaceNamesEwmh
+     . setEwmhActivateHook doAskUrgent
+     . ewmh
+     . myStatusBar
+     $ withUrgencyHook NoUrgencyHook
+     $ myConfig
 
 -- ############################################################################
 --                           CONFIG
@@ -84,32 +92,39 @@ myManageHook = composeAll
     , isFullscreen                     --> doFullFloat
     , isDialog                         --> doCenterFloat
     , className =? "Alert"             --> doCenterFloat
+    , className =? "Alert"             --> doAskUrgent
     ]
 
 -- ############################################################################
 --                           LAYOUTS
 -- ############################################################################
 myLayout = onWorkspace "9" myFull
+    $ workspaceDir "~"
     $ lessBorders AllFloats 
-    $ spacingRaw True (Border 2 0 2 0) True (Border 0 2 0 2) True
     $ myTall ||| myTallNoMag ||| myFull ||| my3Col
 
 my3Col = renamed [ Replace "3Col" ]
-    $ smartBorders
+    $ myDrawer
+    $ mySpacing
     $ magnifiercz' 1.5 
     $ maximizeWithPadding 30
     $ ThreeColMid 1 (3/100) (1/2)
 myTall = renamed [ Replace "Tall" ]
-    $ smartBorders
+    $ myDrawer
+    $ mySpacing
     $ magnifiercz 1.05 
     $ maximizeWithPadding 30
     $ Tall 1 (3/100) (1/2)
 myTallNoMag = renamed [ Replace "TallNoMag" ]
-    $ smartBorders
+    $ myDrawer
+    $ mySpacing
     $ maximizeWithPadding 15
     $ Tall 1 (3/100) (1/2)
 myFull = smartBorders
     $ Full
+
+myDrawer = onRight $ simpleDrawer 0.0 0.333 (Tagged "drawer") 
+mySpacing = spacingRaw True (Border 2 0 2 0) True (Border 0 2 0 2) True
 
 data AllFloats = AllFloats deriving (Read, Show)
 
@@ -155,6 +170,9 @@ configSystem = def {
                  , gs_bordercolor = "snow2"
                  }
 
+toggleTag tag win = do b <- hasTag tag win
+                       if b then delTag tag win
+                       else addTag tag win
 -- ############################################################################
 --                           ON STARTUP
 -- ############################################################################
@@ -167,18 +185,25 @@ myStartupHook = do
 --                           KEYBINDINGS
 -- ############################################################################
 myKeys = [ 
-      ("M-S-l", spawn "slock")
-    , ("M-S-=", unGrab *> spawn "scrot -s"        )
-    , ("M-]"  , spawn "firefox"                   )
-    , ("M-r"  , renameWorkspace def               )
-    , ("M-s"  , gridselect configSystem spawnSystem >>= spawn . fromMaybe ""      )
-    , ("M-a"  , gridselect configPrograms spawnPrograms >>= spawn . fromMaybe ""      )
-    , ("M-d"  , goToSelected def                  )
+      ("M-z"  , spawn "slock"                               )
+    , ("M-S-=", unGrab *> spawn "scrot -s"                  )
+    , ("M-f"  , runOrRaiseMaster "firefox" (className =? "firefox") )
+    , ("M-<Return>", spawn "xterm"                        )
+    , ("M-c"  , kill                                        )
+    , ("M-r"  , renameWorkspace def                         )
+    , ("M-S-r", changeDir def                               )
+    , ("M-s"  , gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
+    , ("M-a"  , gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
+    , ("M-d"  , goToSelected def                            )
     , ("M-x"  , withFocused $ sendMessage . maximizeRestore )
-    , ("M-<L>", Cyc.moveTo Prev (Cyc.Not emptyWS  ) )
-    , ("M-<R>", Cyc.moveTo Next (Cyc.Not emptyWS  ) )
-    , ("M-S-h", Cyc.moveTo Prev (Cyc.Not emptyWS  ) )
-    , ("M-S-l", Cyc.moveTo Next (Cyc.Not emptyWS  ) )
+    , ("M-w"  , toggleRecentNonEmptyWS                      )
+    , ("M-u"  , focusUrgent                                 )
+    , ("M-<L>", Cyc.moveTo Prev (Cyc.Not emptyWS)           )
+    , ("M-<R>", Cyc.moveTo Next (Cyc.Not emptyWS)           )
+    , ("M-S-h", Cyc.moveTo Prev (Cyc.Not emptyWS)           )
+    , ("M-S-l", Cyc.moveTo Next (Cyc.Not emptyWS)           )
+    , ("M-S-y", withFocused ( toggleTag "drawer" )          )
+    , ("M-y"  , focusUpTagged "drawer"                      )
     ]
 
 -- ############################################################################
