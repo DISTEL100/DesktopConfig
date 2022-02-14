@@ -20,7 +20,9 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.Maximize
 import XMonad.Layout.PerWorkspace
-import XMonad.Layout.TabBarDecoration
+import XMonad.Layout.WorkspaceDir
+import XMonad.Layout.Spacing
+import XMonad.Layout.Drawer
 
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
@@ -29,10 +31,30 @@ import XMonad.Hooks.DynamicIcons
 import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.GridSelect
 import XMonad.Actions.CycleWS as Cyc
+import XMonad.Actions.WindowGo
+import XMonad.Actions.CycleRecentWS
+import XMonad.Actions.TagWindows
 
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as M
 
+-- ############################################################################
+--                           COLORS & FONTS
+-- ############################################################################
+colActive   = "LightGreen"
+colInactive = "#45363d"
+colBrown    = "#936e9c"
+colUrgent   = "#f58402"
+colHigh     = "#ff0073"
+colSep      = "#2b2b2b" 
+colFg       = "snow2"
+colBg       = "#202922"
+colBlack    = "#161716"
+colGray     = "#74807b"
+
+-- ############################################################################
+--                           MAIN
+-- ############################################################################
 main :: IO ()
 main = xmonad
      . ewmhFullscreen
@@ -44,19 +66,6 @@ main = xmonad
      $ myConfig
 
 -- ############################################################################
---                           COLORS & FONTS
--- ############################################################################
-colActive   = "LightGreen"
-colInactive = "#45363d"
-colBrown    = "#5e3535"
-colUrgent   = "#f58402"
-colHigh     = "#ff0073"
-colSep      = "#2b2b2b" 
-colFg       = "snow2"
-colBg       = "#202922"
-colBlack    = "#161716"
-
--- ############################################################################
 --                           CONFIG
 -- ############################################################################
 myConfig = def
@@ -64,7 +73,7 @@ myConfig = def
     , layoutHook         = myLayout     
     , manageHook         = myManageHook
     , startupHook        = myStartupHook
-    , normalBorderColor  = colBrown
+    , normalBorderColor  = colInactive
     , focusedBorderColor = colActive
     , borderWidth        = 2
     } `additionalKeysP` myKeys
@@ -82,27 +91,40 @@ myManageHook = composeAll
     , appName   =? "Calendar"          --> doRectFloat (W.RationalRect (1/4) (1/4) (1/2) (1/2))
     , isFullscreen                     --> doFullFloat
     , isDialog                         --> doCenterFloat
+    , className =? "Alert"             --> doCenterFloat
+    , className =? "Alert"             --> doAskUrgent
     ]
 
 -- ############################################################################
 --                           LAYOUTS
 -- ############################################################################
 myLayout = onWorkspace "9" myFull
+    $ workspaceDir "~"
     $ lessBorders AllFloats 
-    $ myTall ||| myFull ||| my3Col
+    $ myTall ||| myTallNoMag ||| myFull ||| my3Col
 
 my3Col = renamed [ Replace "3Col" ]
-    $ smartBorders
+    $ myDrawer
+    $ mySpacing
     $ magnifiercz' 1.5 
     $ maximizeWithPadding 30
     $ ThreeColMid 1 (3/100) (1/2)
 myTall = renamed [ Replace "Tall" ]
-    $ smartBorders
-    $ magnifiercz 1.02 
+    $ myDrawer
+    $ mySpacing
+    $ magnifiercz 1.05 
     $ maximizeWithPadding 30
+    $ Tall 1 (3/100) (1/2)
+myTallNoMag = renamed [ Replace "TallNoMag" ]
+    $ myDrawer
+    $ mySpacing
+    $ maximizeWithPadding 15
     $ Tall 1 (3/100) (1/2)
 myFull = smartBorders
     $ Full
+
+myDrawer = onRight $ simpleDrawer 0.0 0.333 (Tagged "drawer") 
+mySpacing = spacingRaw True (Border 2 0 2 0) True (Border 0 2 0 2) True
 
 data AllFloats = AllFloats deriving (Read, Show)
 
@@ -148,6 +170,9 @@ configSystem = def {
                  , gs_bordercolor = "snow2"
                  }
 
+toggleTag tag win = do b <- hasTag tag win
+                       if b then delTag tag win
+                       else addTag tag win
 -- ############################################################################
 --                           ON STARTUP
 -- ############################################################################
@@ -160,18 +185,25 @@ myStartupHook = do
 --                           KEYBINDINGS
 -- ############################################################################
 myKeys = [ 
-      ("M-S-l", spawn "slock")
-    , ("M-S-=", unGrab *> spawn "scrot -s"        )
-    , ("M-]"  , spawn "firefox"                   )
-    , ("M-r"  , renameWorkspace def               )
-    , ("M-s"  , gridselect configSystem spawnSystem >>= spawn . fromMaybe ""      )
-    , ("M-a"  , gridselect configPrograms spawnPrograms >>= spawn . fromMaybe ""      )
-    , ("M-d"  , goToSelected def                  )
+      ("M-z"  , spawn "slock"                               )
+    , ("M-S-=", unGrab *> spawn "scrot -s"                  )
+    , ("M-f"  , runOrRaiseMaster "firefox" (className =? "firefox") )
+    , ("M-<Return>", spawn "xterm"                        )
+    , ("M-c"  , kill                                        )
+    , ("M-r"  , renameWorkspace def                         )
+    , ("M-S-r", changeDir def                               )
+    , ("M-s"  , gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
+    , ("M-a"  , gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
+    , ("M-d"  , goToSelected def                            )
     , ("M-x"  , withFocused $ sendMessage . maximizeRestore )
-    , ("M-<L>", Cyc.moveTo Prev (Cyc.Not emptyWS  ) )
-    , ("M-<R>", Cyc.moveTo Next (Cyc.Not emptyWS  ) )
-    , ("M-S-h", Cyc.moveTo Prev (Cyc.Not emptyWS  ) )
-    , ("M-S-l", Cyc.moveTo Next (Cyc.Not emptyWS  ) )
+    , ("M-w"  , toggleRecentNonEmptyWS                      )
+    , ("M-u"  , focusUrgent                                 )
+    , ("M-<L>", Cyc.moveTo Prev (Cyc.Not emptyWS)           )
+    , ("M-<R>", Cyc.moveTo Next (Cyc.Not emptyWS)           )
+    , ("M-S-h", Cyc.moveTo Prev (Cyc.Not emptyWS)           )
+    , ("M-S-l", Cyc.moveTo Next (Cyc.Not emptyWS)           )
+    , ("M-S-y", withFocused ( toggleTag "drawer" )          )
+    , ("M-y"  , focusUpTagged "drawer"                      )
     ]
 
 -- ############################################################################
@@ -180,21 +212,25 @@ myKeys = [
 myStatusBar = withEasySB (statusBarProp "xmobar" myXmobarPP) defToggleStrutsKey
 
 myXmobarPP = workspaceNamesPP def
-    { ppSep             = wrap "" "" $ xmobarColor colActive "" ""
+    { ppSep             = xmobarColor colActive "" ""
     , ppTitleSanitize   = xmobarStrip
-    , ppCurrent         = xmobarColor "LightBlue" colSep . wrap "" "" . xmobarBorder "Top" "LightBlue" 3
-    , ppVisible         = xmobarColor "Yellow" colSep . wrap "" "" . xmobarBorder "Top" "Yellow" 3
-    , ppHidden          = xmobarColor colFg colSep . wrap "" ""
-    , ppHiddenNoWindows = xmobarColor colInactive colSep . wrap "" ""
-    , ppLayout          =  wrap "  " "   " 
-    , ppUrgent          = wrap "" "" . xmobarBorder "VBoth" colUrgent 2
-    , ppOrder           = \[ws, l, _, wins] -> [xmobarBorder "Full" colSep 1 $ xmobarColor colFg  colSep (" " ++ ws ++ "  "), l,wins]
-    , ppExtras          = [ onLogger (xmobarBorder "VBoth" "#40324a" 1 . xmobarColor "" "#40324a" ) windowTitles ]
+    , ppCurrent         = xmobarBorder "Full" "LightBlue mb=1" 4 . xmobarColor "LightBlue" colSep . wrap "  " "  " 
+    , ppVisible         = xmobarBorder "Full" "Yellow mb=1   " 4 . xmobarColor "Yellow" colSep . wrap "  " "  " 
+    , ppUrgent          = wrap "  " "  " . xmobarBorder "VBoth" colUrgent 4 
+    , ppHidden          = xmobarColor colFg colSep . wrap "  " "  "
+    , ppHiddenNoWindows = \x -> ""
+    , ppLayout          = xmobarBorder "Full" colSep 2 . xmobarColor colFg colSep . wrap "" "   "
+    , ppOrder           = \[ws, l, _, wins] -> [   
+                                xmobarBorder "Full" colSep 0 $ xmobarColor colFg colSep ("  " ++ ws ++ "  ")
+                              , l
+                              , wins
+                            ]
+    , ppExtras          = [ onLogger (wrap "    " "" ) windowTitles ]
     } 
   where
     windowTitles    = logTitles formatFocused formatUnfocused
-    formatFocused   = xmobarBorder "Full" colActive 0 . xmobarColor colBg colActive . wrap "  " "  " . ppWindow
-    formatUnfocused = xmobarBorder "Full" "#40324a" 3 . xmobarColor colFg  "#40324a" . wrap "  " "  " . ppWindow
+    formatFocused   = xmobarBorder "Top" colActive 2 . xmobarColor colActive "" . ppWindow
+    formatUnfocused = xmobarColor colBrown "" . wrap " " " " . ppWindow
 
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30

@@ -1,12 +1,12 @@
 Config { font = "xft:IBMPlexMono:size=9:style=text italic"
-       , bgColor = "#74807b"
-       , fgColor = "#380736"
+       , bgColor = "#42403d"
+       , fgColor = "#ffd45e"
        , lowerOnStart = True
-       , position = Top
+       , position = TopP 2 2
        , sepChar = "%"
        , alignSep = "}{"
        , commands = [
-                    Run Weather "EDDP" ["-t"," <rh>%, <pressure>hPa, <windKmh>km/h, <tempC>°C","-L","64","-H","77","--normal","green","--high","red","--low","lightblue"] 36000
+                    Run Weather "EDDP" ["-t"," <rh>%, <pressure>hPa, <windKmh>km/h, <tempC>°C","-L","64","-H","77"] 36000
                     , Run XMonadLog
                     , Run MultiCpu [ "-t", "<autovbar>", "-L","3","-H","50","--normal","blue","--high","red"] 10
                     , Run Memory ["-t","Mem: <usedratio>%"] 10
@@ -21,6 +21,5 @@ Config { font = "xft:IBMPlexMono:size=9:style=text italic"
                     , Run Battery [
 			"-t", "<acstatus> (<left>%)"
                      ] 10 ]
-       , template = "%XMonadLog% }{%dynnetwork% <fc=DarkGoldenrod>|</fc> <fc=DarkGoldenrod>|</fc>%EDDP% <fc=DarkGoldenrod>|</fc> <fc=#ee9af0>%berlinTime%</fc>  "
-
+       , template = "%XMonadLog% }{%dynnetwork% <fc=DarkGoldenrod>|</fc>%EDDP% <fc=DarkGoldenrod>|</fc> <fc=#ee9af0>%berlinTime%</fc>  "
        }
