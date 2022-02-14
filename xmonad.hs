@@ -181,7 +181,7 @@ myStartupHook = do
         spawnOnOnce "9" "thunderbird"
         spawnOnOnce "9" "notion-snap"
         spawnOnOnce "9" "slack"
-        spawn "picom"
+        spawn "hsetroot -solid black"
 
 -- ############################################################################
 --                           KEYBINDINGS

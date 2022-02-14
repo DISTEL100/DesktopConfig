@@ -21,5 +21,5 @@ Config { font = "xft:IBMPlexMono:size=9:style=text italic"
                     , Run Battery [
 			"-t", "<acstatus> (<left>%)"
                      ] 10 ]
-       , template = "%XMonadLog% }{%dynnetwork% <fc=DarkGoldenrod>|</fc>%EDDP% <fc=DarkGoldenrod>|</fc> <fc=#ee9af0>%berlinTime%</fc>  "
+       , template = "%XMonadLog% }{ %EDDP% <fc=DarkGoldenrod>|</fc> <fc=#ee9af0>%berlinTime%</fc>  "
        }
