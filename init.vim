@@ -1,5 +1,4 @@
 call plug#begin(stdpath('data') . '/plugged')
-Plug 'davidgranstrom/scnvim', { 'do': {-> scnvim#install() } }
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
