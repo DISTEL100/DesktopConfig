@@ -90,7 +90,7 @@ myLogHook = historyHook
 --                           MANAGE HOOK
 -- ############################################################################
 myManageHook :: ManageHook
-myManageHook = composeAll
+myManageHook = manageSpawn <+> composeAll
     [ className =? "Gimp"              --> doFloat
     , className =? "SuperCollider"     --> doShift "4"
     , className =? "1Password"         --> doCenterFloat
@@ -106,8 +106,8 @@ myManageHook = composeAll
 -- ############################################################################
 --                           LAYOUTS
 -- ############################################################################
-myLayout = onWorkspace "9" myFull
-    $ Boring.boringWindows
+myLayout = Boring.boringWindows
+    $ onWorkspace "9" myFull
     $ workspaceDir "~"
     $ lessBorders AllFloats 
     $ myTall ||| myTallNoMag ||| myFull ||| my3Col
