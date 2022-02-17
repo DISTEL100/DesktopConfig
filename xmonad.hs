@@ -100,6 +100,7 @@ myManageHook = composeAll
     , isFullscreen                     --> doFullFloat
     , isDialog                         --> doCenterFloat
     , className =? "Alert"             --> doAskUrgent
+    , title     =? "preview-tui"       --> doF W.focusDown
     ]
 
 -- ############################################################################
@@ -119,12 +120,14 @@ my3Col = renamed [ Replace "3Col" ]
     $ ThreeColMid 1 (3/100) (1/2)
 myTall = renamed [ Replace "Tall" ]
     $ myDrawer
+    $ smartBorders
     $ mySpacing
-    $ magnifiercz' 1.25 
+    $ magnifiercz' 1.3 
     $ maximizeWithPadding 30
-    $ Tall 1 (3/100) (1/2)
+    $ Tall 1 (3/100) (11/18)
 myTallNoMag = renamed [ Replace "TallNoMag" ]
     $ myDrawer
+    $ smartBorders
     $ mySpacing
     $ maximizeWithPadding 15
     $ Tall 1 (3/100) (1/2)
@@ -190,6 +193,8 @@ moveToDrawer = withFocused (toggleTagBoring "drawer")
 myStartupHook = do
         spawnOnOnce "1" "xterm"
         spawnOnOnce "9" "thunderbird"
+        spawnOnOnce "9" "signal-desktop"
+        spawnOnOnce "9" "telegram-desktop"
         spawn "picom"
 
 -- ############################################################################
