@@ -23,6 +23,7 @@ import XMonad.Layout.PerWorkspace
 import XMonad.Layout.WorkspaceDir
 import XMonad.Layout.Spacing
 import XMonad.Layout.Drawer
+import qualified XMonad.Layout.BoringWindows as Boring
 
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
@@ -34,6 +35,7 @@ import XMonad.Actions.CycleWS as Cyc
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.TagWindows
+import XMonad.Actions.GroupNavigation
 
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as M
@@ -73,11 +75,17 @@ myConfig = def
     , layoutHook         = myLayout     
     , manageHook         = myManageHook
     , startupHook        = myStartupHook
+    , logHook            = myLogHook
     , normalBorderColor  = colInactive
     , focusedBorderColor = colActive
     , borderWidth        = 2
     } `additionalKeysP` myKeys
     
+-- ############################################################################
+--                           LOG HOOK
+-- ############################################################################
+myLogHook = historyHook
+
 -- ############################################################################
 --                           MANAGE HOOK
 -- ############################################################################
@@ -91,7 +99,6 @@ myManageHook = composeAll
     , appName   =? "Calendar"          --> doRectFloat (W.RationalRect (1/4) (1/4) (1/2) (1/2))
     , isFullscreen                     --> doFullFloat
     , isDialog                         --> doCenterFloat
-    , className =? "Alert"             --> doCenterFloat
     , className =? "Alert"             --> doAskUrgent
     ]
 
@@ -99,6 +106,7 @@ myManageHook = composeAll
 --                           LAYOUTS
 -- ############################################################################
 myLayout = onWorkspace "9" myFull
+    $ Boring.boringWindows
     $ workspaceDir "~"
     $ lessBorders AllFloats 
     $ myTall ||| myTallNoMag ||| myFull ||| my3Col
@@ -112,7 +120,7 @@ my3Col = renamed [ Replace "3Col" ]
 myTall = renamed [ Replace "Tall" ]
     $ myDrawer
     $ mySpacing
-    $ magnifiercz 1.05 
+    $ magnifiercz' 1.25 
     $ maximizeWithPadding 30
     $ Tall 1 (3/100) (1/2)
 myTallNoMag = renamed [ Replace "TallNoMag" ]
@@ -123,7 +131,7 @@ myTallNoMag = renamed [ Replace "TallNoMag" ]
 myFull = smartBorders
     $ Full
 
-myDrawer = onRight $ simpleDrawer 0.0 0.333 (Tagged "drawer") 
+myDrawer = onRight $ simpleDrawer 0.0 0.2 (Tagged "drawer") 
 mySpacing = spacingRaw True (Border 2 0 2 0) True (Border 0 2 0 2) True
 
 data AllFloats = AllFloats deriving (Read, Show)
@@ -170,9 +178,12 @@ configSystem = def {
                  , gs_bordercolor = "snow2"
                  }
 
-toggleTag tag win = do b <- hasTag tag win
-                       if b then delTag tag win
-                       else addTag tag win
+toggleTagBoring tag win = do b <- hasTag tag win
+                             if b then Boring.clearBoring >> delTag tag win
+                                  else Boring.markBoring  >> addTag tag win
+
+moveToDrawer = withFocused (toggleTagBoring "drawer") 
+                >> nextMatch History (return True)
 -- ############################################################################
 --                           ON STARTUP
 -- ############################################################################
@@ -186,9 +197,17 @@ myStartupHook = do
 -- ############################################################################
 myKeys = [ 
       ("M-z"  , spawn "slock"                               )
+    , ("M-<Tab>",   Boring.focusDown                        )
+    , ("M-j"  ,     Boring.focusDown                        )
+    , ("M-S-j",     Boring.swapDown                         )
+    , ("M-S-<Tab>", Boring.focusUp                          )
+    , ("M-k"  ,     Boring.focusUp                          )
+    , ("M-S-k",     Boring.swapUp                           )
+    , ("M-m"  ,     Boring.focusMaster                      )
+    , ("M-n"  ,     windows W.swapMaster                    )
     , ("M-S-=", unGrab *> spawn "scrot -s"                  )
     , ("M-f"  , runOrRaiseMaster "firefox" (className =? "firefox") )
-    , ("M-<Return>", spawn "xterm"                        )
+    , ("M-<Return>", spawn "xterm"                          )
     , ("M-c"  , kill                                        )
     , ("M-r"  , renameWorkspace def                         )
     , ("M-S-r", changeDir def                               )
@@ -202,7 +221,7 @@ myKeys = [
     , ("M-<R>", Cyc.moveTo Next (Cyc.Not emptyWS)           )
     , ("M-S-h", Cyc.moveTo Prev (Cyc.Not emptyWS)           )
     , ("M-S-l", Cyc.moveTo Next (Cyc.Not emptyWS)           )
-    , ("M-S-y", withFocused ( toggleTag "drawer" )          )
+    , ("M-S-y", moveToDrawer                                )
     , ("M-y"  , focusUpTagged "drawer"                      )
     ]
 
@@ -229,8 +248,8 @@ myXmobarPP = workspaceNamesPP def
     } 
   where
     windowTitles    = logTitles formatFocused formatUnfocused
-    formatFocused   = xmobarBorder "Top" colActive 2 . xmobarColor colActive "" . ppWindow
-    formatUnfocused = xmobarColor colBrown "" . wrap " " " " . ppWindow
+    formatFocused   = wrap " " " " . xmobarBorder "Top" colActive 2 . xmobarColor colActive "" . ppWindow
+    formatUnfocused = xmobarColor colFg "" . wrap " " " " . ppWindow
 
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
