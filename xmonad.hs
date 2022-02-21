@@ -1,5 +1,7 @@
-import XMonad
+{-# LANGUAGE TupleSections #-}
 
+import XMonad
+import Control.Monad
 import qualified XMonad.StackSet as W
 
 import XMonad.Hooks.DynamicLog
@@ -14,6 +16,8 @@ import XMonad.Util.Loggers
 import XMonad.Util.Ungrab
 import XMonad.Util.SpawnOnce
 
+import XMonad.Layout.Groups.Examples
+
 import XMonad.Layout.Magnifier
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.NoBorders
@@ -23,12 +27,17 @@ import XMonad.Layout.PerWorkspace
 import XMonad.Layout.WorkspaceDir
 import XMonad.Layout.Spacing
 import XMonad.Layout.Drawer
+import XMonad.Layout.LayoutHints
 import qualified XMonad.Layout.BoringWindows as Boring
+import qualified XMonad.Layout.MultiToggle as MT
+import XMonad.Layout.MultiToggle.Instances
 
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.DynamicIcons
 
+import XMonad.Actions.WindowBringer
+import XMonad.Actions.ShowText
 import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.GridSelect
 import XMonad.Actions.CycleWS as Cyc
@@ -74,6 +83,7 @@ myConfig = def
     { modMask            = mod4Mask      
     , layoutHook         = myLayout     
     , manageHook         = myManageHook
+    , handleEventHook    = myEventHook
     , startupHook        = myStartupHook
     , logHook            = myLogHook
     , normalBorderColor  = colInactive
@@ -81,6 +91,11 @@ myConfig = def
     , borderWidth        = 2
     } `additionalKeysP` myKeys
     
+-- ############################################################################
+--                           EVENT HOOK
+-- ############################################################################
+myEventHook = hintsEventHook <+> handleTimerEvent
+
 -- ############################################################################
 --                           LOG HOOK
 -- ############################################################################
@@ -110,26 +125,37 @@ myLayout = Boring.boringWindows
     $ onWorkspace "9" myFull
     $ workspaceDir "~"
     $ lessBorders AllFloats 
-    $ myTall ||| myTallNoMag ||| myFull ||| my3Col
+    $ myTall ||| myTallNoMag ||| myFull ||| my3Col ||| my3ColNoMag  
 
+my3ColNoMag = renamed [ Replace "3ColNoMag" ]
+    $ layoutHintsWithPlacement (0.5, 0.5) 
+    $ myDrawer
+    $ mySpacing
+    $ maximizeWithPadding 30
+    $ ThreeColMid 1 (3/100) (1/2)
 my3Col = renamed [ Replace "3Col" ]
+    $ layoutHintsWithPlacement (0.5, 0.5) 
     $ myDrawer
     $ mySpacing
     $ magnifiercz' 1.5 
     $ maximizeWithPadding 30
     $ ThreeColMid 1 (3/100) (1/2)
 myTall = renamed [ Replace "Tall" ]
+    $ layoutHintsWithPlacement (0.5, 0.5) 
     $ myDrawer
     $ smartBorders
     $ mySpacing
     $ magnifiercz' 1.3 
     $ maximizeWithPadding 30
+    $ MT.mkToggle (MT.single FULL)
     $ Tall 1 (3/100) (11/18)
 myTallNoMag = renamed [ Replace "TallNoMag" ]
+    $ layoutHintsWithPlacement (0.5, 0.5) 
     $ myDrawer
     $ smartBorders
     $ mySpacing
     $ maximizeWithPadding 15
+    $ MT.mkToggle (MT.single FULL)
     $ Tall 1 (3/100) (1/2)
 myFull = smartBorders
     $ Full
@@ -145,6 +171,9 @@ instance SetsAmbiguous AllFloats where
 -- ############################################################################
 --                           ACTIONS
 -- ############################################################################
+
+textTest =  ["a", "b", "c"]
+
 spawnPrograms = [
               ("1Password",     "1password")
             , ( "Bluetooth",    "xterm -bg DarkBlue -class xterm_gridSelect -e bluetoothctl" )
@@ -201,33 +230,41 @@ myStartupHook = do
 --                           KEYBINDINGS
 -- ############################################################################
 myKeys = [ 
-      ("M-z"  , spawn "slock"                               )
-    , ("M-<Tab>",   Boring.focusDown                        )
-    , ("M-j"  ,     Boring.focusDown                        )
-    , ("M-S-j",     Boring.swapDown                         )
-    , ("M-S-<Tab>", Boring.focusUp                          )
-    , ("M-k"  ,     Boring.focusUp                          )
-    , ("M-S-k",     Boring.swapUp                           )
-    , ("M-m"  ,     Boring.focusMaster                      )
-    , ("M-n"  ,     windows W.swapMaster                    )
-    , ("M-S-=", unGrab *> spawn "scrot -s"                  )
-    , ("M-f"  , runOrRaiseMaster "firefox" (className =? "firefox") )
-    , ("M-<Return>", spawn "xterm"                          )
-    , ("M-c"  , kill                                        )
-    , ("M-r"  , renameWorkspace def                         )
-    , ("M-S-r", changeDir def                               )
-    , ("M-s"  , gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
-    , ("M-a"  , gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
-    , ("M-d"  , goToSelected def                            )
-    , ("M-x"  , withFocused $ sendMessage . maximizeRestore )
-    , ("M-w"  , toggleRecentNonEmptyWS                      )
-    , ("M-u"  , focusUrgent                                 )
-    , ("M-<L>", Cyc.moveTo Prev (Cyc.Not emptyWS)           )
-    , ("M-<R>", Cyc.moveTo Next (Cyc.Not emptyWS)           )
-    , ("M-S-h", Cyc.moveTo Prev (Cyc.Not emptyWS)           )
-    , ("M-S-l", Cyc.moveTo Next (Cyc.Not emptyWS)           )
-    , ("M-S-y", moveToDrawer                                )
-    , ("M-y"  , focusUpTagged "drawer"                      )
+      ("M-z",           spawn "slock"                                       )
+    , ("M1-f",          sendMessage $ MT.Toggle FULL                        )
+    , ("M-<Tab>",       Boring.focusDown                                    )
+    , ("M-j",           Boring.focusDown                            )
+    , ("M-S-j",         Boring.swapDown                         )
+    , ("M-S-<Tab>",     Boring.focusUp                          )
+    , ("M-k",           Boring.focusUp                          )
+    , ("M-S-k",         Boring.swapUp                           )
+    , ("M-m",           Boring.focusMaster                      )
+    , ("M-n",           windows W.swapMaster                    )
+    , ("M-S-=",         unGrab *> spawn "scrot -s"                  )
+    , ("M-f",           runOrRaiseMaster "firefox" (className =? "firefox") )
+    , ("M-<Return>",    spawn "xterm"                          )
+    , ("M-c",           kill                                        )
+    , ("M-r",           renameWorkspace def                         )
+    , ("M-S-r",         changeDir def                               )
+    , ("M-s",           gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
+    , ("M-a",           gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
+    , ("M-d",           goToSelected def                            )
+    , ("M-x",           withFocused $ sendMessage . maximizeRestore )
+    , ("M1-<Tab>",      toggleRecentNonEmptyWS                      )
+    , ("M-u",           focusUrgent                                 )
+    , ("M-<L>",         Cyc.moveTo Prev (Cyc.Not emptyWS)           )
+    , ("M-<R>",         Cyc.moveTo Next (Cyc.Not emptyWS)           )
+    , ("M-S-h",         Cyc.moveTo Prev (Cyc.Not emptyWS)           )
+    , ("M-S-l",         Cyc.moveTo Next (Cyc.Not emptyWS)           )
+    , ("M-S-y",         moveToDrawer                                )
+    , ("M-y",           focusUpTagged "drawer"                      )
+    , ("M1-i",           zoomWindowOut                          )
+    , ("M1-u",           zoomWindowIn                      )
+    , ("M1-o",           toggleColumnFull                      )
+    , ("M1-z",           splitGroup                      )
+    , ("M1-b",           gotoMenu                      )
+    , ("M1-g",           bringMenu                      )
+    , ("M1-c",           flashText def 1 (textTest)                      )
     ]
 
 -- ############################################################################
