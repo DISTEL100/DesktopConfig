@@ -1,4 +1,5 @@
 import XMonad
+import XMonad.Prelude
 
 import qualified XMonad.StackSet as W
 
@@ -13,8 +14,12 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Loggers
 import XMonad.Util.Ungrab
 import XMonad.Util.SpawnOnce
+import XMonad.Util.NamedWindows( getName )
+
+import XMonad.Layout.Groups.Examples
 
 import XMonad.Layout.Magnifier
+import XMonad.Layout.Gaps
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
@@ -23,17 +28,24 @@ import XMonad.Layout.PerWorkspace
 import XMonad.Layout.WorkspaceDir
 import XMonad.Layout.Spacing
 import XMonad.Layout.Drawer
+import XMonad.Layout.LayoutHints
+import qualified XMonad.Layout.BoringWindows as Boring
+import qualified XMonad.Layout.MultiToggle as MT
+import XMonad.Layout.MultiToggle.Instances
 
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.DynamicIcons
+import XMonad.Hooks.FadeWindows
+import XMonad.Hooks.DynamicProperty
 
+import XMonad.Actions.WindowBringer
 import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.GridSelect
 import XMonad.Actions.CycleWS as Cyc
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.TagWindows
+import XMonad.Actions.GroupNavigation
 
 import Data.Maybe (fromMaybe)
 import qualified Data.Map as M
@@ -72,17 +84,34 @@ myConfig = def
     { modMask            = mod4Mask      
     , layoutHook         = myLayout     
     , manageHook         = myManageHook
+    , handleEventHook    = myEventHook
     , startupHook        = myStartupHook
+    , logHook            = myLogHook
     , normalBorderColor  = colInactive
     , focusedBorderColor = colActive
     , borderWidth        = 2
     } `additionalKeysP` myKeys
     
 -- ############################################################################
+--                           EVENT HOOK
+-- ############################################################################
+myEventHook = hintsEventHook <+> fadeWindowsEventHook
+
+-- ############################################################################
+--                           LOG HOOK
+-- ############################################################################
+myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook
+myFadeHook = composeAll 
+   [ 
+    opaque
+    , stringProperty "_XMONAD_TAGS" =? "drawer" --> transparency 0.15
+   ]
+
+-- ############################################################################
 --                           MANAGE HOOK
 -- ############################################################################
 myManageHook :: ManageHook
-myManageHook = composeAll
+myManageHook = manageSpawn <+> composeAll
     [ className =? "Gimp"              --> doFloat
     , className =? "SuperCollider"     --> doShift "4"
     , className =? "1Password"         --> doCenterFloat
@@ -91,39 +120,55 @@ myManageHook = composeAll
     , appName   =? "Calendar"          --> doRectFloat (W.RationalRect (1/4) (1/4) (1/2) (1/2))
     , isFullscreen                     --> doFullFloat
     , isDialog                         --> doCenterFloat
-    , className =? "Alert"             --> doCenterFloat
     , className =? "Alert"             --> doAskUrgent
+    , title     =? "preview-tui"       --> doF W.focusDown
     ]
 
 -- ############################################################################
 --                           LAYOUTS
 -- ############################################################################
-myLayout = onWorkspace "9" myFull
+myLayout = Boring.boringWindows
+    $ onWorkspace "9" myFull
     $ workspaceDir "~"
     $ lessBorders AllFloats 
-    $ myTall ||| myTallNoMag ||| myFull ||| my3Col
+    $ myTall ||| myTallNoMag ||| myFull ||| my3Col ||| my3ColNoMag  
 
+my3ColNoMag = renamed [ Replace "3ColNoMag" ]
+    $ layoutHintsWithPlacement (0.5, 0.5) 
+    $ myDrawer
+    $ mySpacing
+    $ maximizeWithPadding 30
+    $ ThreeColMid 1 (3/100) (1/2)
 my3Col = renamed [ Replace "3Col" ]
+    $ layoutHintsWithPlacement (0.5, 0.5) 
     $ myDrawer
     $ mySpacing
     $ magnifiercz' 1.5 
     $ maximizeWithPadding 30
     $ ThreeColMid 1 (3/100) (1/2)
 myTall = renamed [ Replace "Tall" ]
+    $ layoutHintsWithPlacement (0.5, 0.5) 
     $ myDrawer
+    $ smartBorders
     $ mySpacing
-    $ magnifiercz 1.05 
+    $ magnifiercz' 1.3 
     $ maximizeWithPadding 30
-    $ Tall 1 (3/100) (1/2)
+    $ MT.mkToggle (MT.single FULL)
+    $ Tall 1 (3/100) (11/18)
 myTallNoMag = renamed [ Replace "TallNoMag" ]
+    $ layoutHintsWithPlacement (0.5, 0.5) 
     $ myDrawer
+    $ smartBorders
     $ mySpacing
     $ maximizeWithPadding 15
+    $ MT.mkToggle (MT.single FULL)
     $ Tall 1 (3/100) (1/2)
 myFull = smartBorders
     $ Full
 
-myDrawer = onRight $ simpleDrawer 0.0 0.333 (Tagged "drawer") 
+myDrawer =  onBottom $ drawer 0.0 0.8 (Tagged "drawer") myDrawerLayout
+-- myDrawerLayout = gaps [(U,0), (D,0), (L,0), (R,60)] $ Tall 1 0.03 0.6
+myDrawerLayout = spacingRaw False (Border 1400 0 0 0) True (Border 0 0 0 0) True $ Tall 0 00.3 0.6
 mySpacing = spacingRaw True (Border 2 0 2 0) True (Border 0 2 0 2) True
 
 data AllFloats = AllFloats deriving (Read, Show)
@@ -134,6 +179,14 @@ instance SetsAmbiguous AllFloats where
 -- ############################################################################
 --                           ACTIONS
 -- ############################################################################
+windowBringerConf :: WindowBringerConfig
+windowBringerConf = def { 
+    menuArgs = ["-l", "20"],
+    windowTitler = \ws -> \w -> do
+          name <- show <$> getName w
+          return $ W.tag ws ++ "  |  " ++ name
+    }
+
 spawnPrograms = [
               ("1Password",     "1password")
             , ( "Bluetooth",    "xterm -bg DarkBlue -class xterm_gridSelect -e bluetoothctl" )
@@ -170,42 +223,60 @@ configSystem = def {
                  , gs_bordercolor = "snow2"
                  }
 
-toggleTag tag win = do b <- hasTag tag win
-                       if b then delTag tag win
-                       else addTag tag win
+toggleTagBoring tag win = do b <- hasTag tag win
+                             if b then Boring.clearBoring >> delTag tag win
+                                  else Boring.markBoring  >> addTag tag win
+
+moveToDrawer = withFocused (toggleTagBoring "drawer") 
+                >> nextMatch History (return True)
 -- ############################################################################
 --                           ON STARTUP
 -- ############################################################################
 myStartupHook = do
         spawnOnOnce "1" "xterm"
         spawnOnOnce "9" "thunderbird"
-        spawnOnOnce "9" "notion-snap"
-        spawnOnOnce "9" "slack"
-        spawn "hsetroot -solid black"
+        spawnOnOnce "9" "signal-desktop"
+        spawnOnOnce "9" "telegram-desktop"
+        spawn "picom"
 
 -- ############################################################################
 --                           KEYBINDINGS
 -- ############################################################################
 myKeys = [ 
-      ("M-z"  , spawn "slock"                               )
-    , ("M-S-=", unGrab *> spawn "scrot -s"                  )
-    , ("M-f"  , runOrRaiseMaster "firefox" (className =? "firefox") )
-    , ("M-<Return>", spawn "xterm"                        )
-    , ("M-c"  , kill                                        )
-    , ("M-r"  , renameWorkspace def                         )
-    , ("M-S-r", changeDir def                               )
-    , ("M-s"  , gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
-    , ("M-a"  , gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
-    , ("M-d"  , goToSelected def                            )
-    , ("M-x"  , withFocused $ sendMessage . maximizeRestore )
-    , ("M-w"  , toggleRecentNonEmptyWS                      )
-    , ("M-u"  , focusUrgent                                 )
-    , ("M-<L>", Cyc.moveTo Prev (Cyc.Not emptyWS)           )
-    , ("M-<R>", Cyc.moveTo Next (Cyc.Not emptyWS)           )
-    , ("M-S-h", Cyc.moveTo Prev (Cyc.Not emptyWS)           )
-    , ("M-S-l", Cyc.moveTo Next (Cyc.Not emptyWS)           )
-    , ("M-S-y", withFocused ( toggleTag "drawer" )          )
-    , ("M-y"  , focusUpTagged "drawer"                      )
+      ("M-z",           spawn "slock"                                       )
+    , ("M1-f",          sendMessage $ MT.Toggle FULL                        )
+    , ("M-<Tab>",       Boring.focusDown                                    )
+    , ("M-j",           Boring.focusDown                            )
+    , ("M-S-j",         Boring.swapDown                         )
+    , ("M-S-<Tab>",     Boring.focusUp                          )
+    , ("M-k",           Boring.focusUp                          )
+    , ("M-S-k",         Boring.swapUp                           )
+    , ("M-m",           Boring.focusMaster                      )
+    , ("M-n",           windows W.swapMaster                    )
+    , ("M-S-=",         unGrab *> spawn "scrot -s"                  )
+    , ("M-f",           runOrRaiseMaster "firefox" (className =? "firefox") )
+    , ("M-<Return>",    spawn "xterm"                          )
+    , ("M-c",           kill                                        )
+    , ("M-r",           renameWorkspace def                         )
+    , ("M-S-r",         changeDir def                               )
+    , ("M-s",           gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
+    , ("M-a",           gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
+    , ("M-d",           goToSelected def                            )
+    , ("M-x",           withFocused $ sendMessage . maximizeRestore )
+    , ("M1-<Tab>",      toggleRecentNonEmptyWS                      )
+    , ("M-u",           focusUrgent                                 )
+    , ("M-<L>",         Cyc.moveTo Prev ((Cyc.Not emptyWS) :&: hiddenWS)           )
+    , ("M-<R>",         Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS)           )
+    , ("M-S-h",         Cyc.moveTo Prev ((Cyc.Not emptyWS) :&: hiddenWS)           )
+    , ("M-S-l",         Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS) )
+    , ("M-S-y",         moveToDrawer                                )
+    , ("M-y",           focusUpTagged "drawer"                      )
+    , ("M1-i",           zoomWindowOut                          )
+    , ("M1-u",           zoomWindowIn                      )
+    , ("M1-o",           toggleColumnFull                      )
+    , ("M1-z",           splitGroup                      )
+    , ("M1-b",           bringMenuConfig windowBringerConf                      )
+    , ("M1-g",           gotoMenuConfig windowBringerConf                      )
     ]
 
 -- ############################################################################
@@ -231,8 +302,8 @@ myXmobarPP = workspaceNamesPP def
     } 
   where
     windowTitles    = logTitles formatFocused formatUnfocused
-    formatFocused   = xmobarBorder "Top" colActive 2 . xmobarColor colActive "" . ppWindow
-    formatUnfocused = xmobarColor colBrown "" . wrap " " " " . ppWindow
+    formatFocused   = wrap " " " " . xmobarBorder "Top" colActive 2 . xmobarColor colActive "" . ppWindow
+    formatUnfocused = xmobarColor colFg "" . wrap " " " " . ppWindow
 
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
