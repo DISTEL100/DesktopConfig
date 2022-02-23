@@ -271,10 +271,6 @@ myKeys = [
     , ("M-S-l",         Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS) )
     , ("M-S-y",         moveToDrawer                                )
     , ("M-y",           focusUpTagged "drawer"                      )
-    , ("M1-i",           zoomWindowOut                          )
-    , ("M1-u",           zoomWindowIn                      )
-    , ("M1-o",           toggleColumnFull                      )
-    , ("M1-z",           splitGroup                      )
     , ("M1-b",           bringMenuConfig windowBringerConf                      )
     , ("M1-g",           gotoMenuConfig windowBringerConf                      )
     ]
