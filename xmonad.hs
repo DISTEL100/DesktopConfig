@@ -14,7 +14,7 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Loggers
 import XMonad.Util.Ungrab
 import XMonad.Util.SpawnOnce
-import XMonad.Util.NamedWindows( getName )
+import XMonad.Util.NamedWindows( getName, getNameWMClass )
 
 import XMonad.Layout.Groups.Examples
 
@@ -89,7 +89,7 @@ myConfig = def
     , logHook            = myLogHook
     , normalBorderColor  = colInactive
     , focusedBorderColor = colActive
-    , borderWidth        = 2
+    , borderWidth        = 1
     } `additionalKeysP` myKeys
     
 -- ############################################################################
@@ -131,23 +131,23 @@ myLayout = Boring.boringWindows
     $ onWorkspace "9" myFull
     $ workspaceDir "~"
     $ lessBorders AllFloats 
-    $ myTall ||| myTallNoMag ||| myFull ||| my3Col ||| my3ColNoMag  
+    $ myTallNoMag ||| myFull ||| my3Col  
 
 my3ColNoMag = renamed [ Replace "3ColNoMag" ]
-    $ layoutHintsWithPlacement (0.5, 0.5) 
+    $ layoutHintsWithPlacement (0, 0) 
     $ myDrawer
     $ mySpacing
     $ maximizeWithPadding 30
     $ ThreeColMid 1 (3/100) (1/2)
 my3Col = renamed [ Replace "3Col" ]
-    $ layoutHintsWithPlacement (0.5, 0.5) 
+    $ layoutHintsWithPlacement (0, 0) 
     $ myDrawer
     $ mySpacing
     $ magnifiercz' 1.5 
     $ maximizeWithPadding 30
     $ ThreeColMid 1 (3/100) (1/2)
 myTall = renamed [ Replace "Tall" ]
-    $ layoutHintsWithPlacement (0.5, 0.5) 
+    $ layoutHintsWithPlacement (0, 0) 
     $ myDrawer
     $ smartBorders
     $ mySpacing
@@ -156,7 +156,7 @@ myTall = renamed [ Replace "Tall" ]
     $ MT.mkToggle (MT.single FULL)
     $ Tall 1 (3/100) (11/18)
 myTallNoMag = renamed [ Replace "TallNoMag" ]
-    $ layoutHintsWithPlacement (0.5, 0.5) 
+    $ layoutHintsWithPlacement (0, 0) 
     $ myDrawer
     $ smartBorders
     $ mySpacing
@@ -167,7 +167,6 @@ myFull = smartBorders
     $ Full
 
 myDrawer =  onBottom $ drawer 0.0 0.8 (Tagged "drawer") myDrawerLayout
--- myDrawerLayout = gaps [(U,0), (D,0), (L,0), (R,60)] $ Tall 1 0.03 0.6
 myDrawerLayout = spacingRaw False (Border 1400 0 0 0) True (Border 0 0 0 0) True $ Tall 0 00.3 0.6
 mySpacing = spacingRaw True (Border 2 0 2 0) True (Border 0 2 0 2) True
 
@@ -181,11 +180,27 @@ instance SetsAmbiguous AllFloats where
 -- ############################################################################
 windowBringerConf :: WindowBringerConfig
 windowBringerConf = def { 
-    menuArgs = ["-l", "20"],
+    menuArgs = [ "-l", "20"
+               , "-i"
+               , "-b"
+               , "-nb", colInactive
+               , "-nf", colFg
+               , "-sb", colSep
+               , "-sf", colBrown
+               ],
     windowTitler = \ws -> \w -> do
           name <- show <$> getName w
-          return $ W.tag ws ++ "  |  " ++ name
+          className <- show <$> getNameWMClass w
+          return $ "  " ++ W.tag ws
+                        ++ "   |   " 
+                        ++ (fixedWidth 16 className) 
+                        ++ "   |   "
+                        ++ name
     }
+fixedWidth :: Int -> String -> String
+fixedWidth 0 s      = ""
+fixedWidth x ""     = " " ++ (fixedWidth (x-1) "") 
+fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)
 
 spawnPrograms = [
               ("1Password",     "1password")
