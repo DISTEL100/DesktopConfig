@@ -17,9 +17,43 @@ Plug( 'rafamadriz/friendly-snippets' )
 Plug( 'vim-airline/vim-airline' )
 Plug( 'vim-airline/vim-airline-themes' )
 vim.call('plug#end')
-vim.cmd([[
-let g:airline_theme='tomorrow'
-]])
+
 require('nvim-lspconfig')
 require('keymappings')
 require('nvim-cmp')
+
+vim.cmd([[
+set undofile
+set undodir=$HOME/.config/nvim/undo//
+set backupdir=$HOME/.config/nvim/backup//
+set directory=$HOME/.config/nvim/swap//
+set backup
+set writebackup
+set backupcopy=yes
+au BufWritePre * let &bex = '@' . strftime("%F.%H")
+
+set termguicolors   
+colorscheme morning
+let g:airline_theme='tomorrow'
+let g:airline#extensions#tabline#enabled = 1
+
+highlight Cursor guifg=white guibg=black
+highlight iCursor guifg=white guibg=orange
+highlight rCursor guifg=orange guibg=magenta
+set guicursor=n-v-c:block-Cursor
+set guicursor+=i:ver100-iCursor
+set guicursor+=n-v-c:blinkon100
+set guicursor+=i:blinkwait1
+
+set clipboard=unnamedplus
+
+set mouse=a
+set wrap linebreak
+set breakindent
+
+let g:netrw_liststyle=3
+let g:netrw_banner=0
+command! Ll Lexplore | vert res 30
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+]])
