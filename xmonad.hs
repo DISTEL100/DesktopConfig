@@ -16,8 +16,8 @@ import XMonad.Util.Ungrab
 import XMonad.Util.SpawnOnce
 import XMonad.Util.NamedWindows( getName, getNameWMClass )
 
-import XMonad.Layout.Groups.Examples
-
+import XMonad.Layout.BinarySpacePartition
+import XMonad.Layout.Hidden
 import XMonad.Layout.Magnifier
 import XMonad.Layout.Gaps
 import XMonad.Layout.ThreeColumns
@@ -131,16 +131,25 @@ myLayout = Boring.boringWindows
     $ onWorkspace "9" myFull
     $ workspaceDir "~"
     $ lessBorders AllFloats 
-    $ myTallNoMag ||| myFull ||| my3Col  
+    $ myBSP ||| myTallNoMag ||| myFull ||| my3Col
 
+myBSP = renamed [ Replace "BSP" ] 
+    $ layoutHintsWithPlacement (0, 0) 
+    $ myDrawer
+    $ hiddenWindows
+    $ mySpacing
+    $ MT.mkToggle (MT.single FULL)
+    $ emptyBSP
 my3ColNoMag = renamed [ Replace "3ColNoMag" ]
     $ layoutHintsWithPlacement (0, 0) 
+    $ hiddenWindows
     $ myDrawer
     $ mySpacing
     $ maximizeWithPadding 30
     $ ThreeColMid 1 (3/100) (1/2)
 my3Col = renamed [ Replace "3Col" ]
     $ layoutHintsWithPlacement (0, 0) 
+    $ hiddenWindows
     $ myDrawer
     $ mySpacing
     $ magnifiercz' 1.5 
@@ -148,19 +157,18 @@ my3Col = renamed [ Replace "3Col" ]
     $ ThreeColMid 1 (3/100) (1/2)
 myTall = renamed [ Replace "Tall" ]
     $ layoutHintsWithPlacement (0, 0) 
+    $ hiddenWindows
     $ myDrawer
-    $ smartBorders
     $ mySpacing
     $ magnifiercz' 1.3 
     $ maximizeWithPadding 30
     $ MT.mkToggle (MT.single FULL)
     $ Tall 1 (3/100) (11/18)
 myTallNoMag = renamed [ Replace "TallNoMag" ]
+    $ hiddenWindows
     $ layoutHintsWithPlacement (0, 0) 
     $ myDrawer
-    $ smartBorders
     $ mySpacing
-    $ maximizeWithPadding 15
     $ MT.mkToggle (MT.single FULL)
     $ Tall 1 (3/100) (1/2)
 myFull = smartBorders
@@ -267,6 +275,10 @@ myKeys = [
     , ("M-k",           Boring.focusUp                          )
     , ("M-S-k",         Boring.swapUp                           )
     , ("M-m",           Boring.focusMaster                      )
+    , ("M-h",           sendMessage ( ExpandTowards L) >> sendMessage  Shrink                   )
+    , ("M-S-h",         sendMessage ( ExpandTowards D) )
+    , ("M-l",           sendMessage ( ExpandTowards R ) >> sendMessage Expand                      )
+    , ("M-S-l",         sendMessage ( ExpandTowards U ) )
     , ("M-n",           windows W.swapMaster                    )
     , ("M-S-=",         unGrab *> spawn "scrot -s"                  )
     , ("M-f",           runOrRaiseMaster "firefox" (className =? "firefox") )
@@ -282,12 +294,12 @@ myKeys = [
     , ("M-u",           focusUrgent                                 )
     , ("M-<L>",         Cyc.moveTo Prev ((Cyc.Not emptyWS) :&: hiddenWS)           )
     , ("M-<R>",         Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS)           )
-    , ("M-S-h",         Cyc.moveTo Prev ((Cyc.Not emptyWS) :&: hiddenWS)           )
-    , ("M-S-l",         Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS) )
     , ("M-S-y",         moveToDrawer                                )
     , ("M-y",           focusUpTagged "drawer"                      )
     , ("M1-b",           bringMenuConfig windowBringerConf                      )
     , ("M1-g",           gotoMenuConfig windowBringerConf                      )
+    , ("M1-h",           withFocused hideWindow   )
+    , ("M1-S-h",         popOldestHiddenWindow  )
     ]
 
 -- ############################################################################
