@@ -20,8 +20,8 @@ export FZF_DEFAULT_COMMAND='rg --hidden --no-ignore --files'
 export NNN_OPENER='mimeopen'
 export EDITOR='nvim'
 export VISUAL='nvim'
-export NNN_FIFO=/tmp/nnn.fifo
-export NNN_PLUG='<:preview-tui'
+export NNN_FIFO=$HOME/.nnn_fifo
+export NNN_PLUG='<:preview-tui;p:preview-tabbed'
 
 [ -n "$NNNLVL" ] && PS1="N$NNNLVL $PS1"
 
