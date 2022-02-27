@@ -8,6 +8,7 @@
 [ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
 
 alias ls='ls --color=auto'
+alias r="ranger"
 PS1='[\u@\h \W]\$ '
 
 export PATH="$HOME/.local/bin:$PATH"
@@ -17,9 +18,10 @@ export PATH="$PATH:$GEM_HOME/bin"
 
 export FZF_DEFAULT_COMMAND='rg --hidden --no-ignore --files'
 
-export NNN_OPENER='mimeopen'
 export EDITOR='nvim'
 export VISUAL='nvim'
+
+export NNN_OPENER='mimeopen'
 export NNN_FIFO=$HOME/.nnn_fifo
 export NNN_PLUG='<:preview-tui;p:preview-tabbed'
 
