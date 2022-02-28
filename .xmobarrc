@@ -1,6 +1,6 @@
 Config { font = "xft:IBMPlexMono:size=9:style=text italic"
        , bgColor = "#42403d"
-       , fgColor = "#ff9cb9"
+       , fgColor = "#380736"
        , lowerOnStart = True
        , position = TopP 2 2
        , sepChar = "%"
@@ -15,11 +15,12 @@ Config { font = "xft:IBMPlexMono:size=9:style=text italic"
                        "-l", "snow1", "-n", "orange", "-h", "red",
                        "--", "--mintemp", "20", "--maxtemp", "100"] 50
                     , Run DateZone "%A, %d.%m.%y, %H:%M:%S" "de_DE.UTF-8" "Europe/Berlin" "berlinTime" 10
-                    , Run DynNetwork [ "-t", "<dev>" ] 40
+                    , Run DynNetwork [ "-t", "<dev>" ] 10
                     , Run Wireless "wlan0" [ "-t", "<ssid>" ] 10
                     , Run StdinReader
                     , Run Battery [
 			"-t", "<acstatus> (<left>%)"
                      ] 10 ]
-       , template = "%XMonadLog% }{ %EDDP% <fc=DarkGoldenrod>|</fc> <fc=#ee9af0>%berlinTime%</fc>  "
+       , template = "%XMonadLog% }{<fc=snow2,#2b2b2b:0>   %battery% <fc=DarkGoldenrod,#2b2b2b:0>|</fc> %dynnetwork% <fc=DarkGoldenrod,#2b2b2b:0>|</fc> %wlan0wi% <fc=DarkGoldenrod,#2b2b2b:0>|</fc>%EDDP% <fc=DarkGoldenrod,#2b2b2b:0>|</fc> <fc=#ee9af0,#2b2b2b:0>%berlinTime%</fc>   </fc>"
+
        }

@@ -159,7 +159,6 @@ myTall = renamed [ Replace "Tall" ]
     $ layoutHintsWithPlacement (0, 0) 
     $ hiddenWindows
     $ myDrawer
-    $ smartBorders
     $ mySpacing
     $ magnifiercz' 1.3 
     $ maximizeWithPadding 30
@@ -169,7 +168,6 @@ myTallNoMag = renamed [ Replace "TallNoMag" ]
     $ hiddenWindows
     $ layoutHintsWithPlacement (0, 0) 
     $ myDrawer
-    $ smartBorders
     $ mySpacing
     $ MT.mkToggle (MT.single FULL)
     $ Tall 1 (3/100) (1/2)
