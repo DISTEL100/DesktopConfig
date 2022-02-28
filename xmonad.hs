@@ -1,7 +1,6 @@
-{-# LANGUAGE TupleSections #-}
-
 import XMonad
-import Control.Monad
+import XMonad.Prelude
+
 import qualified XMonad.StackSet as W
 
 import XMonad.Hooks.DynamicLog
@@ -15,10 +14,12 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Loggers
 import XMonad.Util.Ungrab
 import XMonad.Util.SpawnOnce
+import XMonad.Util.NamedWindows( getName, getNameWMClass )
 
-import XMonad.Layout.Groups.Examples
-
+import XMonad.Layout.BinarySpacePartition
+import XMonad.Layout.Hidden
 import XMonad.Layout.Magnifier
+import XMonad.Layout.Gaps
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
@@ -34,10 +35,10 @@ import XMonad.Layout.MultiToggle.Instances
 
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.DynamicIcons
+import XMonad.Hooks.FadeWindows
+import XMonad.Hooks.DynamicProperty
 
 import XMonad.Actions.WindowBringer
-import XMonad.Actions.ShowText
 import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.GridSelect
 import XMonad.Actions.CycleWS as Cyc
@@ -88,18 +89,23 @@ myConfig = def
     , logHook            = myLogHook
     , normalBorderColor  = colInactive
     , focusedBorderColor = colActive
-    , borderWidth        = 2
+    , borderWidth        = 1
     } `additionalKeysP` myKeys
     
 -- ############################################################################
 --                           EVENT HOOK
 -- ############################################################################
-myEventHook = hintsEventHook <+> handleTimerEvent
+myEventHook = hintsEventHook <+> fadeWindowsEventHook
 
 -- ############################################################################
 --                           LOG HOOK
 -- ############################################################################
-myLogHook = historyHook
+myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook
+myFadeHook = composeAll 
+   [ 
+    opaque
+    , stringProperty "_XMONAD_TAGS" =? "drawer" --> transparency 0.15
+   ]
 
 -- ############################################################################
 --                           MANAGE HOOK
@@ -125,23 +131,33 @@ myLayout = Boring.boringWindows
     $ onWorkspace "9" myFull
     $ workspaceDir "~"
     $ lessBorders AllFloats 
-    $ myTall ||| myTallNoMag ||| myFull ||| my3Col ||| my3ColNoMag  
+    $ myBSP ||| myTallNoMag ||| myFull ||| my3Col
 
+myBSP = renamed [ Replace "BSP" ] 
+    $ layoutHintsWithPlacement (0, 0) 
+    $ myDrawer
+    $ hiddenWindows
+    $ mySpacing
+    $ MT.mkToggle (MT.single FULL)
+    $ emptyBSP
 my3ColNoMag = renamed [ Replace "3ColNoMag" ]
-    $ layoutHintsWithPlacement (0.5, 0.5) 
+    $ layoutHintsWithPlacement (0, 0) 
+    $ hiddenWindows
     $ myDrawer
     $ mySpacing
     $ maximizeWithPadding 30
     $ ThreeColMid 1 (3/100) (1/2)
 my3Col = renamed [ Replace "3Col" ]
-    $ layoutHintsWithPlacement (0.5, 0.5) 
+    $ layoutHintsWithPlacement (0, 0) 
+    $ hiddenWindows
     $ myDrawer
     $ mySpacing
     $ magnifiercz' 1.5 
     $ maximizeWithPadding 30
     $ ThreeColMid 1 (3/100) (1/2)
 myTall = renamed [ Replace "Tall" ]
-    $ layoutHintsWithPlacement (0.5, 0.5) 
+    $ layoutHintsWithPlacement (0, 0) 
+    $ hiddenWindows
     $ myDrawer
     $ smartBorders
     $ mySpacing
@@ -150,17 +166,18 @@ myTall = renamed [ Replace "Tall" ]
     $ MT.mkToggle (MT.single FULL)
     $ Tall 1 (3/100) (11/18)
 myTallNoMag = renamed [ Replace "TallNoMag" ]
-    $ layoutHintsWithPlacement (0.5, 0.5) 
+    $ hiddenWindows
+    $ layoutHintsWithPlacement (0, 0) 
     $ myDrawer
     $ smartBorders
     $ mySpacing
-    $ maximizeWithPadding 15
     $ MT.mkToggle (MT.single FULL)
     $ Tall 1 (3/100) (1/2)
 myFull = smartBorders
     $ Full
 
-myDrawer = onRight $ simpleDrawer 0.0 0.2 (Tagged "drawer") 
+myDrawer =  onBottom $ drawer 0.0 0.8 (Tagged "drawer") myDrawerLayout
+myDrawerLayout = spacingRaw False (Border 1400 0 0 0) True (Border 0 0 0 0) True $ Tall 0 00.3 0.6
 mySpacing = spacingRaw True (Border 2 0 2 0) True (Border 0 2 0 2) True
 
 data AllFloats = AllFloats deriving (Read, Show)
@@ -171,8 +188,29 @@ instance SetsAmbiguous AllFloats where
 -- ############################################################################
 --                           ACTIONS
 -- ############################################################################
-
-textTest =  ["a", "b", "c"]
+windowBringerConf :: WindowBringerConfig
+windowBringerConf = def { 
+    menuArgs = [ "-l", "20"
+               , "-i"
+               , "-b"
+               , "-nb", colInactive
+               , "-nf", colFg
+               , "-sb", colSep
+               , "-sf", colBrown
+               ],
+    windowTitler = \ws -> \w -> do
+          name <- show <$> getName w
+          className <- show <$> getNameWMClass w
+          return $ "  " ++ W.tag ws
+                        ++ "   |   " 
+                        ++ (fixedWidth 16 className) 
+                        ++ "   |   "
+                        ++ name
+    }
+fixedWidth :: Int -> String -> String
+fixedWidth 0 s      = ""
+fixedWidth x ""     = " " ++ (fixedWidth (x-1) "") 
+fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)
 
 spawnPrograms = [
               ("1Password",     "1password")
@@ -239,6 +277,10 @@ myKeys = [
     , ("M-k",           Boring.focusUp                          )
     , ("M-S-k",         Boring.swapUp                           )
     , ("M-m",           Boring.focusMaster                      )
+    , ("M-h",           sendMessage ( ExpandTowards L) >> sendMessage  Shrink                   )
+    , ("M-S-h",         sendMessage ( ExpandTowards D) )
+    , ("M-l",           sendMessage ( ExpandTowards R ) >> sendMessage Expand                      )
+    , ("M-S-l",         sendMessage ( ExpandTowards U ) )
     , ("M-n",           windows W.swapMaster                    )
     , ("M-S-=",         unGrab *> spawn "scrot -s"                  )
     , ("M-f",           runOrRaiseMaster "firefox" (className =? "firefox") )
@@ -252,19 +294,14 @@ myKeys = [
     , ("M-x",           withFocused $ sendMessage . maximizeRestore )
     , ("M1-<Tab>",      toggleRecentNonEmptyWS                      )
     , ("M-u",           focusUrgent                                 )
-    , ("M-<L>",         Cyc.moveTo Prev (Cyc.Not emptyWS)           )
-    , ("M-<R>",         Cyc.moveTo Next (Cyc.Not emptyWS)           )
-    , ("M-S-h",         Cyc.moveTo Prev (Cyc.Not emptyWS)           )
-    , ("M-S-l",         Cyc.moveTo Next (Cyc.Not emptyWS)           )
+    , ("M-<L>",         Cyc.moveTo Prev ((Cyc.Not emptyWS) :&: hiddenWS)           )
+    , ("M-<R>",         Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS)           )
     , ("M-S-y",         moveToDrawer                                )
     , ("M-y",           focusUpTagged "drawer"                      )
-    , ("M1-i",           zoomWindowOut                          )
-    , ("M1-u",           zoomWindowIn                      )
-    , ("M1-o",           toggleColumnFull                      )
-    , ("M1-z",           splitGroup                      )
-    , ("M1-b",           gotoMenu                      )
-    , ("M1-g",           bringMenu                      )
-    , ("M1-c",           flashText def 1 (textTest)                      )
+    , ("M1-b",           bringMenuConfig windowBringerConf                      )
+    , ("M1-g",           gotoMenuConfig windowBringerConf                      )
+    , ("M1-h",           withFocused hideWindow   )
+    , ("M1-S-h",         popOldestHiddenWindow  )
     ]
 
 -- ############################################################################

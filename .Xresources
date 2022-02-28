@@ -1,13 +1,14 @@
-XTerm.vt100.faceName: Termsyn:size=12
+XTerm.vt100.faceName:Unifont:size=12:style=Regular
+XTerm.vt100.saveLines: 4096
+XTerm*renderFont: true
 XTerm.termName: xterm-256color
 xterm*bellIsUrgent:true
-
 xterm*background: gray12
 xterm*foreground: snow2
 
 Xft.antialias:  true
 Xft.hinting:    true
-Xft.autohint:   0
+Xft.autohint:   1
 Xft.dpi:        96
 Xft.hintstyle:  hintslight
 Xft.lcdfilter:  lcddefault
@@ -17,5 +18,5 @@ xterm*VT100.Translations: #override \
                  Ctrl Shift <Key>V:    insert-selection(CLIPBOARD) \n\
                  Ctrl Shift <Key>C:    copy-selection(CLIPBOARD)
 
-Xcursor.theme: FlatbedCursors-Orange
+Xcursor.theme:Adwaita
 Xcursor.size: 32
