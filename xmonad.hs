@@ -38,6 +38,7 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeWindows
 import XMonad.Hooks.DynamicProperty
 
+import XMonad.Actions.ShowText
 import XMonad.Actions.WindowBringer
 import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.GridSelect
@@ -95,7 +96,7 @@ myConfig = def
 -- ############################################################################
 --                           EVENT HOOK
 -- ############################################################################
-myEventHook = hintsEventHook <+> fadeWindowsEventHook
+myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent
 
 -- ############################################################################
 --                           LOG HOOK
@@ -252,6 +253,16 @@ toggleTagBoring tag win = do b <- hasTag tag win
 
 moveToDrawer = withFocused (toggleTagBoring "drawer") 
                 >> nextMatch History (return True)
+
+getXtermPath = withFocused (\win -> do 
+		wm_name  <- runQuery title win
+		wm_class <- runQuery className win
+                if wm_class == "XTerm"
+                   then flashText def 1 $ extractPathFromTitle wm_name
+                   else flashText def 1 wm_class
+                  )
+extractPathFromTitle :: String -> String
+extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
 -- ############################################################################
 --                           ON STARTUP
 -- ############################################################################
@@ -300,6 +311,7 @@ myKeys = [
     , ("M1-g",           gotoMenuConfig windowBringerConf                      )
     , ("M1-h",           withFocused hideWindow   )
     , ("M1-S-h",         popOldestHiddenWindow  )
+    , ("M1-q",         getXtermPath  )
     ]
 
 -- ############################################################################
