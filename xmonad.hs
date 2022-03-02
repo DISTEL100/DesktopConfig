@@ -254,12 +254,12 @@ toggleTagBoring tag win = do b <- hasTag tag win
 moveToDrawer = withFocused (toggleTagBoring "drawer") 
                 >> nextMatch History (return True)
 
-spawnXtermWithPath = withFocused (\win -> do 
+spawnXtermInPath = withFocused (\win -> do 
 		wm_name  <- runQuery title win
 		wm_class <- runQuery className win
                 if wm_class == "XTerm"
                    then spawn $ "xterm -e 'cd " ++ extractPathFromTitle wm_name ++ " && bash'"
-                   else flashText def 1 wm_class
+                   else spawn "xterm"
                   )
 extractPathFromTitle :: String -> String
 extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
@@ -277,41 +277,39 @@ myStartupHook = do
 --                           KEYBINDINGS
 -- ############################################################################
 myKeys = [ 
-      ("M-z",           spawn "slock"                                       )
-    , ("M1-f",          sendMessage $ MT.Toggle FULL                        )
-    , ("M-<Tab>",       Boring.focusDown                                    )
-    , ("M-j",           Boring.focusDown                            )
-    , ("M-S-j",         Boring.swapDown                         )
-    , ("M-S-<Tab>",     Boring.focusUp                          )
-    , ("M-k",           Boring.focusUp                          )
-    , ("M-S-k",         Boring.swapUp                           )
-    , ("M-m",           Boring.focusMaster                      )
-    , ("M-h",           sendMessage ( ExpandTowards L) >> sendMessage  Shrink                   )
-    , ("M-S-h",         sendMessage ( ExpandTowards D) )
-    , ("M-l",           sendMessage ( ExpandTowards R ) >> sendMessage Expand                      )
-    , ("M-S-l",         sendMessage ( ExpandTowards U ) )
-    , ("M-n",           windows W.swapMaster                    )
-    , ("M-S-=",         unGrab *> spawn "scrot -s"                  )
-    , ("M-f",           runOrRaiseMaster "firefox" (className =? "firefox") )
-    , ("M-<Return>",    spawn "xterm"                          )
-    , ("M-c",           kill                                        )
-    , ("M-r",           renameWorkspace def                         )
-    , ("M-S-r",         changeDir def                               )
-    , ("M-s",           gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
-    , ("M-a",           gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
-    , ("M-d",           goToSelected def                            )
-    , ("M-x",           withFocused $ sendMessage . maximizeRestore )
-    , ("M1-<Tab>",      toggleRecentNonEmptyWS                      )
-    , ("M-u",           focusUrgent                                 )
-    , ("M-<L>",         Cyc.moveTo Prev ((Cyc.Not emptyWS) :&: hiddenWS)           )
-    , ("M-<R>",         Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS)           )
-    , ("M-S-y",         moveToDrawer                                )
-    , ("M-y",           focusUpTagged "drawer"                      )
-    , ("M1-b",           bringMenuConfig windowBringerConf                      )
-    , ("M1-g",           gotoMenuConfig windowBringerConf                      )
-    , ("M1-h",           withFocused hideWindow   )
-    , ("M1-S-h",         popOldestHiddenWindow  )
-    , ("M1-q",           spawnXtermWithPath  )
+      ("M-z",        spawn "slock"                                       )
+    , ("M1-f",       sendMessage $ MT.Toggle FULL                        )
+    , ("M-<Tab>",    Boring.focusDown                                    )
+    , ("M-j",        Boring.focusDown                            )
+    , ("M-S-j",      Boring.swapDown                         )
+    , ("M-S-<Tab>",  Boring.focusUp                          )
+    , ("M-k",        Boring.focusUp                          )
+    , ("M-S-k",      Boring.swapUp                           )
+    , ("M-m",        Boring.focusMaster                      )
+    , ("M-h",        sendMessage ( ExpandTowards L) >> sendMessage  Shrink                   )
+    , ("M-S-h",      sendMessage ( ExpandTowards D) )
+    , ("M-l",        sendMessage ( ExpandTowards R ) >> sendMessage Expand                      )
+    , ("M-S-l",      sendMessage ( ExpandTowards U ) )
+    , ("M-n",        windows W.swapMaster                    )
+    , ("M-S-s",      unGrab *> spawn "scrot -s"                  )
+    , ("M-f",        runOrRaiseMaster "firefox" (className =? "firefox") )
+    , ("M-c",        kill                                        )
+    , ("M-r",        renameWorkspace def                         )
+    , ("M-S-r",      changeDir def                               )
+    , ("M-s",        gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
+    , ("M-a",        gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
+    , ("M-x",        withFocused $ sendMessage . maximizeRestore )
+    , ("M1-<Tab>",   toggleRecentNonEmptyWS                      )
+    , ("M-u",        focusUrgent)
+    , ("M-<L>",      Cyc.moveTo Prev ((Cyc.Not emptyWS) :&: hiddenWS))
+    , ("M-<R>",      Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS))
+    , ("M-S-y",      moveToDrawer)
+    , ("M-y",        focusUpTagged "drawer")
+    , ("M1-b",       bringMenuConfig windowBringerConf)
+    , ("M1-g",       gotoMenuConfig windowBringerConf)
+    , ("M1-h",       withFocused hideWindow )
+    , ("M1-S-h",     popOldestHiddenWindow )
+    , ("M-<Return>", spawnXtermInPath )
     ]
 
 -- ############################################################################
