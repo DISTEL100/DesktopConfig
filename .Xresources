@@ -1,4 +1,4 @@
-XTerm.vt100.faceName:Unifont:size=12:style=Regular
+XTerm.vt100.faceName:IBM Plex Mono:size=10
 XTerm.vt100.saveLines: 4096
 XTerm*renderFont: true
 XTerm.termName: xterm-256color

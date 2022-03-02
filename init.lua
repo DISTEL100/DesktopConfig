@@ -49,6 +49,11 @@ set guicursor+=i:blinkwait1
 
 set clipboard=unnamedplus
 
+set expandtab
+set softtabstop=4
+set shiftwidth=4
+set tabstop=4
+
 set mouse=a
 set wrap linebreak
 set breakindent

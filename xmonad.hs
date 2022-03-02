@@ -212,9 +212,7 @@ fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)
 
 spawnPrograms = [
               ("1Password",     "1password")
-            , ( "Bluetooth",    "xterm -bg DarkBlue -class xterm_gridSelect -e bluetoothctl" )
             , ( "Pulsemixer",   "xterm -bg DarkBlue -class xterm_gridSelect -e pulsemixer" )
-            , ( "iwd",          "xterm -bg DarkBlue -class xterm_gridSelect -e iwctl" )
             , ( "xterm",        "xterm -bg DeepPink4 -class xterm_gridSelect" )
             , ( "ghci",         "xterm -bg DeepSkyBlue4 -class xterm_gridSelect -e 'stack repl'" )
             ]
@@ -234,8 +232,6 @@ spawnSystem = [
     , ( "Journal", "xterm -bg DarkBlue -class xterm_gridSelect -e 'journalctl -r'" )
     , ( "Bildschirm ausschalten", "xset dpms force off" )
     , ( "Suspend", "systemctl suspend" )
-    , ( "restart iwd", "xterm -bg DarkBlue -class xterm_gridSelect -e 'sudo systemctl restart iwd.service'" )
-    , ( "System Update", "xterm -bg DarkBlue -class xterm_gridSelect -e 'pacman -Qqen > ~/.pkglist_Qqen.txt && pacman -Qqem > ~/.pkglist_Qqem.txt && sudo pacman -Syu'" )
     ]
 configSystem :: GSConfig String
 configSystem = def { 
@@ -258,9 +254,9 @@ moveToDrawer = withFocused (toggleTagBoring "drawer")
 myStartupHook = do
         spawnOnOnce "1" "xterm"
         spawnOnOnce "9" "thunderbird"
-        spawnOnOnce "9" "signal-desktop"
-        spawnOnOnce "9" "telegram-desktop"
-        spawn "picom"
+        spawnOnOnce "9" "notion-snap"
+        spawnOnOnce "9" "slack"
+        spawn "hsetroot -solid black"
 
 -- ############################################################################
 --                           KEYBINDINGS
@@ -280,7 +276,7 @@ myKeys = [
     , ("M-l",           sendMessage ( ExpandTowards R ) >> sendMessage Expand                      )
     , ("M-S-l",         sendMessage ( ExpandTowards U ) )
     , ("M-n",           windows W.swapMaster                    )
-    , ("M-S-=",         unGrab *> spawn "scrot -s"                  )
+    , ("M-S-p",         unGrab *> spawn "scrot -s"                  )
     , ("M-f",           runOrRaiseMaster "firefox" (className =? "firefox") )
     , ("M-<Return>",    spawn "xterm"                          )
     , ("M-c",           kill                                        )
