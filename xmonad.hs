@@ -248,6 +248,16 @@ toggleTagBoring tag win = do b <- hasTag tag win
 
 moveToDrawer = withFocused (toggleTagBoring "drawer") 
                 >> nextMatch History (return True)
+
+spawnXtermInPath = withFocused (\win -> do 
+		wm_name  <- runQuery title win
+		wm_class <- runQuery className win
+                if wm_class == "XTerm"
+                   then spawn $ "xterm -e 'cd " ++ extractPathFromTitle wm_name ++ " && bash'"
+                   else spawn "xterm"
+                  )
+extractPathFromTitle :: String -> String
+extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
 -- ############################################################################
 --                           ON STARTUP
 -- ############################################################################
@@ -262,6 +272,7 @@ myStartupHook = do
 --                           KEYBINDINGS
 -- ############################################################################
 myKeys = [ 
+<<<<<<< HEAD
       ("M-z",           spawn "slock"                                       )
     , ("M1-f",          sendMessage $ MT.Toggle FULL                        )
     , ("M-<Tab>",       Boring.focusDown                                    )
@@ -296,6 +307,7 @@ myKeys = [
     , ("M1-g",           gotoMenuConfig windowBringerConf                      )
     , ("M1-h",           withFocused hideWindow   )
     , ("M1-S-h",         popOldestHiddenWindow  )
+    , ("M-<Return>", spawnXtermInPath )
     ]
 
 -- ############################################################################

@@ -2,8 +2,6 @@ local Plug = vim.fn['plug#']
 vim.call('plug#begin', '~/.config/nvim/plugged')
 Plug( 'junegunn/fzf', { ['do'] = vim.fn['fzf#install'] } )
 Plug( 'junegunn/fzf.vim')
-Plug( 'xolox/vim-misc')
-Plug( 'xolox/vim-colorscheme-switcher')
 Plug( 'mbbill/undotree')
 Plug( 'lervag/vimtex')
 Plug( 'neovimhaskell/haskell-vim' )
@@ -18,11 +16,14 @@ Plug( 'hrsh7th/vim-vsnip')
 Plug( 'rafamadriz/friendly-snippets' )
 Plug( 'vim-airline/vim-airline' )
 Plug( 'vim-airline/vim-airline-themes' )
+Plug( 'nvim-lua/plenary.nvim' )
+Plug( 'lewis6991/gitsigns.nvim' )
 vim.call('plug#end')
 
 require('nvim-lspconfig')
 require('keymappings')
 require('nvim-cmp')
+require('gitsigns').setup()
 
 vim.cmd([[
 set undofile
@@ -33,6 +34,8 @@ set backup
 set writebackup
 set backupcopy=yes
 au BufWritePre * let &bex = '@' . strftime("%F.%H")
+
+au TextYankPost * silent! lua vim.highlight.on_yank()
 
 set termguicolors   
 colorscheme slate
@@ -47,7 +50,7 @@ set guicursor+=i:ver100-iCursor
 set guicursor+=n-v-c:blinkon100
 set guicursor+=i:blinkwait1
 
-set clipboard=unnamedplus
+set clipboard=unnamed
 
 set expandtab
 set softtabstop=4
@@ -60,7 +63,7 @@ set breakindent
 
 let g:netrw_liststyle=0
 let g:netrw_banner=0
-let g:netrw_winsize=20
+let g:netrw_winsize=80
 let g:netrw_browse_split=4
 let g:netrw_preview=1
 let g:netrw_altv =1
