@@ -2,6 +2,8 @@ local Plug = vim.fn['plug#']
 vim.call('plug#begin', '~/.config/nvim/plugged')
 Plug( 'junegunn/fzf', { ['do'] = vim.fn['fzf#install'] } )
 Plug( 'junegunn/fzf.vim')
+Plug( 'xolox/vim-misc')
+Plug( 'xolox/vim-colorscheme-switcher')
 Plug( 'mbbill/undotree')
 Plug( 'lervag/vimtex')
 Plug( 'neovimhaskell/haskell-vim' )
@@ -38,7 +40,7 @@ au BufWritePre * let &bex = '@' . strftime("%F.%H")
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
 set termguicolors   
-colorscheme slate
+colorscheme peachpuff
 let g:airline_theme='tomorrow'
 let g:airline#extensions#tabline#enabled = 1
 

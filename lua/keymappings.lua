@@ -5,6 +5,7 @@ nnoremap ö :w<return>
 nnoremap Ö :
 nnoremap <tab><tab> :bn<return>
 map <C-B> <Esc>:Buffers<return>
+
 noremap <F5> :UndotreeT<return>
 
 nnoremap k gk

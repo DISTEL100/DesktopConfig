@@ -250,14 +250,14 @@ moveToDrawer = withFocused (toggleTagBoring "drawer")
                 >> nextMatch History (return True)
 
 spawnXtermInPath = withFocused (\win -> do 
-		wm_name  <- runQuery title win
-		wm_class <- runQuery className win
-                if wm_class == "XTerm"
-                   then spawn $ "xterm -e 'cd " ++ extractPathFromTitle wm_name ++ " && bash'"
-                   else spawn "xterm"
-                  )
-extractPathFromTitle :: String -> String
-extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
+-               wm_name  <- runQuery title win
+-               wm_class <- runQuery className win
+-                if wm_class == "XTerm"
+-                   then spawn $ "xterm -e 'cd " ++ extractPathFromTitle wm_name ++ " && bash'"
+-                   else spawn "xterm"
+-                  )
+-extractPathFromTitle :: String -> String
+-extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
 -- ############################################################################
 --                           ON STARTUP
 -- ############################################################################
@@ -272,7 +272,6 @@ myStartupHook = do
 --                           KEYBINDINGS
 -- ############################################################################
 myKeys = [ 
-<<<<<<< HEAD
       ("M-z",           spawn "slock"                                       )
     , ("M1-f",          sendMessage $ MT.Toggle FULL                        )
     , ("M-<Tab>",       Boring.focusDown                                    )
@@ -289,7 +288,6 @@ myKeys = [
     , ("M-n",           windows W.swapMaster                    )
     , ("M-S-p",         unGrab *> spawn "scrot -s"                  )
     , ("M-f",           runOrRaiseMaster "firefox" (className =? "firefox") )
-    , ("M-<Return>",    spawn "xterm"                          )
     , ("M-c",           kill                                        )
     , ("M-r",           renameWorkspace def                         )
     , ("M-S-r",         changeDir def                               )
@@ -303,11 +301,11 @@ myKeys = [
     , ("M-<R>",         Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS)           )
     , ("M-S-y",         moveToDrawer                                )
     , ("M-y",           focusUpTagged "drawer"                      )
-    , ("M1-b",           bringMenuConfig windowBringerConf                      )
-    , ("M1-g",           gotoMenuConfig windowBringerConf                      )
-    , ("M1-h",           withFocused hideWindow   )
-    , ("M1-S-h",         popOldestHiddenWindow  )
-    , ("M-<Return>", spawnXtermInPath )
+    , ("M1-b",          bringMenuConfig windowBringerConf                      )
+    , ("M1-g",          gotoMenuConfig windowBringerConf                      )
+    , ("M1-h",          withFocused hideWindow   )
+    , ("M1-S-h",        popOldestHiddenWindow  )
+    , ("M-<Return>",    spawnXtermInPath                          )
     ]
 
 -- ############################################################################
