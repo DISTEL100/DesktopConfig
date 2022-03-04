@@ -23,6 +23,7 @@ vim.call('plug#end')
 require('nvim-lspconfig')
 require('keymappings')
 require('nvim-cmp')
+require('vsnip')
 require('gitsigns').setup()
 
 vim.cmd([[
