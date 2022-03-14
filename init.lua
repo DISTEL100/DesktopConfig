@@ -39,6 +39,7 @@ au BufWritePre * let &bex = '@' . strftime("%F.%H")
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
+set number
 set termguicolors   
 colorscheme peachpuff
 let g:airline_theme='tomorrow'
