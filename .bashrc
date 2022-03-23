@@ -7,6 +7,13 @@
 
 alias ls='ls --color=auto'
 alias r="ranger"
+gitfe() {
+    SEP='echo "" && echo"" && echo "#######################################################" && echo "" && echo""' 
+    eval $SEP
+    COMMAND="git submodule foreach 'git $1 && $SEP'"
+    eval $COMMAND
+}
+
 PS1='[\u@\h \W]\$ '
 
 export PATH="$HOME/.local/bin:$PATH"

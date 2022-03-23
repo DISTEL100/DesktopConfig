@@ -1,0 +1,24 @@
+]m              goto next start of method
+[m              goto previous start of method
+
+changelist
+:changes        show changelist
+[n]g,           goto nth-next change
+[n]g;           goto nth-prev change
+
+jumplist
+:jumps          show jumplist
+[n]CTRL-O       goto position before nth jump           
+
+jumps
+    marks
+    '[a-z]      jump to mark a-z. beginning of line
+    `[a-z]      jump to mark a-z
+    ]'          jump to next mark. Beginning of line
+    ]`          jump to next mark
+    ['          jump to previous mark. Beginning of line
+    [`          jump to previous mark
+    '.          jump to last change
+    gi          jump to the position, where insert mode was stopped
+    '^
+

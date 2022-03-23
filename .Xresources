@@ -1,5 +1,6 @@
-XTerm.vt100.faceName:IBM Plex Mono:size=10
+XTerm.vt100.faceName: Iosevka:style=Regular:size=10
 XTerm.vt100.saveLines: 4096
+XTerm.vt100.forcePackedFont: true
 XTerm*renderFont: true
 XTerm.termName: xterm-256color
 xterm*bellIsUrgent:true

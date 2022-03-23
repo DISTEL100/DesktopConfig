@@ -20,6 +20,7 @@ Plug( 'vim-airline/vim-airline' )
 Plug( 'vim-airline/vim-airline-themes' )
 Plug( 'nvim-lua/plenary.nvim' )
 Plug( 'lewis6991/gitsigns.nvim' )
+Plug( 'uiiaoo/java-syntax.vim' )
 vim.call('plug#end')
 
 require('nvim-lspconfig')
