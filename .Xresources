@@ -1,6 +1,10 @@
-XTerm.vt100.faceName:Unifont:size=12:style=Regular
+XTerm.vt100.faceName: Input Mono Compressed:size=14
+XTerm.vt100.faceName: Iosevka Term SS15:size=14
+XTerm.vt100.faceName: IBM IBM VGA 9x16:style=Regular:size=16
+
 XTerm.vt100.saveLines: 4096
-XTerm*renderFont: true
+XTerm.vt100.renderFont:true
+XTerm*forcePackedFont:true
 XTerm.termName: xterm-256color
 xterm*bellIsUrgent:true
 xterm*background: gray12

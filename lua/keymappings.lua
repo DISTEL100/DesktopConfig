@@ -10,4 +10,16 @@ noremap <F5> :UndotreeT<return>
 nnoremap k gk
 noremap j gj
 
+nmap ü }
+imap ü }
+nmap ä {
+imap ä {
+
+imap Ü ]
+nmap Ü ]
+imap Ä [
+nmap Ä [
+
+nmap # `
+
 ]])
