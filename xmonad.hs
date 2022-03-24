@@ -14,13 +14,17 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Loggers
 import XMonad.Util.Ungrab
 import XMonad.Util.SpawnOnce
+import XMonad.Util.NamedScratchpad
 import XMonad.Util.NamedWindows( getName, getNameWMClass )
 
-import XMonad.Layout.BinarySpacePartition
 import XMonad.Layout.Hidden
 import XMonad.Layout.Magnifier
+import XMonad.Layout.WindowNavigation
 import XMonad.Layout.Gaps
+import XMonad.Layout.TwoPane
+import qualified XMonad.Layout.ComboP as CP
 import XMonad.Layout.ThreeColumns
+import XMonad.Layout.ResizableTile
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
 import XMonad.Layout.Maximize
@@ -32,7 +36,7 @@ import XMonad.Layout.LayoutHints
 import qualified XMonad.Layout.BoringWindows as Boring
 import qualified XMonad.Layout.MultiToggle as MT
 import XMonad.Layout.MultiToggle.Instances
-
+import qualified XMonad.Layout.GridVariants as GV
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeWindows
@@ -112,7 +116,9 @@ myFadeHook = composeAll
 --                           MANAGE HOOK
 -- ############################################################################
 myManageHook :: ManageHook
-myManageHook = manageSpawn <+> composeAll
+myManageHook = ( namedScratchpadManageHook myScratchpads )
+   <+> manageSpawn 
+   <+> composeAll
     [ className =? "Gimp"              --> doFloat
     , className =? "SuperCollider"     --> doShift "4"
     , className =? "1Password"         --> doCenterFloat
@@ -125,59 +131,38 @@ myManageHook = manageSpawn <+> composeAll
     , title     =? "preview-tui"       --> doF W.focusDown
     ]
 
+myScratchpads = [ NS "nnn" "xterm -e 'nnn'" (title =? "nnn") defaultFloating ]
+
 -- ############################################################################
 --                           LAYOUTS
 -- ############################################################################
-myLayout = Boring.boringWindows
-    $ onWorkspace "9" myFull
+myLayout = onWorkspace "9" myFull
     $ workspaceDir "~"
     $ lessBorders AllFloats 
-    $ myBSP ||| myTallNoMag ||| myFull ||| my3Col
+    $ myModifiers
+    $ windowNavigation
+    $ myGrid ||| myCombo
 
-myBSP = renamed [ Replace "BSP" ] 
-    $ layoutHintsWithPlacement (0, 0) 
-    $ myDrawer
-    $ hiddenWindows
-    $ mySpacing
-    $ MT.mkToggle (MT.single FULL)
-    $ emptyBSP
-my3ColNoMag = renamed [ Replace "3ColNoMag" ]
-    $ layoutHintsWithPlacement (0, 0) 
-    $ hiddenWindows
-    $ myDrawer
-    $ mySpacing
-    $ maximizeWithPadding 30
-    $ ThreeColMid 1 (3/100) (1/2)
-my3Col = renamed [ Replace "3Col" ]
-    $ layoutHintsWithPlacement (0, 0) 
+myCombo = renamed [ Replace "Combo" ]
+    $ CP.combineTwoP 
+    	(TwoPane (2/100) (5/12)) 
+	( GV.Grid (16/9) )
+	( GV.Grid (16/9) )
+	(CP.Tagged "left")
+myGrid = renamed [ Replace "Grid" ]
+    $ smartBorders
     $ hiddenWindows
     $ myDrawer
-    $ mySpacing
-    $ magnifiercz' 1.5 
-    $ maximizeWithPadding 30
-    $ ThreeColMid 1 (3/100) (1/2)
-myTall = renamed [ Replace "Tall" ]
-    $ layoutHintsWithPlacement (0, 0) 
-    $ hiddenWindows
-    $ myDrawer
-    $ mySpacing
-    $ magnifiercz' 1.3 
-    $ maximizeWithPadding 30
-    $ MT.mkToggle (MT.single FULL)
-    $ Tall 1 (3/100) (11/18)
-myTallNoMag = renamed [ Replace "TallNoMag" ]
-    $ hiddenWindows
-    $ layoutHintsWithPlacement (0, 0) 
-    $ myDrawer
-    $ mySpacing
-    $ MT.mkToggle (MT.single FULL)
-    $ Tall 1 (3/100) (1/2)
+    $ GV.Grid (978/1057)
 myFull = smartBorders
     $ Full
 
+moveToLeftPane = sequence_ [ withFocused $ toggleTag "left"
+  			   , sendMessage $ CP.PartitionWins 
+			   ]
+myModifiers = MT.mkToggle (MIRROR MT.?? FULL MT.?? MT.EOT)
 myDrawer =  onBottom $ drawer 0.0 0.8 (Tagged "drawer") myDrawerLayout
 myDrawerLayout = spacingRaw False (Border 1400 0 0 0) True (Border 0 0 0 0) True $ Tall 0 00.3 0.6
-mySpacing = spacingRaw True (Border 2 0 2 0) True (Border 0 2 0 2) True
 
 data AllFloats = AllFloats deriving (Read, Show)
 
@@ -247,11 +232,19 @@ configSystem = def {
                  , gs_bordercolor = "snow2"
                  }
 
-toggleTagBoring tag win = do b <- hasTag tag win
-                             if b then Boring.clearBoring >> delTag tag win
-                                  else Boring.markBoring  >> addTag tag win
+focusDrawer = popOldestHiddenWindow 
+              >> popOldestHiddenWindow 
+	      >> popOldestHiddenWindow 
+	      >> focusUpTagged "drawer" 
 
-moveToDrawer = withFocused (toggleTagBoring "drawer") 
+toggleTag tag win = do
+	b <- (hasTag tag win)
+        if b 
+	   then delTag tag win
+	   else addTag tag win
+
+moveToDrawer = withFocused (toggleTag "drawer") 
+		>> withFocused hideWindow
                 >> nextMatch History (return True)
 
 spawnXtermInPath = withFocused (\win -> do 
@@ -278,19 +271,23 @@ myStartupHook = do
 -- ############################################################################
 myKeys = [ 
       ("M-z",        spawn "slock"                                       )
-    , ("M1-f",       sendMessage $ MT.Toggle FULL                        )
-    , ("M-<Tab>",    Boring.focusDown                                    )
-    , ("M-j",        Boring.focusDown                            )
-    , ("M-S-j",      Boring.swapDown                         )
-    , ("M-S-<Tab>",  Boring.focusUp                          )
-    , ("M-k",        Boring.focusUp                          )
-    , ("M-S-k",      Boring.swapUp                           )
-    , ("M-m",        Boring.focusMaster                      )
-    , ("M-h",        sendMessage ( ExpandTowards L) >> sendMessage  Shrink                   )
-    , ("M-S-h",      sendMessage ( ExpandTowards D) )
-    , ("M-l",        sendMessage ( ExpandTowards R ) >> sendMessage Expand                      )
-    , ("M-S-l",      sendMessage ( ExpandTowards U ) )
+    , ("M-x",        sendMessage $ MT.Toggle FULL                        )
+    , ("M-S-x",      sendMessage $ MT.Toggle MIRROR                        )
+    , ("M-v",        moveToLeftPane                  )
     , ("M-n",        windows W.swapMaster                    )
+    , ("M-m",        namedScratchpadAction myScratchpads "nnn"        )
+    , ("M1-<Tab>",   toggleRecentNonEmptyWS                      )
+    , ("M-<Tab>",   nextMatch History (return True)       )
+    , ("M-j",        sendMessage $ Go D                            )
+    , ("M-k",        sendMessage $ Go U                          )
+    , ("M-h",        sendMessage $ Go L                          )
+    , ("M-l",        sendMessage $ Go R                          )
+    , ("M-S-j",      sendMessage $ Swap D                         )
+    , ("M-S-k",      sendMessage $ Swap U                           )
+    , ("M-S-h",      sendMessage $ Swap L                           )
+    , ("M-S-l",      sendMessage $ Swap R                           )
+    , ("M-M1-j",     sendMessage Shrink                   )
+    , ("M-M1-k",     sendMessage Expand                      )
     , ("M-S-s",      unGrab *> spawn "scrot -s"                  )
     , ("M-f",        runOrRaiseMaster "firefox" (className =? "firefox") )
     , ("M-c",        kill                                        )
@@ -298,13 +295,11 @@ myKeys = [
     , ("M-S-r",      changeDir def                               )
     , ("M-s",        gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
     , ("M-a",        gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
-    , ("M-x",        withFocused $ sendMessage . maximizeRestore )
-    , ("M1-<Tab>",   toggleRecentNonEmptyWS                      )
     , ("M-u",        focusUrgent)
     , ("M-<L>",      Cyc.moveTo Prev ((Cyc.Not emptyWS) :&: hiddenWS))
     , ("M-<R>",      Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS))
     , ("M-S-y",      moveToDrawer)
-    , ("M-y",        focusUpTagged "drawer")
+    , ("M-y",        focusDrawer )
     , ("M1-b",       bringMenuConfig windowBringerConf)
     , ("M1-g",       gotoMenuConfig windowBringerConf)
     , ("M1-h",       withFocused hideWindow )
