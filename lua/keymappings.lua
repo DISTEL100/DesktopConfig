@@ -10,16 +10,12 @@ noremap <F5> :UndotreeT<return>
 nnoremap k gk
 noremap j gj
 
-nmap ü }
-imap ü }
-nmap ä {
+set langmap=ä{,Ä[,ü},Ü]
 imap ä {
-
-imap Ü ]
-nmap Ü ]
 imap Ä [
-nmap Ä [
-
-nmap # `
+imap ü }
+imap Ü ]
+imap # `
+nmap <C-p> :tjump<Return>
 
 ]])
