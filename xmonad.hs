@@ -38,6 +38,7 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeWindows
 import XMonad.Hooks.DynamicProperty
 
+import XMonad.Actions.ShowText
 import XMonad.Actions.WindowBringer
 import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.GridSelect
@@ -95,7 +96,7 @@ myConfig = def
 -- ############################################################################
 --                           EVENT HOOK
 -- ############################################################################
-myEventHook = hintsEventHook <+> fadeWindowsEventHook
+myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent
 
 -- ############################################################################
 --                           LOG HOOK
@@ -121,6 +122,7 @@ myManageHook = manageSpawn <+> composeAll
     , isFullscreen                     --> doFullFloat
     , isDialog                         --> doCenterFloat
     , className =? "Alert"             --> doAskUrgent
+    , title     =? "preview-tui"       --> doF W.focusDown
     ]
 
 -- ############################################################################
@@ -130,28 +132,32 @@ myLayout = Boring.boringWindows
     $ onWorkspace "9" myFull
     $ workspaceDir "~"
     $ lessBorders AllFloats 
-    $ my3Col ||| myTallNoMag ||| myFull ||| myBSP
+    $ myBSP ||| myTallNoMag ||| myFull ||| my3Col
 
 myBSP = renamed [ Replace "BSP" ] 
+    $ layoutHintsWithPlacement (0, 0) 
     $ myDrawer
-    $ smartBorders
     $ hiddenWindows
     $ mySpacing
     $ MT.mkToggle (MT.single FULL)
     $ emptyBSP
 my3ColNoMag = renamed [ Replace "3ColNoMag" ]
+    $ layoutHintsWithPlacement (0, 0) 
     $ hiddenWindows
     $ myDrawer
     $ mySpacing
     $ maximizeWithPadding 30
     $ ThreeColMid 1 (3/100) (1/2)
 my3Col = renamed [ Replace "3Col" ]
+    $ layoutHintsWithPlacement (0, 0) 
     $ hiddenWindows
     $ myDrawer
     $ mySpacing
+    $ magnifiercz' 1.5 
     $ maximizeWithPadding 30
-    $ ThreeCol 1 (3/100) (1/2)
+    $ ThreeColMid 1 (3/100) (1/2)
 myTall = renamed [ Replace "Tall" ]
+    $ layoutHintsWithPlacement (0, 0) 
     $ hiddenWindows
     $ myDrawer
     $ mySpacing
@@ -161,6 +167,7 @@ myTall = renamed [ Replace "Tall" ]
     $ Tall 1 (3/100) (11/18)
 myTallNoMag = renamed [ Replace "TallNoMag" ]
     $ hiddenWindows
+    $ layoutHintsWithPlacement (0, 0) 
     $ myDrawer
     $ mySpacing
     $ MT.mkToggle (MT.single FULL)
@@ -206,6 +213,9 @@ fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)
 
 spawnPrograms = [
               ("1Password",     "1password")
+            , ( "Bluetooth",    "xterm -bg DarkBlue -class xterm_gridSelect -e bluetoothctl" )
+            , ( "Pulsemixer",   "xterm -bg DarkBlue -class xterm_gridSelect -e pulsemixer" )
+            , ( "iwd",          "xterm -bg DarkBlue -class xterm_gridSelect -e iwctl" )
             , ( "xterm",        "xterm -bg DeepPink4 -class xterm_gridSelect" )
             , ( "ghci",         "xterm -bg DeepSkyBlue4 -class xterm_gridSelect -e 'stack repl'" )
             ]
@@ -219,13 +229,14 @@ configPrograms = def {
                  }
 spawnSystem = [
       ( "Hibernate", "systemctl hibernate" )
-    , ( "Suspend", "systemctl suspend" )
-    , ( "Hybrid-Sleep", "systemctl hybrid-sleep" )
     , ( "Shutdown", "shutdown 0" )
-    , ( "Lock", "slock" )
-    , ( "System update", "xterm -class xterm_gridSelect -e 'sudo apt update && sudo apt upgrade'" )
-    , ( "Bildschirm ausschalten", "xset dpms force off" )
+    , ( "Hybrid-Sleep", "systemctl hybrid-sleep" )
+    , ( "Backup", "xterm -bg DarkBlue -class xterm_gridSelect -e 'sudo backupWhiteRiffle'" )
     , ( "Journal", "xterm -bg DarkBlue -class xterm_gridSelect -e 'journalctl -r'" )
+    , ( "Bildschirm ausschalten", "xset dpms force off" )
+    , ( "Suspend", "systemctl suspend" )
+    , ( "restart iwd", "xterm -bg DarkBlue -class xterm_gridSelect -e 'sudo systemctl restart iwd.service'" )
+    , ( "System Update", "xterm -bg DarkBlue -class xterm_gridSelect -e 'pacman -Qqen > ~/.pkglist_Qqen.txt && pacman -Qqem > ~/.pkglist_Qqem.txt && sudo pacman -Syu'" )
     ]
 configSystem :: GSConfig String
 configSystem = def { 
@@ -242,15 +253,64 @@ toggleTagBoring tag win = do b <- hasTag tag win
 
 moveToDrawer = withFocused (toggleTagBoring "drawer") 
                 >> nextMatch History (return True)
+
+spawnXtermInPath = withFocused (\win -> do 
+		wm_name  <- runQuery title win
+		wm_class <- runQuery className win
+                if wm_class == "XTerm"
+                   then spawn $ "xterm -e 'cd " ++ extractPathFromTitle wm_name ++ " && bash'"
+                   else spawn "xterm"
+                  )
+extractPathFromTitle :: String -> String
+extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
 -- ############################################################################
 --                           ON STARTUP
 -- ############################################################################
 myStartupHook = do
         spawnOnOnce "1" "xterm"
         spawnOnOnce "9" "thunderbird"
-        spawnOnOnce "9" "notion-snap"
-        spawnOnOnce "9" "slack"
-        spawn "hsetroot -solid black"
+        spawnOnOnce "9" "signal-desktop"
+        spawnOnOnce "9" "telegram-desktop"
+        spawn "picom"
+
+-- ############################################################################
+--                           KEYBINDINGS
+-- ############################################################################
+myKeys = [ 
+      ("M-z",        spawn "slock"                                       )
+    , ("M1-f",       sendMessage $ MT.Toggle FULL                        )
+    , ("M-<Tab>",    Boring.focusDown                                    )
+    , ("M-j",        Boring.focusDown                            )
+    , ("M-S-j",      Boring.swapDown                         )
+    , ("M-S-<Tab>",  Boring.focusUp                          )
+    , ("M-k",        Boring.focusUp                          )
+    , ("M-S-k",      Boring.swapUp                           )
+    , ("M-m",        Boring.focusMaster                      )
+    , ("M-h",        sendMessage ( ExpandTowards L) >> sendMessage  Shrink                   )
+    , ("M-S-h",      sendMessage ( ExpandTowards D) )
+    , ("M-l",        sendMessage ( ExpandTowards R ) >> sendMessage Expand                      )
+    , ("M-S-l",      sendMessage ( ExpandTowards U ) )
+    , ("M-n",        windows W.swapMaster                    )
+    , ("M-S-s",      unGrab *> spawn "scrot -s"                  )
+    , ("M-f",        runOrRaiseMaster "firefox" (className =? "firefox") )
+    , ("M-c",        kill                                        )
+    , ("M-r",        renameWorkspace def                         )
+    , ("M-S-r",      changeDir def                               )
+    , ("M-s",        gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
+    , ("M-a",        gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
+    , ("M-x",        withFocused $ sendMessage . maximizeRestore )
+    , ("M1-<Tab>",   toggleRecentNonEmptyWS                      )
+    , ("M-u",        focusUrgent)
+    , ("M-<L>",      Cyc.moveTo Prev ((Cyc.Not emptyWS) :&: hiddenWS))
+    , ("M-<R>",      Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS))
+    , ("M-S-y",      moveToDrawer)
+    , ("M-y",        focusUpTagged "drawer")
+    , ("M1-b",       bringMenuConfig windowBringerConf)
+    , ("M1-g",       gotoMenuConfig windowBringerConf)
+    , ("M1-h",       withFocused hideWindow )
+    , ("M1-S-h",     popOldestHiddenWindow )
+    , ("M-<Return>", spawnXtermInPath )
+    ]
 
 -- ############################################################################
 --                           XMOBAR SETTINGS
@@ -280,45 +340,3 @@ myXmobarPP = workspaceNamesPP def
 
     ppWindow :: String -> String
     ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
-
--- ############################################################################
---                           KEYBINDINGS
--- ############################################################################
-myKeys = [ 
-      ("M-z",           spawn "slock"                                       )
-    , ("M1-f",          sendMessage $ MT.Toggle FULL                        )
-    , ("M-<Tab>",       Boring.focusDown                                    )
-    , ("M-j",           Boring.focusDown                            )
-    , ("M-S-j",         Boring.swapDown                         )
-    , ("M-S-<Tab>",     Boring.focusUp                          )
-    , ("M-k",           Boring.focusUp                          )
-    , ("M-S-k",         Boring.swapUp                           )
-    , ("M-m",           Boring.focusMaster                      )
-    , ("M-S-l",        sendMessage ( ExpandTowards L) >> sendMessage  Shrink                   )
-    , ("M-S-j",        sendMessage ( ExpandTowards D) )
-    , ("M-S-h",        sendMessage ( ExpandTowards R ) >> sendMessage Expand                      )
-    , ("M-S-k",        sendMessage ( ExpandTowards U ) )
-    , ("M-n",           windows W.swapMaster                    )
-    , ("M-S-p",         unGrab *> spawn "scrot -s"                  )
-    , ("M-f",           runOrRaiseMaster "firefox" (className =? "firefox") )
-    , ("M-c",           kill                                        )
-    , ("M-r",           renameWorkspace def                         )
-    , ("M-S-r",         changeDir def                               )
-    , ("M-s",           gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
-    , ("M-a",           gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
-    , ("M-d",           goToSelected def                            )
-    , ("M-x",           withFocused $ sendMessage . maximizeRestore )
-    , ("M1-<Tab>",      toggleRecentNonEmptyWS                      )
-    , ("M-u",           focusUrgent                                 )
-    , ("M-<L>",         Cyc.moveTo Prev ((Cyc.Not emptyWS) :&: hiddenWS)           )
-    , ("M-<R>",         Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS)           )
-    , ("M-S-y",         moveToDrawer                                )
-    , ("M-y",           focusUpTagged "drawer"                      )
-    , ("M1-b",          bringMenuConfig windowBringerConf                      )
-    , ("M1-g",          gotoMenuConfig windowBringerConf                      )
-    , ("M1-h",          withFocused hideWindow   )
-    , ("M1-S-h",        popOldestHiddenWindow  )
-    , ("M-<Return>",    spawn "xterm"                          )
-    ]
-
-

@@ -5,15 +5,10 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+[ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
+
 alias ls='ls --color=auto'
 alias r="ranger"
-gitfe() {
-    SEP='echo "" && echo"" && echo "#######################################################" && echo "" && echo""' 
-    eval $SEP
-    COMMAND="git submodule foreach 'git $1 && $SEP'"
-    eval $COMMAND
-}
-
 PS1='[\u@\h \W]\$ '
 
 export PATH="$HOME/.local/bin:$PATH"
@@ -22,39 +17,22 @@ export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
 export PATH="$PATH:$GEM_HOME/bin"
 
 export FZF_DEFAULT_COMMAND='rg --hidden --no-ignore --files'
-export JDTLS_HOME="/home/jonathan/.local/opt/jdtls-launcher/jdtls"
+
 export EDITOR='nvim'
 export VISUAL='nvim'
 
 export NNN_OPENER='mimeopen'
 export NNN_FIFO=$HOME/.nnn_fifo
 export NNN_PLUG='<:preview-tui;p:preview-tabbed'
-n ()
-{
-    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
-        echo "nnn is already running"
-        return
-    fi
 
-    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+[ -n "$NNNLVL" ] && PS1="N$NNNLVL $PS1"
 
-    nnn "$@"
-
-    if [ -f "$NNN_TMPFILE" ]; then
-            . "$NNN_TMPFILE"
-            rm -f "$NNN_TMPFILE" > /dev/null
-    fi
-}
-
-
-# enable bash completion in interactive shells
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
+    source /usr/share/nnn/quitcd/quitcd.bash_zsh
 fi
+
+eval "$(stack --bash-completion-script stack)"
+
 
 # BEGIN_KITTY_SHELL_INTEGRATION
 if test -n "$KITTY_INSTALLATION_DIR" -a -e "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; then source "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; fi
