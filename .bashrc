@@ -27,6 +27,8 @@ export VISUAL='nvim'
 export NNN_OPENER='mimeopen'
 export NNN_FIFO=$HOME/.nnn_fifo
 export NNN_PLUG='<:preview-tui;p:preview-tabbed'
+export NNN_COLORS='#54'
+export NNN_FCOLORS='#8e#92#c1#e3#e6#e7#b0#e1#90#b5#46'
 
 [ -n "$NNNLVL" ] && PS1="N$NNNLVL $PS1"
 

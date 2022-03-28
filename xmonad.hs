@@ -18,6 +18,8 @@ import XMonad.Util.NamedScratchpad
 import XMonad.Util.NamedWindows( getName, getNameWMClass )
 
 import XMonad.Layout.Hidden
+import XMonad.Layout.Master
+import XMonad.Layout.Reflect
 import XMonad.Layout.Magnifier
 import XMonad.Layout.WindowNavigation
 import XMonad.Layout.Gaps
@@ -105,11 +107,13 @@ myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent
 -- ############################################################################
 --                           LOG HOOK
 -- ############################################################################
+fadedOpacity = 0.1
 myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook
 myFadeHook = composeAll 
    [ 
     opaque
-    , stringProperty "_XMONAD_TAGS" =? "drawer" --> transparency 0.15
+    , title     =? "nnn"       --> transparency fadedOpacity
+    , className =? "1Password" --> transparency fadedOpacity
    ]
 
 -- ############################################################################
@@ -130,8 +134,18 @@ myManageHook = ( namedScratchpadManageHook myScratchpads )
     , className =? "Alert"             --> doAskUrgent
     , title     =? "preview-tui"       --> doF W.focusDown
     ]
-
-myScratchpads = [ NS "nnn" "xterm -e 'nnn'" (title =? "nnn") defaultFloating ]
+nspGapH = (1/35)
+nspGapV = nspGapH * (16/9)
+nnnW = (1/3) - (1.5 * nspGapH)
+nnnH = (1/2) - (1.5 * nspGapV)
+nnnPos =  customFloating (W.RationalRect nspGapH nspGapV nnnW nnnH )
+passW = (2/3) - (2 * nspGapH)
+passH = 1 - (2*nspGapV)
+passPos = customFloating (W.RationalRect ((2*nspGapH)+nnnW) nspGapV passW passH )
+myScratchpads = [ 
+	  NS "nnn" ("xterm -bg Orange4 -e 'nnn' ") (title =? "nnn") nnnPos
+        , NS "1Password" "1password" (className =? "1Password") passPos
+		]
 
 -- ############################################################################
 --                           LAYOUTS
@@ -141,28 +155,20 @@ myLayout = onWorkspace "9" myFull
     $ lessBorders AllFloats 
     $ myModifiers
     $ windowNavigation
-    $ myGrid ||| myCombo
+    $ myMasterGrid ||| myGrid 
 
-myCombo = renamed [ Replace "Combo" ]
-    $ CP.combineTwoP 
-    	(TwoPane (2/100) (5/12)) 
-	( GV.Grid (16/9) )
-	( GV.Grid (16/9) )
-	(CP.Tagged "left")
-myGrid = renamed [ Replace "Grid" ]
-    $ smartBorders
+myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
-    $ myDrawer
+    $ smartBorders
+    $ mastered (1/100) (10/24) $ GV.Grid (9/13)
+myGrid = renamed [ Replace "Grid" ]
+    $ hiddenWindows
+    $ smartBorders
     $ GV.Grid (978/1057)
 myFull = smartBorders
     $ Full
 
-moveToLeftPane = sequence_ [ withFocused $ toggleTag "left"
-  			   , sendMessage $ CP.PartitionWins 
-			   ]
-myModifiers = MT.mkToggle (MIRROR MT.?? FULL MT.?? MT.EOT)
-myDrawer =  onBottom $ drawer 0.0 0.8 (Tagged "drawer") myDrawerLayout
-myDrawerLayout = spacingRaw False (Border 1400 0 0 0) True (Border 0 0 0 0) True $ Tall 0 00.3 0.6
+myModifiers = MT.mkToggle (MIRROR MT.?? FULL MT.?? NOBORDERS MT.?? MT.EOT)
 
 data AllFloats = AllFloats deriving (Read, Show)
 
@@ -232,20 +238,11 @@ configSystem = def {
                  , gs_bordercolor = "snow2"
                  }
 
-focusDrawer = popOldestHiddenWindow 
-              >> popOldestHiddenWindow 
-	      >> popOldestHiddenWindow 
-	      >> focusUpTagged "drawer" 
-
 toggleTag tag win = do
 	b <- (hasTag tag win)
         if b 
 	   then delTag tag win
 	   else addTag tag win
-
-moveToDrawer = withFocused (toggleTag "drawer") 
-		>> withFocused hideWindow
-                >> nextMatch History (return True)
 
 spawnXtermInPath = withFocused (\win -> do 
 		wm_name  <- runQuery title win
@@ -271,13 +268,16 @@ myStartupHook = do
 -- ############################################################################
 myKeys = [ 
       ("M-z",        spawn "slock"                                       )
-    , ("M-x",        sendMessage $ MT.Toggle FULL                        )
+    , ("M-x",        sendMessage (MT.Toggle FULL)  )
     , ("M-S-x",      sendMessage $ MT.Toggle MIRROR                        )
-    , ("M-v",        moveToLeftPane                  )
+    , ("M-m",        windows W.focusMaster                 )
     , ("M-n",        windows W.swapMaster                    )
-    , ("M-m",        namedScratchpadAction myScratchpads "nnn"        )
-    , ("M1-<Tab>",   toggleRecentNonEmptyWS                      )
-    , ("M-<Tab>",   nextMatch History (return True)       )
+    , ("M-S-y",      namedScratchpadAction myScratchpads "nnn"        )
+    , ("M-y",        namedScratchpadAction myScratchpads "1Password"  )
+    , ("M1-<Tab>",   toggleRecentNonEmptyWS            )
+    , ("M1-S-<Tab>", nextMatch History (return True)      )
+    , ("M-<Tab>",    windows W.focusUp       )
+    , ("M-S-<Tab>",  windows W.focusDown  )
     , ("M-j",        sendMessage $ Go D                            )
     , ("M-k",        sendMessage $ Go U                          )
     , ("M-h",        sendMessage $ Go L                          )
@@ -298,8 +298,6 @@ myKeys = [
     , ("M-u",        focusUrgent)
     , ("M-<L>",      Cyc.moveTo Prev ((Cyc.Not emptyWS) :&: hiddenWS))
     , ("M-<R>",      Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS))
-    , ("M-S-y",      moveToDrawer)
-    , ("M-y",        focusDrawer )
     , ("M1-b",       bringMenuConfig windowBringerConf)
     , ("M1-g",       gotoMenuConfig windowBringerConf)
     , ("M1-h",       withFocused hideWindow )
