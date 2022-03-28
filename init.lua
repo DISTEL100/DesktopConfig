@@ -54,7 +54,7 @@ set guicursor+=i:ver100-iCursor
 set guicursor+=n-v-c:blinkon100
 set guicursor+=i:blinkwait1
 
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 set expandtab
 set softtabstop=4

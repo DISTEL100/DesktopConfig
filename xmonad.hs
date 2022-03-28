@@ -259,8 +259,8 @@ extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
 myStartupHook = do
         spawnOnOnce "1" "xterm"
         spawnOnOnce "9" "thunderbird"
-        spawnOnOnce "9" "signal-desktop"
-        spawnOnOnce "9" "telegram-desktop"
+        spawnOnOnce "9" "slack"
+        spawnOnOnce "9" "notion-snap"
         spawn "picom"
 
 -- ############################################################################
