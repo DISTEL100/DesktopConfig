@@ -20,7 +20,7 @@ Plug( 'nvim-lua/plenary.nvim' )
 Plug( 'lewis6991/gitsigns.nvim' )
 vim.call('plug#end')
 
-vim.cmd([[source keymappings.vim]])
+vim.cmd([[source lua/keymappings.vim]])
 require('nvim-lspconfig')
 require('nvim-cmp')
 require('vsnip')
@@ -39,6 +39,7 @@ au BufWritePre * let &bex = '@' . strftime("%F.%H")
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
 set number
+set nornu
 set cursorline
 set termguicolors   
 colorscheme slate
@@ -55,6 +56,7 @@ set guicursor+=i:blinkwait1
 
 set clipboard=unnamed
 
+set mps+=<:>
 set mouse=a
 set wrap linebreak
 set breakindent

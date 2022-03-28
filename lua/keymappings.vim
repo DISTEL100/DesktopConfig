@@ -10,7 +10,8 @@ nnoremap k gk
 noremap j gj
 
 set langmap=ü{,Ü[,ä},Ä],#`
-nmap <C-ä> :tjump<Return>
+
+map <C-p> :tjump<Return>
 
 map [[ ?{<CR>w99[{
 map ][ /}<CR>b99]}
