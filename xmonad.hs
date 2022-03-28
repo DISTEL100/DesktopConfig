@@ -160,7 +160,7 @@ myLayout = onWorkspace "9" myFull
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
     $ smartBorders
-    $ mastered (1/100) (10/24) $ GV.Grid (9/13)
+    $ mastered (1/100) (10/24) $ smartBorders $ GV.Grid (9/13)
 myGrid = renamed [ Replace "Grid" ]
     $ hiddenWindows
     $ smartBorders
