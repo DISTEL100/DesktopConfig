@@ -302,7 +302,7 @@ myKeys = [
     , ("M1-g",       gotoMenuConfig windowBringerConf)
     , ("M1-h",       withFocused hideWindow )
     , ("M1-S-h",     popOldestHiddenWindow )
-    , ("M-<Return>", spawnXtermInPath )
+    , ("M-<Return>", spawn "xterm" )
     ]
 
 -- ############################################################################
