@@ -24,6 +24,7 @@ import XMonad.Layout.Magnifier
 import XMonad.Layout.WindowNavigation
 import XMonad.Layout.Gaps
 import XMonad.Layout.TwoPane
+import XMonad.Layout.ZoomRow
 import qualified XMonad.Layout.ComboP as CP
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.ResizableTile
@@ -114,6 +115,7 @@ myFadeHook = composeAll
     opaque
     , title     =? "nnn"       --> transparency fadedOpacity
     , className =? "1Password" --> transparency fadedOpacity
+    --, isFloating               --> transparency fadedOpacity
    ]
 
 -- ############################################################################
@@ -155,7 +157,7 @@ myLayout = onWorkspace "9" myFull
     $ lessBorders AllFloats 
     $ myModifiers
     $ windowNavigation
-    $ myMasterGrid ||| myGrid 
+    $ myMasterGrid ||| myGrid ||| myCols
 
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
@@ -165,6 +167,10 @@ myGrid = renamed [ Replace "Grid" ]
     $ hiddenWindows
     $ smartBorders
     $ GV.Grid (978/1057)
+myCols = renamed [ Replace "Cols" ]
+    $ hiddenWindows
+    $ smartBorders
+    $ zoomRow
 myFull = smartBorders
     $ Full
 
@@ -286,8 +292,8 @@ myKeys = [
     , ("M-S-k",      sendMessage $ Swap U                           )
     , ("M-S-h",      sendMessage $ Swap L                           )
     , ("M-S-l",      sendMessage $ Swap R                           )
-    , ("M-M1-j",     sendMessage Shrink                   )
-    , ("M-M1-k",     sendMessage Expand                      )
+    , ("M-M1-j",     sendMessage Shrink >>  sendMessage zoomIn                )
+    , ("M-M1-k",     sendMessage Expand >> sendMessage zoomOut)
     , ("M-S-s",      unGrab *> spawn "scrot -s"                  )
     , ("M-f",        runOrRaiseMaster "firefox" (className =? "firefox") )
     , ("M-c",        kill                                        )
