@@ -1,4 +1,3 @@
-vim.cmd([[
 tnoremap <Esc> <C-\><C-n>
 inoremap kj <esc>l
 nnoremap ö :w<return>
@@ -11,6 +10,10 @@ nnoremap k gk
 noremap j gj
 
 set langmap=ü{,Ü[,ä},Ä],#`
-nmap <C-ä> :tjump<Return>
 
-]])
+map <C-p> :tjump<Return>
+
+map [[ ?{<CR>w99[{
+map ][ /}<CR>b99]}
+map ]] j0[[%/{<CR>
+map [] k$][%?}<CR>
