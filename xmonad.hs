@@ -16,15 +16,17 @@ import XMonad.Util.Ungrab
 import XMonad.Util.SpawnOnce
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.NamedWindows( getName, getNameWMClass )
+import XMonad.Util.Themes
 
 import XMonad.Layout.Hidden
+import XMonad.Layout.DwmStyle
+import XMonad.Layout.SimpleDecoration
 import XMonad.Layout.Master
 import XMonad.Layout.Reflect
 import XMonad.Layout.Magnifier
 import XMonad.Layout.WindowNavigation
 import XMonad.Layout.Gaps
 import XMonad.Layout.TwoPane
-import XMonad.Layout.ZoomRow
 import qualified XMonad.Layout.ComboP as CP
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.ResizableTile
@@ -115,7 +117,6 @@ myFadeHook = composeAll
     opaque
     , title     =? "nnn"       --> transparency fadedOpacity
     , className =? "1Password" --> transparency fadedOpacity
-    --, isFloating               --> transparency fadedOpacity
    ]
 
 -- ############################################################################
@@ -128,6 +129,8 @@ myManageHook = ( namedScratchpadManageHook myScratchpads )
     [ className =? "Gimp"              --> doFloat
     , className =? "SuperCollider"     --> doShift "4"
     , className =? "1Password"         --> doCenterFloat
+    , className =? "xmassage"         --> doCenterFloat
+    , appName   =? "Devtools"          --> doCenterFloat
     , className =? "xterm_gridSelect"  --> doRectFloat (W.RationalRect (1/4) (1/4) (1/2) (1/2))
     , className =? "Thunderbird"       --> doShift "9"
     , appName   =? "Calendar"          --> doRectFloat (W.RationalRect (1/4) (1/4) (1/2) (1/2))
@@ -157,22 +160,22 @@ myLayout = onWorkspace "9" myFull
     $ lessBorders AllFloats 
     $ myModifiers
     $ windowNavigation
-    $ myMasterGrid ||| myGrid ||| myCols
+    $ myMasterGrid ||| myGrid 
 
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
     $ smartBorders
-    $ mastered (1/100) (10/24) $ smartBorders $ GV.Grid (9/13)
+    $ mastered (1/100) (10/24) $ GV.Grid (9/13)
 myGrid = renamed [ Replace "Grid" ]
     $ hiddenWindows
     $ smartBorders
+    $ dwmStyle shrinkText (theme robertTheme)
     $ GV.Grid (978/1057)
-myCols = renamed [ Replace "Cols" ]
-    $ hiddenWindows
-    $ smartBorders
-    $ zoomRow
 myFull = smartBorders
     $ Full
+
+mySDConfig = def { inactiveBorderColor = "red"
+                 , inactiveTextColor   = "red"}
 
 myModifiers = MT.mkToggle (MIRROR MT.?? FULL MT.?? NOBORDERS MT.?? MT.EOT)
 
@@ -265,9 +268,10 @@ extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
 myStartupHook = do
         spawnOnOnce "1" "xterm"
         spawnOnOnce "9" "thunderbird"
-        spawnOnOnce "9" "signal-desktop"
-        spawnOnOnce "9" "telegram-desktop"
+        spawnOnOnce "9" "slack"
+        spawnOnOnce "9" "notion-snap"
         spawn "picom"
+        spawn "xsetroot -solid Black"
 
 -- ############################################################################
 --                           KEYBINDINGS
@@ -280,10 +284,14 @@ myKeys = [
     , ("M-n",        windows W.swapMaster                    )
     , ("M-S-y",      namedScratchpadAction myScratchpads "nnn"        )
     , ("M-y",        namedScratchpadAction myScratchpads "1Password"  )
-    , ("M1-<Tab>",   toggleRecentNonEmptyWS            )
-    , ("M1-S-<Tab>", nextMatch History (return True)      )
+    , ("M-<L>",      Cyc.moveTo Prev relevantWorkspaces)
+    , ("M-<R>",      Cyc.moveTo Next relevantWorkspaces)
+    , ("M1-<Tab>",   Cyc.moveTo Next relevantWorkspaces  )
+    , ("M1-S-<Tab>", Cyc.moveTo Prev relevantWorkspaces  )
     , ("M-<Tab>",    windows W.focusUp       )
+    , ("C-<Tab>",    windows W.focusUp       )
     , ("M-S-<Tab>",  windows W.focusDown  )
+    , ("S-<Tab>",    cycleRecentNonEmptyWS [xK_Shift_L] xK_Tab xK_q)
     , ("M-j",        sendMessage $ Go D                            )
     , ("M-k",        sendMessage $ Go U                          )
     , ("M-h",        sendMessage $ Go L                          )
@@ -292,24 +300,25 @@ myKeys = [
     , ("M-S-k",      sendMessage $ Swap U                           )
     , ("M-S-h",      sendMessage $ Swap L                           )
     , ("M-S-l",      sendMessage $ Swap R                           )
-    , ("M-M1-j",     sendMessage Shrink >>  sendMessage zoomIn                )
-    , ("M-M1-k",     sendMessage Expand >> sendMessage zoomOut)
+    , ("M-M1-j",     sendMessage Shrink                   )
+    , ("M-M1-k",     sendMessage Expand                      )
     , ("M-S-s",      unGrab *> spawn "scrot -s"                  )
     , ("M-f",        runOrRaiseMaster "firefox" (className =? "firefox") )
+    , ("M-S-f",      ifWindow (className =? "firefox") (currentWs >>= doShift) idHook)
     , ("M-c",        kill                                        )
     , ("M-r",        renameWorkspace def                         )
     , ("M-S-r",      changeDir def                               )
     , ("M-s",        gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
     , ("M-a",        gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
     , ("M-u",        focusUrgent)
-    , ("M-<L>",      Cyc.moveTo Prev ((Cyc.Not emptyWS) :&: hiddenWS))
-    , ("M-<R>",      Cyc.moveTo Next ((Cyc.Not emptyWS) :&: hiddenWS))
     , ("M1-b",       bringMenuConfig windowBringerConf)
     , ("M1-g",       gotoMenuConfig windowBringerConf)
     , ("M1-h",       withFocused hideWindow )
     , ("M1-S-h",     popOldestHiddenWindow )
-    , ("M-<Return>", spawnXtermInPath )
+    , ("M-<Return>", spawn "xterm" )
     ]
+
+relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] )
 
 -- ############################################################################
 --                           XMOBAR SETTINGS
