@@ -21,7 +21,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
 export PATH="$PATH:$GEM_HOME/bin"
 
-export FZF_DEFAULT_COMMAND='rg --hidden --no-ignore --files'
+export FZF_DEFAULT_COMMAND='rg --hidden --files'
 export JDTLS_HOME="/home/jonathan/.local/opt/jdtls-launcher/jdtls"
 export EDITOR='nvim'
 export VISUAL='nvim'

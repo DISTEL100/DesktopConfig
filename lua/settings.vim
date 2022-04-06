@@ -13,7 +13,7 @@ set number
 set nornu
 set cursorline
 set termguicolors   
-colorscheme slate
+colorscheme desert
 let g:airline_theme='tomorrow'
 let g:airline#extensions#tabline#enabled = 1
 
@@ -32,10 +32,14 @@ set mouse=a
 set wrap linebreak
 set breakindent
 
+set tabstop=4
+set shiftwidth=4
+set smarttab
+
 let g:netrw_liststyle=0
 let g:netrw_banner=0
 let g:netrw_winsize=80
-let g:netrw_browse_split=4
+let g:netrw_browse_split=0
 let g:netrw_preview=1
 let g:netrw_altv =1
 let g:netrw_sizestyle='H'

@@ -9,11 +9,20 @@ noremap <F5> :UndotreeT<return>
 nnoremap k gk
 noremap j gj
 
-set langmap=ü{,Ü[,ä},Ä],#`
+inoremap <C-l> <esc>ea
 
-map <C-p> :tjump<Return>
+noremap s cl
+
+set langmap=ü{,Ü[,ä},Ä],#`
 
 map [[ ?{<CR>w99[{
 map ][ /}<CR>b99]}
 map ]] j0[[%/{<CR>
 map [] k$][%?}<CR>
+
+inoremap { {}<Esc>ha
+inoremap ( ()<Esc>ha
+inoremap [ []<Esc>ha
+inoremap " ""<Esc>ha
+inoremap ' ''<Esc>ha
+inoremap ` ``<Esc>ha

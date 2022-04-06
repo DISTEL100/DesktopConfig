@@ -52,6 +52,7 @@ import XMonad.Actions.WindowBringer
 import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.GridSelect
 import XMonad.Actions.CycleWS as Cyc
+import XMonad.Actions.CycleWindows
 import XMonad.Actions.WindowGo
 import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.TagWindows
@@ -64,7 +65,7 @@ import qualified Data.Map as M
 --                           COLORS & FONTS
 -- ############################################################################
 colActive   = "LightGreen"
-colInactive = "#45363d"
+colInactive = "#42403d"
 colBrown    = "#936e9c"
 colUrgent   = "#f58402"
 colHigh     = "#ff0073"
@@ -73,6 +74,7 @@ colFg       = "snow2"
 colBg       = "#202922"
 colBlack    = "#161716"
 colGray     = "#74807b"
+font        = "xft:IBM Plex Mono:size=9:style=italic"
 
 -- ############################################################################
 --                           MAIN
@@ -115,8 +117,8 @@ myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook
 myFadeHook = composeAll 
    [ 
     opaque
-    , title     =? "nnn"       --> transparency fadedOpacity
-    , className =? "1Password" --> transparency fadedOpacity
+    , title     =? "nnn"               --> transparency fadedOpacity
+    , className =? "1Password"         --> transparency fadedOpacity
    ]
 
 -- ############################################################################
@@ -129,7 +131,7 @@ myManageHook = ( namedScratchpadManageHook myScratchpads )
     [ className =? "Gimp"              --> doFloat
     , className =? "SuperCollider"     --> doShift "4"
     , className =? "1Password"         --> doCenterFloat
-    , className =? "xmassage"         --> doCenterFloat
+    , className =? "Xmessage"          --> doCenterFloat
     , appName   =? "Devtools"          --> doCenterFloat
     , className =? "xterm_gridSelect"  --> doRectFloat (W.RationalRect (1/4) (1/4) (1/2) (1/2))
     , className =? "Thunderbird"       --> doShift "9"
@@ -165,17 +167,26 @@ myLayout = onWorkspace "9" myFull
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
     $ smartBorders
-    $ mastered (1/100) (10/24) $ GV.Grid (9/13)
+    $ mastered (1/100) (10/24) $ GV.Grid (15/13)
 myGrid = renamed [ Replace "Grid" ]
     $ hiddenWindows
     $ smartBorders
-    $ dwmStyle shrinkText (theme robertTheme)
+    $ dwmStyle shrinkText mySDConfig
     $ GV.Grid (978/1057)
+
 myFull = smartBorders
     $ Full
 
-mySDConfig = def { inactiveBorderColor = "red"
-                 , inactiveTextColor   = "red"}
+mySDConfig = def { inactiveTextColor   = colActive
+		 , activeColor         = colActive
+		 , inactiveColor       = colBlack
+		 , urgentColor 	       = colUrgent
+		 , activeBorderWidth   = 0
+		 , inactiveBorderWidth = 0
+		 , decoHeight          = 22
+		 , decoWidth           = 190
+		 , fontName            = font
+		 }
 
 myModifiers = MT.mkToggle (MIRROR MT.?? FULL MT.?? NOBORDERS MT.?? MT.EOT)
 
@@ -266,12 +277,11 @@ extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
 --                           ON STARTUP
 -- ############################################################################
 myStartupHook = do
-        spawnOnOnce "1" "xterm"
+        spawn "xsetroot -solid Black"
         spawnOnOnce "9" "thunderbird"
         spawnOnOnce "9" "slack"
         spawnOnOnce "9" "notion-snap"
         spawn "picom"
-        spawn "xsetroot -solid Black"
 
 -- ############################################################################
 --                           KEYBINDINGS
@@ -284,14 +294,19 @@ myKeys = [
     , ("M-n",        windows W.swapMaster                    )
     , ("M-S-y",      namedScratchpadAction myScratchpads "nnn"        )
     , ("M-y",        namedScratchpadAction myScratchpads "1Password"  )
-    , ("M-<L>",      Cyc.moveTo Prev relevantWorkspaces)
-    , ("M-<R>",      Cyc.moveTo Next relevantWorkspaces)
-    , ("M1-<Tab>",   Cyc.moveTo Next relevantWorkspaces  )
-    , ("M1-S-<Tab>", Cyc.moveTo Prev relevantWorkspaces  )
-    , ("M-<Tab>",    windows W.focusUp       )
-    , ("C-<Tab>",    windows W.focusUp       )
-    , ("M-S-<Tab>",  windows W.focusDown  )
-    , ("S-<Tab>",    cycleRecentNonEmptyWS [xK_Shift_L] xK_Tab xK_q)
+    , ("M1-<L>",     Cyc.moveTo Prev relevantWorkspaces)
+    , ("M1-<R>",     Cyc.moveTo Next relevantWorkspaces)
+    , ("M1-h",       Cyc.moveTo Prev relevantWorkspaces)
+    , ("M1-l",       Cyc.moveTo Next relevantWorkspaces)
+    , ("M1-S-<L>",   Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces)
+    , ("M1-S-<R>",   Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces)
+    , ("M1-S-h",     Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces)
+    , ("M1-S-l",     Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces)
+    , ("M1-<Tab>",   cycleRecentNonEmptyWS [xK_Alt_L] xK_Tab xK_q)
+    , ("M-<Tab>",    windows W.focusUp )
+    , ("M-S-<Tab>",  windows W.focusDown )
+    , ("<Page_Up>",   nextMatch History (return True) )
+    , ("<Page_Down>", nextMatchWithThis Forward className )
     , ("M-j",        sendMessage $ Go D                            )
     , ("M-k",        sendMessage $ Go U                          )
     , ("M-h",        sendMessage $ Go L                          )
@@ -300,9 +315,17 @@ myKeys = [
     , ("M-S-k",      sendMessage $ Swap U                           )
     , ("M-S-h",      sendMessage $ Swap L                           )
     , ("M-S-l",      sendMessage $ Swap R                           )
-    , ("M-M1-j",     sendMessage Shrink                   )
-    , ("M-M1-k",     sendMessage Expand                      )
-    , ("M-S-s",      unGrab *> spawn "scrot -s"                  )
+    , ("M-<D>",      sendMessage $ Go D                            )
+    , ("M-<U>",      sendMessage $ Go U                          )
+    , ("M-<L>",      sendMessage $ Go L                          )
+    , ("M-<R>",      sendMessage $ Go R                          )
+    , ("M-S-<D>",    sendMessage $ Swap D                         )
+    , ("M-S-<U>",    sendMessage $ Swap U                           )
+    , ("M-S-<L>",    sendMessage $ Swap L                           )
+    , ("M-S-<R>",    sendMessage $ Swap R                           )
+    , ("M--",        sendMessage Shrink                   )
+    , ("M-+",        sendMessage Expand                      )
+    , ("<Print>",    unGrab *> spawn "scrot -s"                  )
     , ("M-f",        runOrRaiseMaster "firefox" (className =? "firefox") )
     , ("M-S-f",      ifWindow (className =? "firefox") (currentWs >>= doShift) idHook)
     , ("M-c",        kill                                        )
@@ -313,10 +336,10 @@ myKeys = [
     , ("M-u",        focusUrgent)
     , ("M1-b",       bringMenuConfig windowBringerConf)
     , ("M1-g",       gotoMenuConfig windowBringerConf)
-    , ("M1-h",       withFocused hideWindow )
-    , ("M1-S-h",     popOldestHiddenWindow )
+    , ("M1-v",       withFocused hideWindow )
+    , ("M1-S-v",     popOldestHiddenWindow )
     , ("M-<Return>", spawn "xterm" )
-    ]
+    ] 
 
 relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] )
 
