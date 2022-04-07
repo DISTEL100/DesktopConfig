@@ -2,6 +2,8 @@ local Plug = vim.fn['plug#']
 vim.call('plug#begin', '~/.config/nvim/plugged')
 Plug( 'junegunn/fzf', { ['do'] = vim.fn['fzf#install'] } )
 Plug( 'junegunn/fzf.vim')
+Plug( 'xolox/vim-misc')
+Plug( 'xolox/vim-colorscheme-switcher')
 Plug( 'mbbill/undotree')
 Plug( 'lervag/vimtex')
 Plug( 'neovimhaskell/haskell-vim' )
@@ -18,11 +20,16 @@ Plug( 'vim-airline/vim-airline' )
 Plug( 'vim-airline/vim-airline-themes' )
 Plug( 'nvim-lua/plenary.nvim' )
 Plug( 'lewis6991/gitsigns.nvim' )
+Plug( 'nvim-treesitter/nvim-treesitter', { ['do'] = vim.fn[ 'TSUpdate' ] } )
 vim.call('plug#end')
 
-vim.cmd([[source ~/.config/nvim/lua/keymappings.vim]])
-vim.cmd([[source ~/.config/nvim/lua/settings.vim]])
+vim.cmd([[
+	source ~/.config/nvim/lua/keymappings.vim
+	source ~/.config/nvim/lua/settings.vim
+	source ~/.config/nvim/lua/vim-airline.vim
+]])
 require('nvim-lspconfig')
 require('nvim-cmp')
 require('vsnip')
 require('gitsigns').setup()
+require('nvim-treesitter.configs').setup { highlight = { enable = true } }

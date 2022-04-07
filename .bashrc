@@ -5,10 +5,16 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-[ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
-
 alias ls='ls --color=auto'
 alias r="ranger"
+
+gitfe() {
+    SEP='echo "" && echo"" && echo "#######################################################" && echo "" && echo""' 
+    eval $SEP
+    COMMAND="git submodule foreach 'git $1 && $SEP'"
+    eval $COMMAND
+}
+
 PS1='[\u@\h \W]\$ '
 
 export PATH="$HOME/.local/bin:$PATH"
@@ -19,7 +25,7 @@ export PATH="$PATH:$GEM_HOME/bin"
 export JDTLS_HOME=$HOME/.local/opt/jdtls-launcher/jdtls
 export WORKSPACE=$HOME/workspace
 
-export FZF_DEFAULT_COMMAND='rg --hidden --no-ignore --files'
+export FZF_DEFAULT_COMMAND='rg --files'
 
 export EDITOR='nvim'
 export VISUAL='nvim'
@@ -27,8 +33,24 @@ export VISUAL='nvim'
 export NNN_OPENER='mimeopen'
 export NNN_FIFO=$HOME/.nnn_fifo
 export NNN_PLUG='<:preview-tui;p:preview-tabbed'
-export NNN_COLORS='#54'
-export NNN_FCOLORS='#8e#92#c1#e3#e6#e7#b0#e1#90#b5#46'
+export NNN_COLOR='#54'
+BLK="04" CHR="04" DIR="04" EXE="9e" REG="e7" HARDLINK="e2" SYMLINK="06" MISSING="00" ORPHAN="01" FIFO="0F" SOCK="0F" OTHER="02"
+export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
+n ()
+{
+    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    nnn "$@"
+    if [ -f "$NNN_TMPFILE" ]; then
+            . "$NNN_TMPFILE"
+            rm -f "$NNN_TMPFILE" > /dev/null
+    fi
+}
 
 [ -n "$NNNLVL" ] && PS1="N$NNNLVL $PS1"
 
@@ -36,9 +58,12 @@ if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
     source /usr/share/nnn/quitcd/quitcd.bash_zsh
 fi
 
-eval "$(stack --bash-completion-script stack)"
+# enable bash completion in interactive shells
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
 
-
-# BEGIN_KITTY_SHELL_INTEGRATION
-if test -n "$KITTY_INSTALLATION_DIR" -a -e "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; then source "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; fi
-# END_KITTY_SHELL_INTEGRATION

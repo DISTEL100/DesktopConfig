@@ -65,7 +65,7 @@ import qualified Data.Map as M
 --                           COLORS & FONTS
 -- ############################################################################
 colActive   = "LightGreen"
-colInactive = "#45363d"
+colInactive = "#42403d"
 colBrown    = "#936e9c"
 colUrgent   = "#f58402"
 colHigh     = "#ff0073"
@@ -179,10 +179,12 @@ myFull = smartBorders
 
 mySDConfig = def { inactiveTextColor   = colActive
 		 , activeColor         = colActive
+		 , inactiveColor       = colBlack
 		 , urgentColor 	       = colUrgent
 		 , activeBorderWidth   = 0
 		 , inactiveBorderWidth = 0
-		 , decoHeight          = 18
+		 , decoHeight          = 22
+		 , decoWidth           = 190
 		 , fontName            = font
 		 }
 
@@ -275,9 +277,9 @@ extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
 --                           ON STARTUP
 -- ############################################################################
 myStartupHook = do
+        spawn "xsetroot -solid Black"
         spawnOnOnce "9" "thunderbird"
         spawn "picom"
-        spawn "xsetroot -solid Black"
 
 -- ############################################################################
 --                           KEYBINDINGS
