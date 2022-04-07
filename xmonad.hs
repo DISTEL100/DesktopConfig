@@ -278,8 +278,8 @@ extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
 -- ############################################################################
 myStartupHook = do
         spawn "xsetroot -solid Black"
-        spawnOnOnce "9" "thunderbird"
         spawn "picom"
+        spawnOnOnce "9" "thunderbird"
 
 -- ############################################################################
 --                           KEYBINDINGS
