@@ -74,6 +74,7 @@ colFg       = "snow2"
 colBg       = "#202922"
 colBlack    = "#161716"
 colGray     = "#74807b"
+colGray2    = "#999999"
 font        = "xft:IBMPlexMono:size=9:style=italic"
 
 -- ############################################################################
