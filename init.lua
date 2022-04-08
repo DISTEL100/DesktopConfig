@@ -20,7 +20,7 @@ Plug( 'vim-airline/vim-airline' )
 Plug( 'vim-airline/vim-airline-themes' )
 Plug( 'nvim-lua/plenary.nvim' )
 Plug( 'lewis6991/gitsigns.nvim' )
-Plug( 'nvim-treesitter/nvim-treesitter', { ['do'] = vim.fn[ 'TSUpdate' ] } )
+Plug( 'nvim-treesitter/nvim-treesitter', { ['do'] = vim.fn[ ':TSUpdate' ] } )
 vim.call('plug#end')
 
 vim.cmd([[
@@ -28,6 +28,7 @@ vim.cmd([[
 	source ~/.config/nvim/lua/settings.vim
 	source ~/.config/nvim/lua/vim-airline.vim
 ]])
+
 require('nvim-lspconfig')
 require('nvim-cmp')
 require('vsnip')
