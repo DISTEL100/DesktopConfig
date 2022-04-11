@@ -22,14 +22,12 @@ Plug( 'vim-airline/vim-airline-themes' )
 Plug( 'nvim-lua/plenary.nvim' )
 Plug( 'lewis6991/gitsigns.nvim' )
 Plug( 'nvim-treesitter/nvim-treesitter', { ['do'] = vim.fn[ ':TSUpdate' ] } )
-Plug( 'davidgranstrom/scnvim', { ['do'] = vim.fn['scnvim#install()'] })
 vim.call('plug#end')
 
 vim.cmd([[
 	source ~/.config/nvim/lua/keymappings.vim
 	source ~/.config/nvim/lua/settings.vim
 	source ~/.config/nvim/lua/vim-airline.vim
-	source ~/.config/nvim/lua/scnvim.vim
 ]])
 
 require('nvim-lspconfig')
