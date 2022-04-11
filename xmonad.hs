@@ -223,10 +223,6 @@ fixedWidth x ""     = " " ++ (fixedWidth (x-1) "")
 fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)
 
 spawnPrograms = [
-              ("1Password",     "1password")
-            , ( "Bluetooth",    "xterm -bg DarkBlue -class xterm_gridSelect -e bluetoothctl" )
-            , ( "Pulsemixer",   "xterm -bg DarkBlue -class xterm_gridSelect -e pulsemixer" )
-            , ( "iwd",          "xterm -bg DarkBlue -class xterm_gridSelect -e iwctl" )
             , ( "xterm",        "xterm -bg DeepPink4 -class xterm_gridSelect" )
             , ( "ghci",         "xterm -bg DeepSkyBlue4 -class xterm_gridSelect -e 'stack repl'" )
             ]
@@ -242,12 +238,10 @@ spawnSystem = [
       ( "Hibernate", "systemctl hibernate" )
     , ( "Shutdown", "shutdown 0" )
     , ( "Hybrid-Sleep", "systemctl hybrid-sleep" )
-    , ( "Backup", "xterm -bg DarkBlue -class xterm_gridSelect -e 'sudo backupWhiteRiffle'" )
     , ( "Journal", "xterm -bg DarkBlue -class xterm_gridSelect -e 'journalctl -r'" )
     , ( "Bildschirm ausschalten", "xset dpms force off" )
     , ( "Suspend", "systemctl suspend" )
     , ( "restart iwd", "xterm -bg DarkBlue -class xterm_gridSelect -e 'sudo systemctl restart iwd.service'" )
-    , ( "System Update", "xterm -bg DarkBlue -class xterm_gridSelect -e 'pacman -Qqen > ~/.pkglist_Qqen.txt && pacman -Qqem > ~/.pkglist_Qqem.txt && sudo pacman -Syu'" )
     ]
 configSystem :: GSConfig String
 configSystem = def { 
@@ -282,7 +276,6 @@ myStartupHook = do
         spawnOnOnce "9" "slack"
         spawnOnOnce "9" "notion-snap"
         spawn "picom"
-        spawn "xsetroot -solid Black"
 
 -- ############################################################################
 --                           KEYBINDINGS
@@ -306,8 +299,8 @@ myKeys = [
     , ("M1-<Tab>",   cycleRecentNonEmptyWS [xK_Alt_L] xK_Tab xK_q)
     , ("M-<Tab>",    windows W.focusUp )
     , ("M-S-<Tab>",  windows W.focusDown )
-    , ("<Page_Up>",   nextMatch History (return True) )
-    , ("<Page_Down>", nextMatchWithThis Forward className )
+    , ("<Page_Up>",  nextMatch History (return True) )
+    , ("<Page_Down>",nextMatchWithThis Forward className )
     , ("M-j",        sendMessage $ Go D                            )
     , ("M-k",        sendMessage $ Go U                          )
     , ("M-h",        sendMessage $ Go L                          )

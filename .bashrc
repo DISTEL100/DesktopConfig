@@ -29,8 +29,24 @@ export VISUAL='nvim'
 export NNN_OPENER='mimeopen'
 export NNN_FIFO=$HOME/.nnn_fifo
 export NNN_PLUG='<:preview-tui;p:preview-tabbed'
-export NNN_COLORS='#54'
-export NNN_FCOLORS='#8e#92#c1#e3#e6#e7#b0#e1#90#b5#46'
+export NNN_COLOR='#54'
+BLK="04" CHR="04" DIR="04" EXE="9e" REG="E7" HARDLINK="E2" SYMLINK="06" MISSING="00" ORPHAN="01" FIFO="0F" SOCK="0F" OTHER="02"
+export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
+n ()
+{
+    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    nnn "$@"
+    if [ -f "$NNN_TMPFILE" ]; then
+            . "$NNN_TMPFILE"
+            rm -f "$NNN_TMPFILE" > /dev/null
+    fi
+}
 
 [ -n "$NNNLVL" ] && PS1="N$NNNLVL $PS1"
 

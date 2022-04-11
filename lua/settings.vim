@@ -9,13 +9,13 @@ au BufWritePre * let &bex = '@' . strftime("%F.%H")
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
+set title
 set number
 set nornu
 set cursorline
 set termguicolors   
 colorscheme desert
 let g:airline_theme='tomorrow'
-let g:airline#extensions#tabline#enabled = 1
 
 highlight Cursor guifg=white guibg=black
 highlight iCursor guifg=white guibg=orange

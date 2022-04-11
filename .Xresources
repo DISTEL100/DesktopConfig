@@ -1,7 +1,7 @@
 XTerm.vt100.faceName: Iosevka:style=Regular:size=9
 XTerm.vt100.saveLines: 4096
-XTerm.vt100.forcePackedFont: true
-XTerm*renderFont: true
+XTerm*renderFont:true
+XTerm*forcePackedFont:true
 XTerm.termName: xterm-256color
 xterm*bellIsUrgent:true
 xterm*background: gray12
