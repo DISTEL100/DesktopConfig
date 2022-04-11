@@ -282,6 +282,7 @@ myStartupHook = do
         spawnOnOnce "9" "slack"
         spawnOnOnce "9" "notion-snap"
         spawn "picom"
+        spawn "xsetroot -solid Black"
 
 -- ############################################################################
 --                           KEYBINDINGS

@@ -21,7 +21,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
 export PATH="$PATH:$GEM_HOME/bin"
 
-export FZF_DEFAULT_COMMAND='rg --hidden --files'
+export FZF_DEFAULT_COMMAND='rg --files'
 export JDTLS_HOME="/home/jonathan/.local/opt/jdtls-launcher/jdtls"
 export EDITOR='nvim'
 export VISUAL='nvim'
@@ -29,32 +29,13 @@ export VISUAL='nvim'
 export NNN_OPENER='mimeopen'
 export NNN_FIFO=$HOME/.nnn_fifo
 export NNN_PLUG='<:preview-tui;p:preview-tabbed'
-export NNN_COLORS='#34'
-n ()
-{
-    if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
-        echo "nnn is already running"
-        return
-    fi
+export NNN_COLORS='#54'
+export NNN_FCOLORS='#8e#92#c1#e3#e6#e7#b0#e1#90#b5#46'
 
-    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+[ -n "$NNNLVL" ] && PS1="N$NNNLVL $PS1"
 
-    nnn "$@"
-
-    if [ -f "$NNN_TMPFILE" ]; then
-            . "$NNN_TMPFILE"
-            rm -f "$NNN_TMPFILE" > /dev/null
-    fi
-}
-
-
-# enable bash completion in interactive shells
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+if [ -f /usr/share/nnn/quitcd/quitcd.bash_zsh ]; then
+    source /usr/share/nnn/quitcd/quitcd.bash_zsh
 fi
 
 # BEGIN_KITTY_SHELL_INTEGRATION
