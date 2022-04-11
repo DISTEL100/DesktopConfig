@@ -13,24 +13,27 @@ Plug( 'hrsh7th/cmp-buffer')
 Plug( 'hrsh7th/cmp-path')
 Plug( 'hrsh7th/cmp-cmdline')
 Plug( 'hrsh7th/nvim-cmp')
-Plug( 'hrsh7th/cmp-vsnip')
-Plug( 'hrsh7th/vim-vsnip')
+Plug('SirVer/ultisnips')
+Plug('quangnguyen30192/cmp-nvim-ultisnips')
+Plug( 'honza/vim-snippets')
 Plug( 'rafamadriz/friendly-snippets' )
 Plug( 'vim-airline/vim-airline' )
 Plug( 'vim-airline/vim-airline-themes' )
 Plug( 'nvim-lua/plenary.nvim' )
 Plug( 'lewis6991/gitsigns.nvim' )
 Plug( 'nvim-treesitter/nvim-treesitter', { ['do'] = vim.fn[ ':TSUpdate' ] } )
+Plug( 'davidgranstrom/scnvim', { ['do'] = vim.fn['scnvim#install()'] })
 vim.call('plug#end')
 
 vim.cmd([[
 	source ~/.config/nvim/lua/keymappings.vim
 	source ~/.config/nvim/lua/settings.vim
 	source ~/.config/nvim/lua/vim-airline.vim
+	source ~/.config/nvim/lua/scnvim.vim
 ]])
 
 require('nvim-lspconfig')
 require('nvim-cmp')
-require('vsnip')
+require('utilsnips')
 require('gitsigns').setup()
 require('nvim-treesitter.configs').setup { highlight = { enable = true } }

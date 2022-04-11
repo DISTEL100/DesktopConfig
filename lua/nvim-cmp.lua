@@ -5,7 +5,7 @@ vim.cmd([[set completeopt=menu,menuone,noselect]])
   cmp.setup({
     snippet = {
       expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
       end,
     },
     mapping = {
@@ -21,7 +21,7 @@ vim.cmd([[set completeopt=menu,menuone,noselect]])
     },
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
-      { name = 'vsnip' }, -- For vsnip users.
+      { name = 'ultisnips' }, -- For vsnip users.
     }, {
       { name = 'buffer' },
     })
