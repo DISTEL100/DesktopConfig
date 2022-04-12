@@ -150,7 +150,7 @@ passW = (2/3) - (2 * nspGapH)
 passH = 1 - (2*nspGapV)
 passPos = customFloating (W.RationalRect ((2*nspGapH)+nnnW) nspGapV passW passH )
 myScratchpads = [ 
-	  NS "nnn" ("xterm -bg Orange4 -e 'nnn' ") (title =? "nnn") nnnPos
+          NS "nnn" ("xterm -bg Orange4 -e 'nnn' ") (title =? "nnn") nnnPos
         , NS "1Password" "1password" (className =? "1Password") passPos
 		]
 
