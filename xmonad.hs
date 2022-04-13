@@ -165,7 +165,7 @@ myLayout = onWorkspace "9" myFull
     $ lessBorders AllFloats 
     $ myModifiers
     $ windowNavigation
-    $ myMasterGrid ||| myGrid ||| myHintedTile ||| Grid False
+    $ myMasterGrid ||| myGrid 
 
 myHintedTile = renamed [ Replace "HTile" ]
     $ hiddenWindows
@@ -230,11 +230,9 @@ fixedWidth x ""     = " " ++ (fixedWidth (x-1) "")
 fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)
 
 spawnPrograms = [
-              ("1Password",     "1password")
-            , ( "Bluetooth",    "xterm -bg DarkBlue -class xterm_gridSelect -e bluetoothctl" )
+              ( "Bluetooth",    "xterm -bg DarkBlue -class xterm_gridSelect -e bluetoothctl" )
             , ( "Pulsemixer",   "xterm -bg DarkBlue -class xterm_gridSelect -e pulsemixer" )
             , ( "iwd",          "xterm -bg DarkBlue -class xterm_gridSelect -e iwctl" )
-            , ( "xterm",        "xterm -bg DeepPink4 -class xterm_gridSelect" )
             , ( "ghci",         "xterm -bg DeepSkyBlue4 -class xterm_gridSelect -e 'stack repl'" )
             ]
 configPrograms :: GSConfig String

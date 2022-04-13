@@ -1,10 +1,10 @@
-ln -f xmonad.hs 		        $HOME/.config/xmonad/xmonad.hs 		
-ln -f .Xresources 		        $HOME/.Xresources				
-ln -f .bashrc 			        $HOME/.bashrc				
-ln -f .xmobarrc 		        $HOME/.xmobarrc				
-ln -f picom.conf 		        $HOME/.config/picom.conf 			
+ln -f xmonad.hs 		        	$HOME/.config/xmonad/xmonad.hs 		
+ln -f .Xresources 		        	$HOME/.Xresources				
+ln -f .bashrc 			        	$HOME/.bashrc				
+ln -f .xmobarrc 		        	$HOME/.xmobarrc				
+ln -f picom.conf 		        	$HOME/.config/picom.conf 			
 
-ln -f init.lua 			        $HOME/.config/nvim/init.lua 		
+ln -f init.lua 			        	$HOME/.config/nvim/init.lua 		
 ln -f lua/keymappings.vim 	    	$HOME/.config/nvim/lua/keymappings.vim	
 ln -f lua/settings.vim	 	    	$HOME/.config/nvim/lua/settings.vim	
 ln -f lua/nvim-cmp.lua 		    	$HOME/.config/nvim/lua/nvim-cmp.lua	
