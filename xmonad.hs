@@ -1,4 +1,4 @@
-import XMonad
+import XMonad hiding (Tall)
 import XMonad.Prelude
 
 import qualified XMonad.StackSet as W
@@ -19,6 +19,7 @@ import XMonad.Util.NamedWindows( getName, getNameWMClass )
 import XMonad.Util.Themes
 
 import XMonad.Layout.Hidden
+import XMonad.Layout.HintedTile
 import XMonad.Layout.DwmStyle
 import XMonad.Layout.SimpleDecoration
 import XMonad.Layout.Master
@@ -42,6 +43,8 @@ import qualified XMonad.Layout.BoringWindows as Boring
 import qualified XMonad.Layout.MultiToggle as MT
 import XMonad.Layout.MultiToggle.Instances
 import qualified XMonad.Layout.GridVariants as GV
+import XMonad.Layout.HintedGrid
+
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeWindows
@@ -162,8 +165,12 @@ myLayout = onWorkspace "9" myFull
     $ lessBorders AllFloats 
     $ myModifiers
     $ windowNavigation
-    $ myMasterGrid ||| myGrid 
+    $ myMasterGrid ||| myGrid ||| myHintedTile ||| Grid False
 
+myHintedTile = renamed [ Replace "HTile" ]
+    $ hiddenWindows
+	$ smartBorders
+	$ HintedTile 1 (1/100) (1/3) TopLeft Tall
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
     $ smartBorders
