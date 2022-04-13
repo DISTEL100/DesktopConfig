@@ -10,3 +10,4 @@ ln -f $HOME/.config/nvim/lua/settings.vim 	    lua/settings.vim
 ln -f $HOME/.config/nvim/lua/nvim-cmp.lua 	    lua/nvim-cmp.lua 		
 ln -f $HOME/.config/nvim/lua/nvim-lspconfig.lua     lua/nvim-lspconfig.lua 	
 ln -f $HOME/.config/nvim/lua/utilsnips.lua              lua/utilsnips.lua 
+ln -f $HOME/.config/nvim/lua/vim-airline.vim              lua/vim-airline.vim 

@@ -223,7 +223,7 @@ fixedWidth x ""     = " " ++ (fixedWidth (x-1) "")
 fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)
 
 spawnPrograms = [
-            , ( "xterm",        "xterm -bg DeepPink4 -class xterm_gridSelect" )
+              ( "xterm",        "xterm -bg DeepPink4 -class xterm_gridSelect" )
             , ( "ghci",         "xterm -bg DeepSkyBlue4 -class xterm_gridSelect -e 'stack repl'" )
             ]
 configPrograms :: GSConfig String
@@ -272,8 +272,8 @@ extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
 -- ############################################################################
 myStartupHook = do
         spawn "xsetroot -solid Black"
-        spawnOnOnce "9" "thunderbird"
         spawnOnOnce "9" "slack"
+        spawnOnOnce "9" "thunderbird"
         spawnOnOnce "9" "notion-snap"
         spawn "picom"
 
