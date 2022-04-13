@@ -253,7 +253,6 @@ spawnSystem = [
     , ( "Journal", "xterm -bg DarkBlue -class xterm_gridSelect -e 'journalctl -r'" )
     , ( "Bildschirm ausschalten", "xset dpms force off" )
     , ( "Suspend", "systemctl suspend" )
-    , ( "restart iwd", "xterm -bg DarkBlue -class xterm_gridSelect -e 'sudo systemctl restart iwd.service'" )
     , ( "System Update", "xterm -bg DarkBlue -class xterm_gridSelect -e 'pacman -Qqen > ~/.pkglist_Qqen.txt && pacman -Qqem > ~/.pkglist_Qqem.txt && sudo pacman -Syu'" )
     ]
 configSystem :: GSConfig String
