@@ -27,6 +27,9 @@ set guicursor+=i:blinkwait1
 
 set clipboard=unnamedplus
 
+set foldmethod=syntax
+set foldlevelstart=4
+
 set mps+=<:>
 set mouse=a
 set wrap linebreak
