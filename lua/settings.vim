@@ -25,7 +25,10 @@ set guicursor+=i:ver100-iCursor
 set guicursor+=n-v-c:blinkon100
 set guicursor+=i:blinkwait1
 
-set clipboard=unnamed
+set clipboard=unnamedplus
+
+set foldmethod=syntax
+set foldlevelstart=4
 
 set mps+=<:>
 set mouse=a
