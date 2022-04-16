@@ -221,12 +221,12 @@ windowBringerConf = def {
                , "-nb", colInactive
                , "-nf", colFg
                , "-sb", colSep
-               , "-sf", colBrown
+               , "-sf", colActive
                ],
     windowTitler = \ws -> \w -> do
           name <- show <$> getName w
           className <- show <$> getNameWMClass w
-          return $ "  " ++ W.tag ws
+          return $ "  " ++ fixedWidth 5 ( W.tag ws )
                         ++ "   |   " 
                         ++ (fixedWidth 16 className) 
                         ++ "   |   "
@@ -287,8 +287,39 @@ myStartupHook = do
         spawnOnOnce "9" "thunderbird"
 
 -- ############################################################################
+--                           XMOBAR SETTINGS
+-- ############################################################################
+myStatusBar = withEasySB (statusBarProp "xmobar" myXmobarPP) defToggleStrutsKey
+
+myXmobarPP = workspaceNamesPP def
+    { ppSep             = xmobarColor colActive "" ""
+    , ppTitleSanitize   = xmobarStrip
+    , ppCurrent         = xmobarBorder "Full" "LightBlue mb=1" 4 . xmobarColor "LightBlue" colSep . wrap "  " "  " 
+    , ppVisible         = xmobarBorder "Full" "Yellow mb=1   " 4 . xmobarColor "Yellow" colSep . wrap "  " "  " 
+    , ppUrgent          = wrap "  " "  " . xmobarBorder "VBoth" colUrgent 4 
+    , ppHidden          = xmobarColor colFg colSep . wrap "  " "  "
+    , ppHiddenNoWindows = \x -> ""
+    , ppLayout          = xmobarBorder "Full" colSep 2 . xmobarColor colFg colSep . wrap "" "   "
+    , ppOrder           = \[ws, l, _, wins] -> [   
+                                xmobarBorder "Full" colSep 0 $ xmobarColor colFg colSep ("  " ++ ws ++ "  ")
+                              , l
+                              , wins
+                            ]
+    , ppExtras          = [ onLogger (wrap "    " "" ) windowTitles ]
+    } 
+  where
+    windowTitles    = logTitles formatFocused formatUnfocused
+    formatFocused   = wrap " " " " . xmobarBorder "Top" colActive 2 . xmobarColor colActive "" . ppWindow
+    formatUnfocused = xmobarColor colFg "" . wrap " " " " . ppWindow
+
+    ppWindow :: String -> String
+    ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
+
+-- ############################################################################
 --                           KEYBINDINGS
 -- ############################################################################
+relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] )
+
 myKeys = [ 
       ("M-z",        spawn "slock"                                       )
     , ("M-x",        runSelectedAction myGSConfig xActions  )
@@ -305,7 +336,8 @@ myKeys = [
     , ("M1-S-h",     Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-S-l",     Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
     , ("M1-<Tab>",   nextMatch History (return True) )
-    , ("M1-S-<Tab>", nextMatchWithThis Forward className  )
+    , ("M1-j",       nextMatchWithThis Forward className  )
+    , ("M1-k",       nextMatchWithThis Backward className  )
     , ("M-<Tab>",    windows W.focusUp )
     , ("M-S-<Tab>",  windows W.focusDown )
     , ("<Page_Up>",  nextWS >> flashCurrentWS)
@@ -336,41 +368,10 @@ myKeys = [
     , ("M-S-r",      changeDir def                               )
     , ("M-s",        gridselect myGSConfig spawnSystem >>= spawn . fromMaybe "" )
     , ("M-a",        gridselect myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
-    , ("M-u",        focusUrgent)
-    , ("M1-b",       bringMenuConfig windowBringerConf)
-    , ("M1-g",       gotoMenuConfig windowBringerConf)
+    , ("M-u",        focusUrgent   )
+    , ("M-S-g",      bringMenuConfig windowBringerConf)
+    , ("M-g",        gotoMenuConfig windowBringerConf)
     , ("M-v",        withFocused hideWindow )
     , ("M-S-v",      popOldestHiddenWindow )
     , ("M-<Return>", spawn "xterm" )
     ] 
-
-relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] )
-
--- ############################################################################
---                           XMOBAR SETTINGS
--- ############################################################################
-myStatusBar = withEasySB (statusBarProp "xmobar" myXmobarPP) defToggleStrutsKey
-
-myXmobarPP = workspaceNamesPP def
-    { ppSep             = xmobarColor colActive "" ""
-    , ppTitleSanitize   = xmobarStrip
-    , ppCurrent         = xmobarBorder "Full" "LightBlue mb=1" 4 . xmobarColor "LightBlue" colSep . wrap "  " "  " 
-    , ppVisible         = xmobarBorder "Full" "Yellow mb=1   " 4 . xmobarColor "Yellow" colSep . wrap "  " "  " 
-    , ppUrgent          = wrap "  " "  " . xmobarBorder "VBoth" colUrgent 4 
-    , ppHidden          = xmobarColor colFg colSep . wrap "  " "  "
-    , ppHiddenNoWindows = \x -> ""
-    , ppLayout          = xmobarBorder "Full" colSep 2 . xmobarColor colFg colSep . wrap "" "   "
-    , ppOrder           = \[ws, l, _, wins] -> [   
-                                xmobarBorder "Full" colSep 0 $ xmobarColor colFg colSep ("  " ++ ws ++ "  ")
-                              , l
-                              , wins
-                            ]
-    , ppExtras          = [ onLogger (wrap "    " "" ) windowTitles ]
-    } 
-  where
-    windowTitles    = logTitles formatFocused formatUnfocused
-    formatFocused   = wrap " " " " . xmobarBorder "Top" colActive 2 . xmobarColor colActive "" . ppWindow
-    formatUnfocused = xmobarColor colFg "" . wrap " " " " . ppWindow
-
-    ppWindow :: String -> String
-    ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
