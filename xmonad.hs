@@ -151,10 +151,12 @@ nnnPos =  customFloating (W.RationalRect nspGapH nspGapV nnnW nnnH )
 passW = (2/3) - (2 * nspGapH)
 passH = 1 - (2*nspGapV)
 passPos = customFloating (W.RationalRect ((2*nspGapH)+nnnW) nspGapV passW passH )
+pulsePos =  customFloating (W.RationalRect nspGapH (nspGapV+nnnH+nspGapV) nnnW nnnH )
 myScratchpads = [ 
-	  NS "nnn" ("xterm -bg Orange4 -e 'nnn' ") (title =? "nnn") nnnPos
-        , NS "1Password" "1password" (className =? "1Password") passPos
-		]
+                   NS "nnn" ("xterm -bg Orange4 -e 'nnn' ") (title =? "nnn") nnnPos
+                 , NS "1Password" "1password" (className =? "1Password") passPos
+                 , NS "Pulsemixer" "xterm -e 'pulsemixer' -class pulsemixer" (className =? "pulsemixer") pulsePos
+                ]
 
 -- ############################################################################
 --                           LAYOUTS
@@ -327,6 +329,7 @@ myKeys = [
     , ("M-n",        windows W.swapMaster                    )
     , ("M-S-y",      namedScratchpadAction myScratchpads "nnn"        )
     , ("M-y",        namedScratchpadAction myScratchpads "1Password"  )
+    , ("M1-y",       namedScratchpadAction myScratchpads "Pulsemixer"  )
     , ("M1-<L>",     Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-<R>",     Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
     , ("M1-h",       Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
