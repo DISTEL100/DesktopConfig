@@ -1,3 +1,4 @@
+{-# LANGUAGE TypeSynonymInstances, MultiParamTypeClasses #-}
 import XMonad
 import XMonad.Prelude
 
@@ -18,6 +19,7 @@ import XMonad.Util.NamedScratchpad
 import XMonad.Util.NamedWindows( getName, getNameWMClass )
 import XMonad.Util.Themes
 
+import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Hidden
 import XMonad.Layout.DwmStyle
 import XMonad.Layout.SimpleDecoration
@@ -188,7 +190,11 @@ mySDConfig = def { inactiveTextColor   = colActive
 		 , fontName            = font "9"
 		 }
 
-myModifiers = MT.mkToggle (MIRROR MT.?? FULL MT.?? NOBORDERS MT.?? MT.EOT)
+data MAGNIFY = MAGNIFY deriving (Read, Show, Eq)
+instance MT.Transformer MAGNIFY Window where
+    transform MAGNIFY x k = k ((magnifiercz 1.4) x) (\(ModifiedLayout _ x') -> x')
+
+myModifiers = MT.mkToggle (MIRROR MT.?? FULL MT.?? NOBORDERS MT.?? MAGNIFY MT.?? MT.EOT)
 
 data AllFloats = AllFloats deriving (Read, Show)
 
@@ -230,19 +236,24 @@ fixedWidth :: Int -> String -> String
 fixedWidth 0 s      = ""
 fixedWidth x ""     = " " ++ (fixedWidth (x-1) "") 
 fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)
-
+myGSConfig :: HasColorizer a => GSConfig a
+myGSConfig = def { 
+                   gs_cellheight = 80
+                 , gs_cellwidth = 300
+                 , gs_cellpadding = 20
+                 , gs_font = font "14"
+                 , gs_bordercolor = "snow2"
+                 }
+xActions = [
+           ( "Full", sendMessage $ MT.Toggle FULL)
+		 , ( "Mirror", sendMessage $ MT.Toggle MIRROR)
+		 , ( "NoBorder", sendMessage $ MT.Toggle NOBORDERS)
+		 , ( "Magnify", sendMessage $ MT.Toggle MAGNIFY)
+		   ]
 spawnPrograms = [
               ( "xterm",        "xterm -bg DeepPink4 -class xterm_gridSelect" )
             , ( "ghci",         "xterm -bg DeepSkyBlue4 -class xterm_gridSelect -e 'stack repl'" )
             ]
-configPrograms :: GSConfig String
-configPrograms = def { 
-                   gs_cellheight = 80
-                 , gs_cellwidth = 300
-                 , gs_cellpadding = 20
-                 , gs_font = "xft:IBMPlexMono:size=11:style=italic"
-                 , gs_bordercolor = "snow2"
-                 }
 spawnSystem = [
       ( "Hibernate", "systemctl hibernate" )
     , ( "Shutdown", "shutdown 0" )
@@ -252,15 +263,6 @@ spawnSystem = [
     , ( "Suspend", "systemctl suspend" )
     , ( "restart iwd", "xterm -bg DarkBlue -class xterm_gridSelect -e 'sudo systemctl restart iwd.service'" )
     ]
-configSystem :: GSConfig String
-configSystem = def { 
-                   gs_cellheight = 80
-                 , gs_cellwidth = 300
-                 , gs_cellpadding = 20
-                 , gs_font = "xft:IBMPlexMono:size=11:style=italic"
-                 , gs_bordercolor = "snow2"
-                 }
-
 toggleTag tag win = do
 	b <- (hasTag tag win)
         if b 
@@ -289,8 +291,7 @@ myStartupHook = do
 -- ############################################################################
 myKeys = [ 
       ("M-z",        spawn "slock"                                       )
-    , ("M-x",        sendMessage (MT.Toggle FULL)  )
-    , ("M-S-x",      sendMessage $ MT.Toggle MIRROR                        )
+    , ("M-x",        runSelectedAction myGSConfig xActions  )
     , ("M-m",        windows W.focusMaster                 )
     , ("M-n",        windows W.swapMaster                    )
     , ("M-S-y",      namedScratchpadAction myScratchpads "nnn"        )
@@ -327,19 +328,19 @@ myKeys = [
     , ("M-S-<R>",    sendMessage $ Swap R                           )
     , ("M--",        sendMessage Shrink                   )
     , ("M-+",        sendMessage Expand                      )
-    , ("<Print>",    unGrab *> spawn "scrot -s"                  )
+    , ("<Print>",    unGrab *> spawn "scrot -s $HOME/Regal/Screenshots/%F_%R-screenshot.png"                  )
     , ("M-f",        runOrRaiseMaster "firefox" (className =? "firefox") )
     , ("M-S-f",      ifWindow (className =? "firefox") (currentWs >>= doShift) idHook)
     , ("M-c",        kill                                        )
     , ("M-r",        renameWorkspace def                         )
     , ("M-S-r",      changeDir def                               )
-    , ("M-s",        gridselect configSystem spawnSystem >>= spawn . fromMaybe "" )
-    , ("M-a",        gridselect configPrograms spawnPrograms >>= spawn . fromMaybe "" )
+    , ("M-s",        gridselect myGSConfig spawnSystem >>= spawn . fromMaybe "" )
+    , ("M-a",        gridselect myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
     , ("M-u",        focusUrgent)
     , ("M1-b",       bringMenuConfig windowBringerConf)
     , ("M1-g",       gotoMenuConfig windowBringerConf)
-    , ("M1-v",       withFocused hideWindow )
-    , ("M1-S-v",     popOldestHiddenWindow )
+    , ("M-v",        withFocused hideWindow )
+    , ("M-S-v",      popOldestHiddenWindow )
     , ("M-<Return>", spawn "xterm" )
     ] 
 
