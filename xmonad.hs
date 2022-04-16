@@ -74,7 +74,7 @@ colFg       = "snow2"
 colBg       = "#202922"
 colBlack    = "#161716"
 colGray     = "#74807b"
-font        = "xft:IBMPlexMono:size=9:style=italic"
+font size   = "xft:IBMPlexMono:size="++ size ++ ":style=italic"
 
 -- ############################################################################
 --                           MAIN
@@ -185,7 +185,7 @@ mySDConfig = def { inactiveTextColor   = colActive
 		 , inactiveBorderWidth = 0
 		 , decoHeight          = 22
 		 , decoWidth           = 190
-		 , fontName            = font
+		 , fontName            = font "9"
 		 }
 
 myModifiers = MT.mkToggle (MIRROR MT.?? FULL MT.?? NOBORDERS MT.?? MT.EOT)
@@ -198,6 +198,15 @@ instance SetsAmbiguous AllFloats where
 -- ############################################################################
 --                           ACTIONS
 -- ############################################################################
+showTextConf :: ShowTextConfig
+showTextConf = def {
+				   st_font = font "23",
+				   st_bg   = colInactive,
+				   st_fg   = colUrgent
+				   }
+flashCurrentWS = withWindowSet (pure . W.currentTag) 
+                   >>= return . (wrap " " " " ) 
+				   >>= flashText showTextConf 1.5 
 windowBringerConf :: WindowBringerConfig
 windowBringerConf = def { 
     menuArgs = [ "-l", "20"
@@ -223,7 +232,7 @@ fixedWidth x ""     = " " ++ (fixedWidth (x-1) "")
 fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)
 
 spawnPrograms = [
-            , ( "xterm",        "xterm -bg DeepPink4 -class xterm_gridSelect" )
+              ( "xterm",        "xterm -bg DeepPink4 -class xterm_gridSelect" )
             , ( "ghci",         "xterm -bg DeepSkyBlue4 -class xterm_gridSelect -e 'stack repl'" )
             ]
 configPrograms :: GSConfig String
@@ -286,19 +295,20 @@ myKeys = [
     , ("M-n",        windows W.swapMaster                    )
     , ("M-S-y",      namedScratchpadAction myScratchpads "nnn"        )
     , ("M-y",        namedScratchpadAction myScratchpads "1Password"  )
-    , ("M1-<L>",     Cyc.moveTo Prev relevantWorkspaces)
-    , ("M1-<R>",     Cyc.moveTo Next relevantWorkspaces)
-    , ("M1-h",       Cyc.moveTo Prev relevantWorkspaces)
-    , ("M1-l",       Cyc.moveTo Next relevantWorkspaces)
-    , ("M1-S-<L>",   Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces)
-    , ("M1-S-<R>",   Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces)
-    , ("M1-S-h",     Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces)
-    , ("M1-S-l",     Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces)
-    , ("M1-<Tab>",   cycleRecentNonEmptyWS [xK_Alt_L] xK_Tab xK_q)
+    , ("M1-<L>",     Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
+    , ("M1-<R>",     Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+    , ("M1-h",       Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
+    , ("M1-l",       Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+    , ("M1-S-<L>",   Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
+    , ("M1-S-<R>",   Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+    , ("M1-S-h",     Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
+    , ("M1-S-l",     Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+    , ("M1-<Tab>",   nextMatch History (return True) )
+    , ("M1-S-<Tab>", nextMatchWithThis Forward className  )
     , ("M-<Tab>",    windows W.focusUp )
     , ("M-S-<Tab>",  windows W.focusDown )
-    , ("<Page_Up>",  nextMatch History (return True) )
-    , ("<Page_Down>",nextMatchWithThis Forward className )
+    , ("<Page_Up>",  nextWS >> flashCurrentWS)
+    , ("<Page_Down>",prevWS >> flashCurrentWS)
     , ("M-j",        sendMessage $ Go D                            )
     , ("M-k",        sendMessage $ Go U                          )
     , ("M-h",        sendMessage $ Go L                          )
