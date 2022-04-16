@@ -1,5 +1,9 @@
+<<<<<<< HEAD
+import XMonad hiding (Tall)
+=======
 {-# LANGUAGE TypeSynonymInstances, MultiParamTypeClasses #-}
 import XMonad
+>>>>>>> main
 import XMonad.Prelude
 
 import qualified XMonad.StackSet as W
@@ -21,6 +25,7 @@ import XMonad.Util.Themes
 
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Hidden
+import XMonad.Layout.HintedTile
 import XMonad.Layout.DwmStyle
 import XMonad.Layout.SimpleDecoration
 import XMonad.Layout.Master
@@ -44,6 +49,8 @@ import qualified XMonad.Layout.BoringWindows as Boring
 import qualified XMonad.Layout.MultiToggle as MT
 import XMonad.Layout.MultiToggle.Instances
 import qualified XMonad.Layout.GridVariants as GV
+import XMonad.Layout.HintedGrid
+
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeWindows
@@ -152,7 +159,7 @@ passW = (2/3) - (2 * nspGapH)
 passH = 1 - (2*nspGapV)
 passPos = customFloating (W.RationalRect ((2*nspGapH)+nnnW) nspGapV passW passH )
 myScratchpads = [ 
-	  NS "nnn" ("xterm -bg Orange4 -e 'nnn' ") (title =? "nnn") nnnPos
+          NS "nnn" ("xterm -bg Orange4 -e 'nnn' ") (title =? "nnn") nnnPos
         , NS "1Password" "1password" (className =? "1Password") passPos
 		]
 
@@ -166,6 +173,10 @@ myLayout = onWorkspace "9" myFull
     $ windowNavigation
     $ myMasterGrid ||| myGrid 
 
+myHintedTile = renamed [ Replace "HTile" ]
+    $ hiddenWindows
+	$ smartBorders
+	$ HintedTile 1 (1/100) (1/3) TopLeft Tall
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
     $ smartBorders
@@ -236,8 +247,20 @@ fixedWidth :: Int -> String -> String
 fixedWidth 0 s      = ""
 fixedWidth x ""     = " " ++ (fixedWidth (x-1) "") 
 fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)
+<<<<<<< HEAD
+
+spawnPrograms = [
+              ( "Bluetooth",    "xterm -bg DarkBlue -class xterm_gridSelect -e bluetoothctl" )
+            , ( "Pulsemixer",   "xterm -bg DarkBlue -class xterm_gridSelect -e pulsemixer" )
+            , ( "iwd",          "xterm -bg DarkBlue -class xterm_gridSelect -e iwctl" )
+            , ( "ghci",         "xterm -bg DeepSkyBlue4 -class xterm_gridSelect -e 'stack repl'" )
+            ]
+configPrograms :: GSConfig String
+configPrograms = def { 
+=======
 myGSConfig :: HasColorizer a => GSConfig a
 myGSConfig = def { 
+>>>>>>> main
                    gs_cellheight = 80
                  , gs_cellwidth = 300
                  , gs_cellpadding = 20
@@ -258,6 +281,7 @@ spawnSystem = [
       ( "Hibernate", "systemctl hibernate" )
     , ( "Shutdown", "shutdown 0" )
     , ( "Hybrid-Sleep", "systemctl hybrid-sleep" )
+    , ( "Backup", "xterm -bg DarkBlue -class xterm_gridSelect -e 'sudo backupWhiteRiffle'" )
     , ( "Journal", "xterm -bg DarkBlue -class xterm_gridSelect -e 'journalctl -r'" )
     , ( "Bildschirm ausschalten", "xset dpms force off" )
     , ( "Suspend", "systemctl suspend" )
