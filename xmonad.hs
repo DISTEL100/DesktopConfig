@@ -155,7 +155,7 @@ pulsePos =  customFloating (W.RationalRect nspGapH (nspGapV+nnnH+nspGapV) nnnW n
 myScratchpads = [ 
                    NS "nnn" ("xterm -bg Orange4 -e 'nnn' ") (title =? "nnn") nnnPos
                  , NS "1Password" "1password" (className =? "1Password") passPos
-                 , NS "Pulsemixer" "xterm -e 'pulsemixer' -class pulsemixer" (className =? "pulsemixer") pulsePos
+                 , NS "Pulsemixer" "xterm -class 'pulsemixer' -e 'pulsemixer' " (className =? "pulsemixer") pulsePos
                 ]
 
 -- ############################################################################
