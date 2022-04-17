@@ -329,7 +329,7 @@ myKeys = [
     , ("M-n",        windows W.swapMaster                    )
     , ("M-S-y",      namedScratchpadAction myScratchpads "nnn"        )
     , ("M-y",        namedScratchpadAction myScratchpads "1Password"  )
-    , ("M1-y",       namedScratchpadAction myScratchpads "Pulsemixer"  )
+    , ("M1-y",       namedScratchpadAction myScratchpads "Mixer"  )
     , ("M1-<L>",     Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-<R>",     Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
     , ("M1-h",       Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)

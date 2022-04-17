@@ -1,7 +1,7 @@
-XTerm.vt100.faceName: IBM IBM VGA 9x16:style=Regular:size=16
+XTerm*faceName: IBM IBM VGA 9x16:style=Regular:size=16
 
-XTerm.vt100.saveLines: 4096
-XTerm.vt100.renderFont:true
+XTerm*saveLines: 4096
+XTerm*renderFont:true
 XTerm*forcePackedFont:true
 XTerm.termName: xterm-256color
 xterm*bellIsUrgent:true
