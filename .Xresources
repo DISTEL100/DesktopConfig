@@ -1,4 +1,3 @@
-XTerm*faceName: IBM IBM VGA 9x16:style=Regular:size=16
 
 XTerm*saveLines: 4096
 XTerm*renderFont:true
