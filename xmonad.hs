@@ -155,7 +155,7 @@ ncpamixerPos =  customFloating (W.RationalRect nspGapH (nspGapV+nnnH+nspGapV) nn
 myScratchpads = [ 
                    NS "nnn" ("xterm -bg Orange4 -e 'nnn' ") (title =? "nnn") nnnPos
                  , NS "1Password" "1password" (className =? "1Password") passPos
-                 , NS "Mixer" "xterm -class 'ncpamixer' -e 'ncpamixer' " (className =? "ncpamixer") ncpamixerPos
+                 , NS "Mixer" "xterm -e 'ncpamixer'" ((stringProperty "WM_NAME") =? "ncpamixer") ncpamixerPos
                 ]
 
 -- ############################################################################
