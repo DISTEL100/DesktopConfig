@@ -1,5 +1,9 @@
+<<<<<<< HEAD
+import XMonad hiding (Tall)
+=======
 {-# LANGUAGE TypeSynonymInstances, MultiParamTypeClasses #-}
 import XMonad
+>>>>>>> main
 import XMonad.Prelude
 
 import qualified XMonad.StackSet as W
@@ -21,6 +25,7 @@ import XMonad.Util.Themes
 
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Hidden
+import XMonad.Layout.HintedTile
 import XMonad.Layout.DwmStyle
 import XMonad.Layout.SimpleDecoration
 import XMonad.Layout.Master
@@ -44,6 +49,8 @@ import qualified XMonad.Layout.BoringWindows as Boring
 import qualified XMonad.Layout.MultiToggle as MT
 import XMonad.Layout.MultiToggle.Instances
 import qualified XMonad.Layout.GridVariants as GV
+import XMonad.Layout.HintedGrid
+
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeWindows
@@ -76,7 +83,7 @@ colFg       = "snow2"
 colBg       = "#202922"
 colBlack    = "#161716"
 colGray     = "#74807b"
-font size   = "xft:IBM Plex Mono:size=" ++ size ++ ":style=italic"
+font size   = "xft:IBMPlexMono:size="++ size ++ ":style=italic"
 
 -- ############################################################################
 --                           MAIN
@@ -151,12 +158,10 @@ nnnPos =  customFloating (W.RationalRect nspGapH nspGapV nnnW nnnH )
 passW = (2/3) - (2 * nspGapH)
 passH = 1 - (2*nspGapV)
 passPos = customFloating (W.RationalRect ((2*nspGapH)+nnnW) nspGapV passW passH )
-ncpamixerPos =  customFloating (W.RationalRect nspGapH (nspGapV+nnnH+nspGapV) (nnnW*2) nnnH )
 myScratchpads = [ 
-                   NS "nnn" ("xterm -bg Orange4 -e 'nnn' ") (title =? "nnn") nnnPos
-                 , NS "1Password" "1password" (className =? "1Password") passPos
-                 , NS "Mixer" "xterm -e 'ncpamixer'" ((stringProperty "WM_NAME") =? "ncpamixer") ncpamixerPos
-                ]
+          NS "nnn" ("xterm -bg Orange4 -e 'nnn' ") (title =? "nnn") nnnPos
+        , NS "1Password" "1password" (className =? "1Password") passPos
+		]
 
 -- ############################################################################
 --                           LAYOUTS
@@ -168,6 +173,10 @@ myLayout = onWorkspace "9" myFull
     $ windowNavigation
     $ myMasterGrid ||| myGrid 
 
+myHintedTile = renamed [ Replace "HTile" ]
+    $ hiddenWindows
+	$ smartBorders
+	$ HintedTile 1 (1/100) (1/3) TopLeft Tall
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
     $ smartBorders
@@ -223,12 +232,12 @@ windowBringerConf = def {
                , "-nb", colInactive
                , "-nf", colFg
                , "-sb", colSep
-               , "-sf", colActive
+               , "-sf", colBrown
                ],
     windowTitler = \ws -> \w -> do
           name <- show <$> getName w
           className <- show <$> getNameWMClass w
-          return $ "  " ++ fixedWidth 5 ( W.tag ws )
+          return $ "  " ++ W.tag ws
                         ++ "   |   " 
                         ++ (fixedWidth 16 className) 
                         ++ "   |   "
@@ -238,8 +247,20 @@ fixedWidth :: Int -> String -> String
 fixedWidth 0 s      = ""
 fixedWidth x ""     = " " ++ (fixedWidth (x-1) "") 
 fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)
+<<<<<<< HEAD
+
+spawnPrograms = [
+              ( "Bluetooth",    "xterm -bg DarkBlue -class xterm_gridSelect -e bluetoothctl" )
+            , ( "Pulsemixer",   "xterm -bg DarkBlue -class xterm_gridSelect -e pulsemixer" )
+            , ( "iwd",          "xterm -bg DarkBlue -class xterm_gridSelect -e iwctl" )
+            , ( "ghci",         "xterm -bg DeepSkyBlue4 -class xterm_gridSelect -e 'stack repl'" )
+            ]
+configPrograms :: GSConfig String
+configPrograms = def { 
+=======
 myGSConfig :: HasColorizer a => GSConfig a
 myGSConfig = def { 
+>>>>>>> main
                    gs_cellheight = 80
                  , gs_cellwidth = 300
                  , gs_cellpadding = 20
@@ -260,10 +281,11 @@ spawnSystem = [
       ( "Hibernate", "systemctl hibernate" )
     , ( "Shutdown", "shutdown 0" )
     , ( "Hybrid-Sleep", "systemctl hybrid-sleep" )
+    , ( "Backup", "xterm -bg DarkBlue -class xterm_gridSelect -e 'sudo backupWhiteRiffle'" )
     , ( "Journal", "xterm -bg DarkBlue -class xterm_gridSelect -e 'journalctl -r'" )
     , ( "Bildschirm ausschalten", "xset dpms force off" )
     , ( "Suspend", "systemctl suspend" )
-    , ( "System Update", "xterm -bg DarkBlue -class xterm_gridSelect -e 'sudo apt update && sudo apt upgrade'" )
+    , ( "System Update", "xterm -bg DarkBlue -class xterm_gridSelect -e 'pacman -Qqen > ~/.pkglist_Qqen.txt && pacman -Qqem > ~/.pkglist_Qqem.txt && sudo pacman -Syu'" )
     ]
 toggleTag tag win = do
 	b <- (hasTag tag win)
@@ -284,46 +306,13 @@ extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
 --                           ON STARTUP
 -- ############################################################################
 myStartupHook = do
-        spawn "xsetroot -solid Black"
-        spawnOnOnce "9" "slack"
+        spawnOnce "xsetroot -solid Black"
+        spawnOnce "picom"
         spawnOnOnce "9" "thunderbird"
-        spawnOnOnce "9" "notion-snap"
-        spawn "picom"
-
--- ############################################################################
---                           XMOBAR SETTINGS
--- ############################################################################
-myStatusBar = withEasySB (statusBarProp "xmobar" myXmobarPP) defToggleStrutsKey
-
-myXmobarPP = workspaceNamesPP def
-    { ppSep             = xmobarColor colActive "" ""
-    , ppTitleSanitize   = xmobarStrip
-    , ppCurrent         = xmobarBorder "Full" "LightBlue mb=1" 4 . xmobarColor "LightBlue" colSep . wrap "  " "  " 
-    , ppVisible         = xmobarBorder "Full" "Yellow mb=1   " 4 . xmobarColor "Yellow" colSep . wrap "  " "  " 
-    , ppUrgent          = wrap "  " "  " . xmobarBorder "VBoth" colUrgent 4 
-    , ppHidden          = xmobarColor colFg colSep . wrap "  " "  "
-    , ppHiddenNoWindows = \x -> ""
-    , ppLayout          = xmobarBorder "Full" colSep 2 . xmobarColor colFg colSep . wrap "" "   "
-    , ppOrder           = \[ws, l, _, wins] -> [   
-                                xmobarBorder "Full" colSep 0 $ xmobarColor colFg colSep ("  " ++ ws ++ "  ")
-                              , l
-                              , wins
-                            ]
-    , ppExtras          = [ onLogger (wrap "    " "" ) windowTitles ]
-    } 
-  where
-    windowTitles    = logTitles formatFocused formatUnfocused
-    formatFocused   = wrap " " " " . xmobarBorder "Top" colActive 2 . xmobarColor colActive "" . ppWindow
-    formatUnfocused = xmobarColor colFg "" . wrap " " " " . ppWindow
-
-    ppWindow :: String -> String
-    ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
 
 -- ############################################################################
 --                           KEYBINDINGS
 -- ############################################################################
-relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] )
-
 myKeys = [ 
       ("M-z",        spawn "slock"                                       )
     , ("M-x",        runSelectedAction myGSConfig xActions  )
@@ -331,7 +320,6 @@ myKeys = [
     , ("M-n",        windows W.swapMaster                    )
     , ("M-S-y",      namedScratchpadAction myScratchpads "nnn"        )
     , ("M-y",        namedScratchpadAction myScratchpads "1Password"  )
-    , ("M1-y",       namedScratchpadAction myScratchpads "Mixer"  )
     , ("M1-<L>",     Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-<R>",     Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
     , ("M1-h",       Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
@@ -341,8 +329,7 @@ myKeys = [
     , ("M1-S-h",     Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-S-l",     Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
     , ("M1-<Tab>",   nextMatch History (return True) )
-    , ("M1-j",       nextMatchWithThis Forward className  )
-    , ("M1-k",       nextMatchWithThis Backward className  )
+    , ("M1-S-<Tab>", nextMatchWithThis Forward className  )
     , ("M-<Tab>",    windows W.focusUp )
     , ("M-S-<Tab>",  windows W.focusDown )
     , ("<Page_Up>",  nextWS >> flashCurrentWS)
@@ -373,10 +360,41 @@ myKeys = [
     , ("M-S-r",      changeDir def                               )
     , ("M-s",        gridselect myGSConfig spawnSystem >>= spawn . fromMaybe "" )
     , ("M-a",        gridselect myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
-    , ("M-u",        focusUrgent   )
-    , ("M-S-g",      bringMenuConfig windowBringerConf)
-    , ("M-g",        gotoMenuConfig windowBringerConf)
+    , ("M-u",        focusUrgent)
+    , ("M1-b",       bringMenuConfig windowBringerConf)
+    , ("M1-g",       gotoMenuConfig windowBringerConf)
     , ("M-v",        withFocused hideWindow )
     , ("M-S-v",      popOldestHiddenWindow )
     , ("M-<Return>", spawn "xterm" )
     ] 
+
+relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] )
+
+-- ############################################################################
+--                           XMOBAR SETTINGS
+-- ############################################################################
+myStatusBar = withEasySB (statusBarProp "xmobar" myXmobarPP) defToggleStrutsKey
+
+myXmobarPP = workspaceNamesPP def
+    { ppSep             = xmobarColor colActive "" ""
+    , ppTitleSanitize   = xmobarStrip
+    , ppCurrent         = xmobarBorder "Full" "LightBlue mb=1" 4 . xmobarColor "LightBlue" colSep . wrap "  " "  " 
+    , ppVisible         = xmobarBorder "Full" "Yellow mb=1   " 4 . xmobarColor "Yellow" colSep . wrap "  " "  " 
+    , ppUrgent          = wrap "  " "  " . xmobarBorder "VBoth" colUrgent 4 
+    , ppHidden          = xmobarColor colFg colSep . wrap "  " "  "
+    , ppHiddenNoWindows = \x -> ""
+    , ppLayout          = xmobarBorder "Full" colSep 2 . xmobarColor colFg colSep . wrap "" "   "
+    , ppOrder           = \[ws, l, _, wins] -> [   
+                                xmobarBorder "Full" colSep 0 $ xmobarColor colFg colSep ("  " ++ ws ++ "  ")
+                              , l
+                              , wins
+                            ]
+    , ppExtras          = [ onLogger (wrap "    " "" ) windowTitles ]
+    } 
+  where
+    windowTitles    = logTitles formatFocused formatUnfocused
+    formatFocused   = wrap " " " " . xmobarBorder "Top" colActive 2 . xmobarColor colActive "" . ppWindow
+    formatUnfocused = xmobarColor colFg "" . wrap " " " " . ppWindow
+
+    ppWindow :: String -> String
+    ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30

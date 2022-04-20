@@ -22,6 +22,7 @@ Plug( 'vim-airline/vim-airline-themes' )
 Plug( 'nvim-lua/plenary.nvim' )
 Plug( 'lewis6991/gitsigns.nvim' )
 Plug( 'nvim-treesitter/nvim-treesitter', { ['do'] = vim.fn[ ':TSUpdate' ] } )
+Plug( 'davidgranstrom/scnvim', { ['do'] = vim.fn['scnvim#install()'] })
 vim.call('plug#end')
 
 vim.cmd([[

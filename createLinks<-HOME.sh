@@ -1,5 +1,5 @@
 ln -f $HOME/.config/xmonad/xmonad.hs                xmonad.hs 				
-ln -f $HOME/.Xresources 	                    .Xresources 					
+ln -f $HOME/.Xresources 	                        .Xresources 					
 ln -f $HOME/.bashrc 	                            .bashrc 						
 ln -f $HOME/.xmobarrc 	                            .xmobarrc 					
 ln -f $HOME/.config/picom.conf                      picom.conf 					
