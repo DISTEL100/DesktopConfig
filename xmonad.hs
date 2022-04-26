@@ -153,7 +153,7 @@ passH = 1 - (2*nspGapV)
 passPos = customFloating (W.RationalRect ((2*nspGapH)+nnnW) nspGapV passW passH )
 ncpamixerPos =  customFloating (W.RationalRect nspGapH (nspGapV+nnnH+nspGapV) (nnnW*2) nnnH )
 myScratchpads = [ 
-                   NS "nnn" ("xterm -bg Orange4 -e 'nnn' ") (title =? "nnn") nnnPos
+                   NS "nnn" ("xterm -bg DeepSkyBlue4 -e 'nnn' ") (title =? "nnn") nnnPos
                  , NS "1Password" "1password" (className =? "1Password") passPos
                  , NS "Mixer" "xterm -e 'ncpamixer'" ((stringProperty "WM_NAME") =? "ncpamixer") ncpamixerPos
                 ]
