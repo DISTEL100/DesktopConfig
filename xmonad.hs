@@ -255,6 +255,8 @@ xActions = [
 spawnPrograms = [
               ( "xterm",        "xterm -bg DeepPink4 -class xterm_gridSelect" )
             , ( "ghci",         "xterm -bg DeepSkyBlue4 -class xterm_gridSelect -e 'stack repl'" )
+            , ( "iwd",         "xterm -bg DeepSkyBlue4 -class xterm_gridSelect -e 'iwctl'" )
+            , ( "Bluetooth",    "xterm -bg DeepSkyBlue4 -class xterm_gridSelect -e 'bluetoothctl'" )
             ]
 spawnSystem = [
       ( "Hibernate", "systemctl hibernate" )
