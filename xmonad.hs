@@ -164,16 +164,16 @@ myLayout = onWorkspace "9" myFull
     $ workspaceDir "~"
     $ lessBorders AllFloats 
     $ myModifiers
+    $ smartBorders
     $ windowNavigation
     $ myMasterGrid ||| myGrid 
 
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
-    $ spacingWithEdge 10 
     $ mastered (1/100) (10/24) $ GV.Grid (15/13)
 myGrid = renamed [ Replace "Grid" ]
     $ hiddenWindows
-    $ smartBorders
+    $ spacingWithEdge 10 
     $ dwmStyle shrinkText mySDConfig
     $ GV.Grid (978/1057)
 
