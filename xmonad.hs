@@ -60,7 +60,7 @@ import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.TagWindows
 import XMonad.Actions.GroupNavigation
 
-import Data.Maybe (fromMaybe)
+import Data.Maybe ( fromMaybe )
 import qualified Data.Map as M
 
 -- ############################################################################
@@ -132,7 +132,6 @@ myManageHook = ( namedScratchpadManageHook myScratchpads )
    <+> composeAll
     [ className =? "Gimp"              --> doFloat
     , className =? "SuperCollider"     --> doShift "4"
-    , className =? "1Password"         --> doCenterFloat
     , className =? "Xmessage"          --> doCenterFloat
     , appName   =? "Devtools"          --> doCenterFloat
     , className =? "xterm_gridSelect"  --> doRectFloat (W.RationalRect (1/4) (1/4) (1/2) (1/2))
@@ -170,7 +169,7 @@ myLayout = onWorkspace "9" myFull
 
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
-    $ smartBorders
+    $ spacingWithEdge 10 
     $ mastered (1/100) (10/24) $ GV.Grid (15/13)
 myGrid = renamed [ Replace "Grid" ]
     $ hiddenWindows
