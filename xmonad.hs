@@ -342,7 +342,7 @@ myKeys = [
     , ("M1-<Tab>",   cycleRecentNonEmptyWS [xK_Alt_L] xK_Tab xK_grave )
     , ("M1-j",       nextMatchWithThis Forward className  )
     , ("M1-k",       nextMatchWithThis Backward className  )
-    , ("M-<Tab>",    windows W.focusUp )
+    , ("M-<Tab>",    nextMatch History (return True) )
     , ("M-S-<Tab>",  windows W.focusDown )
     , ("<Page_Up>",  nextWS >> flashCurrentWS)
     , ("<Page_Down>",prevWS >> flashCurrentWS)
