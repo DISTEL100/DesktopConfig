@@ -173,16 +173,16 @@ myMasterGrid = renamed [ Replace "MGrid" ]
     $ mastered (1/100) (10/24) $ GV.Grid (15/13)
 myGrid = renamed [ Replace "Grid" ]
     $ hiddenWindows
-    $ spacingWithEdge 10 
+    $ spacingWithEdge 7
     $ dwmStyle shrinkText mySDConfig
     $ GV.Grid (978/1057)
-
 myFull = smartBorders
     $ Full
 
-mySDConfig = def { inactiveTextColor   = colActive
+mySDConfig = def { 
+           inactiveTextColor   = colActive
 		 , activeColor         = colActive
-		 , inactiveColor       = colBlack
+		 , inactiveColor       = colGray
 		 , urgentColor 	       = colUrgent
 		 , activeBorderWidth   = 0
 		 , inactiveBorderWidth = 0
@@ -339,7 +339,7 @@ myKeys = [
     , ("M1-S-<R>",   Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
     , ("M1-S-h",     Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-S-l",     Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
-    , ("M1-<Tab>",   nextMatch History (return True) )
+    , ("M1-<Tab>",   cycleRecentNonEmptyWS [xK_Alt_L] xK_Tab xK_grave )
     , ("M1-j",       nextMatchWithThis Forward className  )
     , ("M1-k",       nextMatchWithThis Backward className  )
     , ("M-<Tab>",    windows W.focusUp )
