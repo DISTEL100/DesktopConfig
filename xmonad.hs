@@ -60,7 +60,7 @@ import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.TagWindows
 import XMonad.Actions.GroupNavigation
 
-import Data.Maybe (fromMaybe)
+import Data.Maybe ( fromMaybe )
 import qualified Data.Map as M
 
 -- ############################################################################
@@ -132,7 +132,6 @@ myManageHook = ( namedScratchpadManageHook myScratchpads )
    <+> composeAll
     [ className =? "Gimp"              --> doFloat
     , className =? "SuperCollider"     --> doShift "4"
-    , className =? "1Password"         --> doCenterFloat
     , className =? "Xmessage"          --> doCenterFloat
     , appName   =? "Devtools"          --> doCenterFloat
     , className =? "xterm_gridSelect"  --> doRectFloat (W.RationalRect (1/4) (1/4) (1/2) (1/2))
@@ -165,25 +164,25 @@ myLayout = onWorkspace "9" myFull
     $ workspaceDir "~"
     $ lessBorders AllFloats 
     $ myModifiers
+    $ smartBorders
     $ windowNavigation
     $ myMasterGrid ||| myGrid 
 
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
-    $ smartBorders
     $ mastered (1/100) (10/24) $ GV.Grid (15/13)
 myGrid = renamed [ Replace "Grid" ]
     $ hiddenWindows
-    $ smartBorders
+    $ spacingWithEdge 7
     $ dwmStyle shrinkText mySDConfig
     $ GV.Grid (978/1057)
-
 myFull = smartBorders
     $ Full
 
-mySDConfig = def { inactiveTextColor   = colActive
+mySDConfig = def { 
+           inactiveTextColor   = colActive
 		 , activeColor         = colActive
-		 , inactiveColor       = colBlack
+		 , inactiveColor       = colGray
 		 , urgentColor 	       = colUrgent
 		 , activeBorderWidth   = 0
 		 , inactiveBorderWidth = 0
@@ -212,6 +211,9 @@ showTextConf = def {
 				   st_bg   = colInactive,
 				   st_fg   = colUrgent
 				   }
+flashCurrentWin = withFocused 
+				  $  \w -> getName w >>= flashText showTextConf 0.35 . show
+
 flashCurrentWS = withWindowSet (pure . W.currentTag) 
                    >>= return . (wrap " " " " ) 
 				   >>= flashText showTextConf 1.5 
@@ -340,42 +342,42 @@ myKeys = [
     , ("M1-S-<R>",   Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
     , ("M1-S-h",     Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-S-l",     Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
-    , ("M1-<Tab>",   nextMatch History (return True) )
-    , ("M1-j",       nextMatchWithThis Forward className  )
-    , ("M1-k",       nextMatchWithThis Backward className  )
-    , ("M-<Tab>",    windows W.focusUp )
-    , ("M-S-<Tab>",  windows W.focusDown )
+    , ("M1-<Tab>",   cycleRecentNonEmptyWS [xK_Alt_L] xK_Tab xK_grave >> flashCurrentWS)
+    , ("M1-j",       nextMatchWithThis Forward className >> flashCurrentWS )
+    , ("M1-k",       nextMatchWithThis Backward className >> flashCurrentWS )
+    , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )
+    , ("M-S-<Tab>",  windows W.focusDown >> flashCurrentWin )
     , ("<Page_Up>",  nextWS >> flashCurrentWS)
     , ("<Page_Down>",prevWS >> flashCurrentWS)
-    , ("M-j",        sendMessage $ Go D                            )
-    , ("M-k",        sendMessage $ Go U                          )
-    , ("M-h",        sendMessage $ Go L                          )
-    , ("M-l",        sendMessage $ Go R                          )
-    , ("M-S-j",      sendMessage $ Swap D                         )
-    , ("M-S-k",      sendMessage $ Swap U                           )
-    , ("M-S-h",      sendMessage $ Swap L                           )
-    , ("M-S-l",      sendMessage $ Swap R                           )
-    , ("M-<D>",      sendMessage $ Go D                            )
-    , ("M-<U>",      sendMessage $ Go U                          )
-    , ("M-<L>",      sendMessage $ Go L                          )
-    , ("M-<R>",      sendMessage $ Go R                          )
-    , ("M-S-<D>",    sendMessage $ Swap D                         )
-    , ("M-S-<U>",    sendMessage $ Swap U                           )
-    , ("M-S-<L>",    sendMessage $ Swap L                           )
-    , ("M-S-<R>",    sendMessage $ Swap R                           )
+    , ("M-j",        sendMessage ( Go D )   >> flashCurrentWin      )
+    , ("M-k",        sendMessage ( Go U )   >> flashCurrentWin                             )
+    , ("M-h",        sendMessage ( Go L )   >> flashCurrentWin                               )
+    , ("M-l",        sendMessage ( Go R )   >> flashCurrentWin                               )
+    , ("M-S-j",      sendMessage ( Swap D ) >> flashCurrentWin                              )
+    , ("M-S-k",      sendMessage ( Swap U ) >> flashCurrentWin                                )
+    , ("M-S-h",      sendMessage ( Swap L ) >> flashCurrentWin                                )
+    , ("M-S-l",      sendMessage ( Swap R ) >> flashCurrentWin                          )
+    , ("M-<D>",      sendMessage ( Go D )   >> flashCurrentWin                            )
+    , ("M-<U>",      sendMessage ( Go U )   >> flashCurrentWin                          )
+    , ("M-<L>",      sendMessage ( Go L )   >> flashCurrentWin                          )
+    , ("M-<R>",      sendMessage ( Go R )   >> flashCurrentWin                          )
+    , ("M-S-<D>",    sendMessage ( Swap D ) >> flashCurrentWin                         )
+    , ("M-S-<U>",    sendMessage ( Swap U ) >> flashCurrentWin                           )
+    , ("M-S-<L>",    sendMessage ( Swap L ) >> flashCurrentWin                           )
+    , ("M-S-<R>",    sendMessage ( Swap R ) >> flashCurrentWin                           )
     , ("M--",        sendMessage Shrink                   )
     , ("M-+",        sendMessage Expand                      )
     , ("<Print>",    unGrab *> spawn "scrot -s $HOME/Regal/Screenshots/%F_%R-screenshot.png"                  )
-    , ("M-f",        runOrRaiseMaster "firefox" (className =? "firefox") )
+    , ("M-f",        runOrRaiseMaster "firefox" (className =? "firefox") >> flashCurrentWS )
     , ("M-S-f",      ifWindow (className =? "firefox") (currentWs >>= doShift) idHook)
     , ("M-c",        kill                                        )
     , ("M-r",        renameWorkspace def                         )
     , ("M-S-r",      changeDir def                               )
     , ("M-s",        gridselect myGSConfig spawnSystem >>= spawn . fromMaybe "" )
     , ("M-a",        gridselect myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
-    , ("M-u",        focusUrgent   )
+    , ("M-u",        focusUrgent >> flashCurrentWS )
     , ("M-S-g",      bringMenuConfig windowBringerConf)
-    , ("M-g",        gotoMenuConfig windowBringerConf)
+    , ("M-g",        gotoMenuConfig windowBringerConf >> flashCurrentWS )
     , ("M-v",        withFocused hideWindow )
     , ("M-S-v",      popOldestHiddenWindow )
     , ("M-<Return>", spawn "xterm" )
