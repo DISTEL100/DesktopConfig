@@ -6,6 +6,7 @@ ln -f picom.conf 		        	$HOME/.config/picom.conf
 
 ln -f init.lua 			        	$HOME/.config/nvim/init.lua 		
 ln -f lua/keymappings.vim 	    	$HOME/.config/nvim/lua/keymappings.vim	
+ln -f lua/vim-airline.vim 	    	$HOME/.config/nvim/lua/vim-airline.vim	
 ln -f lua/settings.vim	 	    	$HOME/.config/nvim/lua/settings.vim	
 ln -f lua/nvim-cmp.lua 		    	$HOME/.config/nvim/lua/nvim-cmp.lua	
 ln -f lua/nvim-lspconfig.lua 		$HOME/.config/nvim/lua/nvim-lspconfig.lua	
