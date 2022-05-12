@@ -22,10 +22,6 @@ Plug( 'vim-airline/vim-airline-themes' )
 Plug( 'nvim-lua/plenary.nvim' )
 Plug( 'lewis6991/gitsigns.nvim' )
 Plug( 'nvim-treesitter/nvim-treesitter', { ['do'] = vim.fn[ ':TSUpdate' ] } )
-Plug( 'tree-sitter/tree-sitter-typescript')
-Plug( 'tree-sitter/tree-sitter-html')
-Plug( 'tree-sitter/tree-sitter-css')
-Plug( 'tree-sitter/tree-sitter-java')
 Plug( 'davidgranstrom/scnvim', { ['do'] = vim.fn['scnvim#install()'] })
 vim.call('plug#end')
 
@@ -41,7 +37,3 @@ require('nvim-cmp')
 require('utilsnips')
 require('gitsigns').setup()
 require('nvim-treesitter.configs').setup { highlight = { enable = true } }
-require('tree-sitter-typescript').typescript; // TypeScript grammar
-require('tree-sitter-html')
-require('tree-sitter-css')
-require('tree-sitter-java')
