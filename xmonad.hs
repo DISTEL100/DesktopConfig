@@ -132,6 +132,8 @@ myManageHook = ( namedScratchpadManageHook myScratchpads )
    <+> composeAll
     [ className =? "Gimp"              --> doFloat
     , className =? "SuperCollider"     --> doShift "4"
+    , className =? "1Password"         --> doCenterFloat
+    , className =? "QjackCtl"          --> doFloat
     , className =? "Xmessage"          --> doCenterFloat
     , appName   =? "Devtools"          --> doCenterFloat
     , className =? "xterm_gridSelect"  --> doRectFloat (W.RationalRect (1/4) (1/4) (1/2) (1/2))

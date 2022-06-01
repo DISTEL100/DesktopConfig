@@ -23,7 +23,7 @@ export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
 export PATH="$PATH:$GEM_HOME/bin"
 
 export JDTLS_HOME=$HOME/.local/opt/jdtls-launcher/jdtls
-export WORKSPACE=$HOME/workspace
+export WORKSPACE=$HOME/.cache/jdtls/workspace
 
 export FZF_DEFAULT_COMMAND='rg --files'
 
