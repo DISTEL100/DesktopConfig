@@ -14,6 +14,9 @@ inoremap <C-l> <esc>ea
 noremap s cl
 
 set langmap=ü{,Ü[,ä},Ä],#`
+set langremap
+
+nmap <C-ü> <C-]>
 
 map [[ ?{<CR>w99[{
 map ][ /}<CR>b99]}
