@@ -1,0 +1,13 @@
+[user]
+	email = jonathan_schneider@posteo.net
+	name = Jonathan Schneider
+[merge]
+  tool = nvimdiff
+[diff]
+  tool = nvimdiff
+[difftool]
+	prompt = false
+[core]
+    editor = nvim
+[init]
+	defaultBranch = main
