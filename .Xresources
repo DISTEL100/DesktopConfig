@@ -1,5 +1,4 @@
-XTerm*faceName: IBM IBM VGA 9x16:style=Regular
-XTerm*faceName:Flexi IBM VGA True (437):size=14
+XTerm*faceName:Flexi IBM VGA True:size=12
 
 XTerm*saveLines: 4096
 XTerm*renderFont:true
