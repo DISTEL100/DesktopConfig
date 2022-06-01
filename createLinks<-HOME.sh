@@ -3,6 +3,7 @@ ln -f $HOME/.Xresources 	                        .Xresources
 ln -f $HOME/.bashrc 	                            .bashrc 						
 ln -f $HOME/.xmobarrc 	                            .xmobarrc 					
 ln -f $HOME/.config/picom.conf                      picom.conf 					
+ln -f $HOME/.gitconfig								.gitconfig
 
 ln -f $HOME/.config/nvim/init.lua                   init.lua 					
 ln -f $HOME/.config/nvim/lua/keymappings.vim 	    lua/keymappings.vim 	
