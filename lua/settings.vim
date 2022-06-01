@@ -14,7 +14,6 @@ set number
 set nornu
 set cursorline
 set termguicolors   
-colorscheme desert
 let g:airline_theme='tomorrow'
 
 highlight Cursor guifg=white guibg=black
