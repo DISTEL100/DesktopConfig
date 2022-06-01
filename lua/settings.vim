@@ -48,8 +48,3 @@ let g:netrw_preview=1
 let g:netrw_altv =1
 let g:netrw_sizestyle='H'
 let g:netrw_fastbrowse=0
-
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
-  \   fzf#vim#with_preview(), <bang>0)
