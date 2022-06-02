@@ -4,6 +4,10 @@ import XMonad.Prelude
 
 import qualified XMonad.StackSet as W
 
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.FadeWindows
+import XMonad.Hooks.DynamicProperty
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
@@ -22,11 +26,14 @@ import XMonad.Util.Themes
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Hidden
 import XMonad.Layout.DwmStyle
+import XMonad.Layout.WindowArranger
 import XMonad.Layout.SimpleDecoration
 import XMonad.Layout.Groups as G
 import XMonad.Layout.Groups.Helpers as GH
+import XMonad.Layout.ResizableTile
 import XMonad.Layout.ZoomRow
 import XMonad.Layout.Master
+import XMonad.Layout.MultiColumns
 import XMonad.Layout.Reflect
 import XMonad.Layout.Magnifier
 import XMonad.Layout.WindowNavigation
@@ -47,11 +54,8 @@ import qualified XMonad.Layout.BoringWindows as Boring
 import qualified XMonad.Layout.MultiToggle as MT
 import XMonad.Layout.MultiToggle.Instances
 import qualified XMonad.Layout.GridVariants as GV
-import XMonad.Hooks.EwmhDesktops
-import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.FadeWindows
-import XMonad.Hooks.DynamicProperty
 
+import XMonad.Actions.UpdatePointer
 import XMonad.Actions.ShowText
 import XMonad.Actions.Navigation2D as N2D
 import XMonad.Actions.WindowBringer
@@ -119,7 +123,7 @@ myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent
 --                           LOG HOOK
 -- ############################################################################
 fadedOpacity = 0.1
-myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook
+myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook >> updatePointer  (0.25, 0.25) (0.25, 0.25)
 myFadeHook = composeAll 
    [ 
     opaque
@@ -175,9 +179,10 @@ myLayout = onWorkspace "9" myFull
     $ myGroup ||| myGrid ||| myMasterGrid 
 
 myGroup = renamed [ Replace "Groups" ]
-	$ hiddenWindows $ G.group (GV.Grid (978/1057))
+	  $ hiddenWindows 
+		$ G.group (GV.Grid (978/1057))
     $ smartSpacingWithEdge 8
-    $  zoomRow
+    $ multiCol [1] 1 0.02 0.3
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
     $ mastered (1/100) (10/24) $ GV.Grid (15/13)
@@ -340,7 +345,7 @@ myKeys = [
       ("M-z",        spawn "slock"                                       )
 
     , ("M-o",        withFocused (toggleTag "i")  )
-    , ("M-i",        focusDownTaggedGlobal "io")
+    , ("M-i",        focusDownTaggedGlobal "i")
 
     , ("M-x",        runSelectedAction myGSConfig xActions  )
     , ("M-s",        gridselect        myGSConfig spawnSystem   >>= spawn . fromMaybe "" )
@@ -360,11 +365,8 @@ myKeys = [
     , ("M1-<L>",     Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-<R>",     Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
 
-    , ("M1-h",       N2D.screenGo N2D.L False >> flashCurrentWS)
-    , ("M1-l",       N2D.screenGo N2D.R False >> flashCurrentWS)
-
-    , ("M1-j",       Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
-    , ("M1-k",       Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+    , ("M1-h",       Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
+    , ("M1-l",       Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
 
     , ("M1-S-<L>",   Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-S-<R>",   Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
@@ -394,8 +396,11 @@ myKeys = [
     , ("M-S-<L>",    sendMessage ( Swap L ) >> flashCurrentWin                           )
     , ("M-S-<R>",    sendMessage ( Swap R ) >> flashCurrentWin                           )
 
-    , ("M--",        sendMessage ( G.ToEnclosing $ SomeMessage zoomOut) >> sendMessage Shrink     )
-    , ("M-+",        sendMessage ( G.ToEnclosing $ SomeMessage zoomIn) >> sendMessage Expand     )
+    , ("M-+",        sendMessage ( G.ToEnclosing $ SomeMessage Expand) >> sendMessage Expand     )
+    , ("M--",        sendMessage ( G.ToEnclosing $ SomeMessage Shrink ) >> sendMessage Shrink     )
+
+--    , ("M--",        sendMessage ( G.ToEnclosing $ SomeMessage zoomOut) >> sendMessage Shrink     )
+--    , ("M-+",        sendMessage ( G.ToEnclosing $ SomeMessage zoomIn) >> sendMessage Expand     )
 
     , ("<Print>",    unGrab *> spawn "scrot -s $HOME/Regal/Screenshots/%F_%R-screenshot.png"                  )
 
