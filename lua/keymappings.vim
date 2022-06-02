@@ -6,7 +6,7 @@ nnoremap Ö :
 nnoremap k gk
 noremap j gj
 
-inoremap <C-l> <esc>a
+inoremap <C-l> <esc>la
 
 noremap s cl
 
