@@ -44,6 +44,7 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
+import qualified XMonad.Layout.BinarySpacePartition as BSP
 import XMonad.Layout.Maximize
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.WorkspaceDir
@@ -174,12 +175,12 @@ myLayout = onWorkspace "9" myFull
     $ myModifiers
     $ smartBorders
     $ windowNavigation
-    $ myGroup ||| myGrid ||| myMasterGrid 
+    $ myGroup ||| myGrid ||| zoomRow 
 
 myGroup = renamed [ Replace "Groups" ]
 	  $ hiddenWindows 
-		$ G.group (GV.Grid (978/1057))
-    $ smartSpacingWithEdge 8
+		$ G.group myMasterGrid
+		$ smartSpacingWithEdge 8
     $ multiCol [1] 1 0.02 0.3
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
@@ -392,11 +393,10 @@ myKeys = [
     , ("M-S-<L>",    sendMessage ( Swap L ) >> flashCurrentWin                           )
     , ("M-S-<R>",    sendMessage ( Swap R ) >> flashCurrentWin                           )
 
-    , ("M-+",        sendMessage ( G.ToEnclosing $ SomeMessage Expand) >> sendMessage Expand     )
-    , ("M--",        sendMessage ( G.ToEnclosing $ SomeMessage Shrink ) >> sendMessage Shrink     )
-
---    , ("M--",        sendMessage ( G.ToEnclosing $ SomeMessage zoomOut) >> sendMessage Shrink     )
---    , ("M-+",        sendMessage ( G.ToEnclosing $ SomeMessage zoomIn) >> sendMessage Expand     )
+    , ("M-+",        sendMessage Expand     )
+    , ("M--",        sendMessage Shrink     )
+    , ("M-S-+",      sendMessage ( G.ToEnclosing $ SomeMessage Expand) )
+    , ("M-S--",      sendMessage ( G.ToEnclosing $ SomeMessage Shrink ) )
 
     , ("<Print>",    unGrab *> spawn "scrot -s $HOME/Regal/Screenshots/%F_%R-screenshot.png"                  )
 
