@@ -42,4 +42,3 @@ vim.cmd([[set completeopt=menu,menuone,noselect]])
       { name = 'cmdline' }
     })
   })
-

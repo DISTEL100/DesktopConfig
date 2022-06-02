@@ -2,12 +2,11 @@ tnoremap <Esc> <C-\><C-n>
 inoremap kj <esc>l
 nnoremap ö :w<return>
 nnoremap Ö :
-noremap <F5> :UndotreeT<return>
 
 nnoremap k gk
 noremap j gj
 
-inoremap <C-l> <esc>ea
+inoremap <C-l> <esc>a
 
 noremap s cl
 
@@ -16,11 +15,14 @@ set langremap
 
 nmap <C-ü> <C-]>
 
-nnoremap <silent> <Leader>r :Rg <C-R><C-W><CR>
+nnoremap <silent> <Leader>* :Rg <C-R><C-W><CR>
+nnoremap <silent> <Leader>r :Rg <CR>
 nnoremap <silent> <Leader>b :Buffers <CR>
+nnoremap <silent> <Leader>h :History <CR>
 nnoremap <silent> <Leader>f :Files <CR>
 nnoremap <silent> <Leader>m :Marks <CR>
 nnoremap <silent> <Leader>e :E <CR>
+nnoremap <silent> <Leader>u :UndotreeT<return>
 
 map [[ ?{<CR>w99[{
 map ][ /}<CR>b99]}

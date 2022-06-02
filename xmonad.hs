@@ -23,6 +23,9 @@ import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Hidden
 import XMonad.Layout.DwmStyle
 import XMonad.Layout.SimpleDecoration
+import XMonad.Layout.Groups as G
+import XMonad.Layout.Groups.Helpers as GH
+import XMonad.Layout.ZoomRow
 import XMonad.Layout.Master
 import XMonad.Layout.Reflect
 import XMonad.Layout.Magnifier
@@ -50,6 +53,7 @@ import XMonad.Hooks.FadeWindows
 import XMonad.Hooks.DynamicProperty
 
 import XMonad.Actions.ShowText
+import XMonad.Actions.Navigation2D as N2D
 import XMonad.Actions.WindowBringer
 import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.GridSelect
@@ -166,14 +170,18 @@ myLayout = onWorkspace "9" myFull
     $ myModifiers
     $ smartBorders
     $ windowNavigation
-    $ myMasterGrid ||| myGrid 
+    $ myGroup ||| myGrid ||| myMasterGrid 
 
+myGroup = renamed [ Replace "Groups" ]
+	$ hiddenWindows $ G.group (GV.Grid (978/1057))
+    $ smartSpacingWithEdge 8
+    $  zoomRow
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
     $ mastered (1/100) (10/24) $ GV.Grid (15/13)
 myGrid = renamed [ Replace "Grid" ]
     $ hiddenWindows
-    $ spacingWithEdge 7
+    $ spacingWithEdge 3
     $ dwmStyle shrinkText mySDConfig
     $ GV.Grid (978/1057)
 myFull = smartBorders
@@ -326,35 +334,53 @@ relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] 
 
 myKeys = [ 
       ("M-z",        spawn "slock"                                       )
+
+    , ("M-o",        withFocused (toggleTag "i")  )
+    , ("M-i",        focusDownTaggedGlobal "io")
+
     , ("M-x",        runSelectedAction myGSConfig xActions  )
+    , ("M-s",        gridselect        myGSConfig spawnSystem   >>= spawn . fromMaybe "" )
+    , ("M-a",        gridselect        myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
+
+    , ("M1-<Tab>",   cycleRecentNonEmptyWS [xK_Alt_L] xK_Tab xK_grave >> flashCurrentWS)
+    , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )
+    , ("M-S-<Tab>",  windows W.focusDown >> flashCurrentWin )
+
     , ("M-m",        windows W.focusMaster                 )
     , ("M-n",        windows W.swapMaster                    )
+
     , ("M-S-y",      namedScratchpadAction myScratchpads "nnn"        )
     , ("M-y",        namedScratchpadAction myScratchpads "1Password"  )
     , ("M1-y",       namedScratchpadAction myScratchpads "Mixer"  )
+
     , ("M1-<L>",     Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-<R>",     Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
-    , ("M1-h",       Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
-    , ("M1-l",       Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+
+    , ("M1-h",       N2D.screenGo N2D.L False >> flashCurrentWS)
+    , ("M1-l",       N2D.screenGo N2D.R False >> flashCurrentWS)
+
+    , ("M1-j",       Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
+    , ("M1-k",       Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+
     , ("M1-S-<L>",   Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-S-<R>",   Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
     , ("M1-S-h",     Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-S-l",     Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
-    , ("M1-<Tab>",   cycleRecentNonEmptyWS [xK_Alt_L] xK_Tab xK_grave >> flashCurrentWS)
-    , ("M1-j",       nextMatchWithThis Forward className >> flashCurrentWS )
-    , ("M1-k",       nextMatchWithThis Backward className >> flashCurrentWS )
-    , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )
-    , ("M-S-<Tab>",  windows W.focusDown >> flashCurrentWin )
+
     , ("<Page_Up>",  nextWS >> flashCurrentWS)
     , ("<Page_Down>",prevWS >> flashCurrentWS)
-    , ("M-j",        sendMessage ( Go D )   >> flashCurrentWin      )
-    , ("M-k",        sendMessage ( Go U )   >> flashCurrentWin                             )
-    , ("M-h",        sendMessage ( Go L )   >> flashCurrentWin                               )
-    , ("M-l",        sendMessage ( Go R )   >> flashCurrentWin                               )
-    , ("M-S-j",      sendMessage ( Swap D ) >> flashCurrentWin                              )
-    , ("M-S-k",      sendMessage ( Swap U ) >> flashCurrentWin                                )
-    , ("M-S-h",      sendMessage ( Swap L ) >> flashCurrentWin                                )
-    , ("M-S-l",      sendMessage ( Swap R ) >> flashCurrentWin                          )
+
+    , ("M-j",        N2D.windowGo N2D.D False >> flashCurrentWin      )
+    , ("M-k",        N2D.windowGo N2D.U False >> flashCurrentWin                             )
+    , ("M-h",        N2D.windowGo N2D.L False >> flashCurrentWin                               )
+    , ("M-l",        N2D.windowGo N2D.R False >> flashCurrentWin                               )
+
+    , ("M-S-j",      withFocused hideWindow )
+    , ("M-S-k",      popOldestHiddenWindow )
+
+    , ("M-S-h",      N2D.windowSwap N2D.U False >> flashCurrentWin                                )
+    , ("M-S-l",      N2D.windowSwap N2D.R False >> flashCurrentWin                          )
+
     , ("M-<D>",      sendMessage ( Go D )   >> flashCurrentWin                            )
     , ("M-<U>",      sendMessage ( Go U )   >> flashCurrentWin                          )
     , ("M-<L>",      sendMessage ( Go L )   >> flashCurrentWin                          )
@@ -363,20 +389,25 @@ myKeys = [
     , ("M-S-<U>",    sendMessage ( Swap U ) >> flashCurrentWin                           )
     , ("M-S-<L>",    sendMessage ( Swap L ) >> flashCurrentWin                           )
     , ("M-S-<R>",    sendMessage ( Swap R ) >> flashCurrentWin                           )
-    , ("M--",        sendMessage Shrink                   )
-    , ("M-+",        sendMessage Expand                      )
+
+    , ("M--",        sendMessage ( G.ToEnclosing $ SomeMessage zoomOut) >> sendMessage Shrink     )
+    , ("M-+",        sendMessage ( G.ToEnclosing $ SomeMessage zoomIn) >> sendMessage Expand     )
+
     , ("<Print>",    unGrab *> spawn "scrot -s $HOME/Regal/Screenshots/%F_%R-screenshot.png"                  )
+
     , ("M-f",        runOrRaiseMaster "firefox" (className =? "firefox") >> flashCurrentWS )
     , ("M-S-f",      ifWindow (className =? "firefox") (currentWs >>= doShift) idHook)
-    , ("M-c",        kill                                        )
+
     , ("M-r",        renameWorkspace def                         )
     , ("M-S-r",      changeDir def                               )
-    , ("M-s",        gridselect myGSConfig spawnSystem >>= spawn . fromMaybe "" )
-    , ("M-a",        gridselect myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
+
     , ("M-u",        focusUrgent >> flashCurrentWS )
+
     , ("M-S-g",      bringMenuConfig windowBringerConf)
     , ("M-g",        gotoMenuConfig windowBringerConf >> flashCurrentWS )
-    , ("M-v",        withFocused hideWindow )
-    , ("M-S-v",      popOldestHiddenWindow )
+
+    , ("M1-s",      GH.splitGroup )
+
+    , ("M-c",        kill                                        )
     , ("M-<Return>", spawn "xterm" )
     ] 
