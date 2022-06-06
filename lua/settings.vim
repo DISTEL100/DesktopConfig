@@ -35,6 +35,8 @@ set mouse=a
 set wrap linebreak
 set breakindent
 
+set shada=!,'100,<50,s100 
+
 set tabstop=2
 set shiftwidth=2
 set smarttab
