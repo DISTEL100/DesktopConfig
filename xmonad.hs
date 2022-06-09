@@ -13,6 +13,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
+import qualified XMonad.Hooks.InsertPosition as IP
 import XMonad.Hooks.UrgencyHook
 
 import XMonad.Util.EZConfig
@@ -136,10 +137,10 @@ myFadeHook = composeAll
 --                           MANAGE HOOK
 -- ############################################################################
 myManageHook :: ManageHook
-myManageHook = ( namedScratchpadManageHook myScratchpads )
-   <+> manageSpawn 
-   <+> composeAll
-    [ className =? "Gimp"              --> doFloat
+myManageHook =  composeAll
+    [ manageSpawn
+    , ( namedScratchpadManageHook myScratchpads )
+		, className =? "Gimp"              --> doFloat
     , className =? "SuperCollider"     --> doShift "4"
     , className =? "Xmessage"          --> doCenterFloat
     , appName   =? "Devtools"          --> doCenterFloat
@@ -150,6 +151,7 @@ myManageHook = ( namedScratchpadManageHook myScratchpads )
     , isDialog                         --> doCenterFloat
     , className =? "Alert"             --> doAskUrgent
     , title     =? "preview-tui"       --> doF W.focusDown
+		, IP.insertPosition IP.Below IP.Newer 
     ]
 nspGapH = (1/35)
 nspGapV = nspGapH * (16/9)
@@ -175,7 +177,7 @@ myLayout = onWorkspace "9" myFull
     $ myModifiers
     $ smartBorders
     $ windowNavigation
-    $ myGroup ||| myGrid ||| zoomRow 
+    $ myMasterGrid ||| myGrid
 
 myGroup = renamed [ Replace "Groups" ]
 	  $ hiddenWindows 
@@ -344,7 +346,9 @@ myKeys = [
     , ("M-o",        withFocused (toggleTag "i")  )
     , ("M-i",        focusDownTaggedGlobal "i")
 
-    , ("M-x",        runSelectedAction myGSConfig xActions  )
+    , ("M-x",        sendMessage $ MT.Toggle FULL  )
+    , ("M-v",        withFocused hideWindow  )
+    , ("M-S-v",      popNewestHiddenWindow  )
     , ("M-s",        gridselect        myGSConfig spawnSystem   >>= spawn . fromMaybe "" )
     , ("M-a",        gridselect        myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
 
@@ -414,5 +418,6 @@ myKeys = [
     , ("M1-s",      GH.splitGroup )
 
     , ("M-c",        kill                                        )
-    , ("M-<Return>", spawn "xterm" )
+    , ("M-<Return>", spawnXtermInPath )
+    , ("M-S-<Return>", spawn "xterm -e 'zsh'" )
     ] 
