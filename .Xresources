@@ -1,4 +1,5 @@
-XTerm*faceName:Flexi IBM VGA True:size=12
+XTerm*faceName:Flexi IBM VGA True:pixelsize=16
+
 
 XTerm*saveLines: 4096
 XTerm*renderFont:true
