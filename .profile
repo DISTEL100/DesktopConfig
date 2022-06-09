@@ -1,5 +1,4 @@
 # If not running interactively, don't do anything
-PS1='%n>'
 [[ $- != *i* ]] && return
 
 alias ls='ls --color=auto'

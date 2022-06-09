@@ -6,6 +6,7 @@ ln -f $HOME/.profile 	                            .profile
 ln -f $HOME/.xmobarrc 	                          .xmobarrc 					
 ln -f $HOME/.config/picom.conf                    picom.conf 					
 ln -f $HOME/.gitconfig								            .gitconfig
+ln -f $HOME/.p10k.zsh                             .p10k.zsh
 
 ln -f $HOME/.config/nvim/init.lua                 init.lua 					
 ln -f $HOME/.config/nvim/lua/keymappings.vim 	    lua/keymappings.vim 	
