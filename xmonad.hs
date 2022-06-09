@@ -141,7 +141,7 @@ myManageHook =  composeAll
     [ manageSpawn
     , ( namedScratchpadManageHook myScratchpads )
 		, className =? "Gimp"              --> doFloat
-    , className =? "SuperCollider"     --> doShift "4"
+    , className =? "SuperCollider"     --> doFloat
     , className =? "1Password"         --> doCenterFloat
     , className =? "QjackCtl"          --> doFloat
     , className =? "Xmessage"          --> doCenterFloat
