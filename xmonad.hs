@@ -13,6 +13,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
+import XMonad.Hooks.SetWMName
 import qualified XMonad.Hooks.InsertPosition as IP
 import XMonad.Hooks.UrgencyHook
 
@@ -125,7 +126,9 @@ myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent
 --                           LOG HOOK
 -- ############################################################################
 fadedOpacity = 0.1
-myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook >> updatePointer  (0.25, 0.25) (0.25, 0.25)
+myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook 
+             >> updatePointer  (0.25, 0.25) (0.25, 0.25)
+			       >> setWMName "LG3D"
 myFadeHook = composeAll 
    [ 
     opaque
