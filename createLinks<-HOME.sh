@@ -2,6 +2,7 @@ ln -f $HOME/.config/xmonad/xmonad.hs              xmonad.hs
 ln -f $HOME/.Xresources 	                        .Xresources 					
 ln -f $HOME/.bashrc 	                            .bashrc 						
 ln -f $HOME/.zshrc 	                              .zshrc 						
+ln -f $HOME/.p10k.zsh 	                          .p10k.zsh 						
 ln -f $HOME/.profile 	                            .profile 						
 ln -f $HOME/.xmobarrc 	                          .xmobarrc 					
 ln -f $HOME/.config/picom.conf                    picom.conf 					

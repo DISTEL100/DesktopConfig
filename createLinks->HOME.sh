@@ -3,6 +3,7 @@ ln -f .Xresources 		       	$HOME/.Xresources
 ln -f .bashrc 			        	$HOME/.bashrc				
 ln -f .profile 			        	$HOME/.profile				
 ln -f .zshrc 			        		$HOME/.zshrc				
+ln -f .p10k.zsh 	            $HOME/.p10k.zsh 						
 ln -f .xmobarrc 		        	$HOME/.xmobarrc				
 ln -f picom.conf 		        	$HOME/.config/picom.conf 			
 ln -f .gitconfig 		        	$HOME/.gitconfig
