@@ -7,6 +7,7 @@ ln -f .p10k.zsh 	            $HOME/.p10k.zsh
 ln -f .xmobarrc 		        	$HOME/.xmobarrc				
 ln -f picom.conf 		        	$HOME/.config/picom.conf 			
 ln -f .gitconfig 		        	$HOME/.gitconfig
+ln -f .p10k.zsh               $HOME/.p10k.zsh
 
 ln -f init.lua 			        	$HOME/.config/nvim/init.lua 		
 ln -f lua/keymappings.vim    	$HOME/.config/nvim/lua/keymappings.vim	

@@ -1,6 +1,7 @@
 {-# LANGUAGE TypeSynonymInstances, MultiParamTypeClasses #-}
 import XMonad
 import XMonad.Prelude
+import Graphics.X11.ExtraTypes
 
 import qualified XMonad.StackSet as W
 
@@ -115,7 +116,7 @@ myConfig = def
     , normalBorderColor  = colInactive
     , focusedBorderColor = colActive
     , borderWidth        = 1
-    } `additionalKeysP` myKeys
+    } `additionalKeysP` myKeys `additionalKeys` myKeys'
     
 -- ############################################################################
 --                           EVENT HOOK
@@ -127,7 +128,7 @@ myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent
 -- ############################################################################
 fadedOpacity = 0.1
 myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook 
-             >> updatePointer  (0.25, 0.25) (0.25, 0.25)
+             >> updatePointer  (0.3, 0.3) (1.25, 1.25)
 			       >> setWMName "LG3D"
 myFadeHook = composeAll 
    [ 
@@ -428,3 +429,14 @@ myKeys = [
     , ("M-<Return>", spawnXtermInPath )
     , ("M-S-<Return>", spawn "xterm -e 'zsh'" )
     ] 
+
+myKeys'= [
+		(  (mod4Mask, xF86XK_AudioRaiseVolume ), spawn "amixer set Master 2db+" )
+		,( (mod4Mask, xF86XK_AudioLowerVolume ), spawn "amixer set Master 2db-" )
+		,( (mod4Mask, xF86XK_AudioMicMute ), spawn "amixer set Capture toggle" )
+		,( (mod1Mask, xF86XK_AudioLowerVolume ), spawn "amixer set Capture 2db+" )
+		,( (mod1Mask, xF86XK_AudioRaiseVolume ), spawn "amixer set Capture 2db+" )
+    ,( (mod4Mask, xF86XK_MonBrightnessUp ), spawn "light -A 4" )
+    ,( (mod4Mask, xF86XK_MonBrightnessDown ), spawn "light-U 4" )
+    ,( (mod4Mask, xF86XK_Display ), spawn "xrandr --auto && xrandr --output HDMI-A-0 --left-of eDP --rotate normal && xrandr --auto" )
+				 ]

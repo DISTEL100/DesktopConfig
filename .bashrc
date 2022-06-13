@@ -1,9 +1,9 @@
 #
 # ~/.bashrc
 #
-source .profile
-source    /usr/share/fzf/key-bindings.bash
-source    /usr/share/fzf/completion.bash
+source $HOME/.profile
+source /usr/share/fzf/key-bindings.bash
+source /usr/share/fzf/completion.bash
 
 
 # enable bash completion in interactive shells
