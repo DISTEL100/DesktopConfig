@@ -225,6 +225,15 @@ instance SetsAmbiguous AllFloats where
 -- ############################################################################
 --                           ACTIONS
 -- ############################################################################
+-- Wie cycleRecentWS nur dass Workspaces, die auf einem anderen Screen sichtbar sind ausgelassen werden
+recentWS' :: (WindowSpace -> Bool)
+          -> WindowSet
+          -> [WorkspaceId]
+recentWS' p w = map W.tag 
+              $ filter p
+							(W.hidden w) ++ [ W.workspace (W.current w)]
+cycleRecentNonVisible = cycleWindowSets $ recentWS' ( not . null . W.stack )
+
 showTextConf :: ShowTextConfig
 showTextConf = def {
 				   st_font = font "23",
@@ -356,7 +365,7 @@ myKeys = [
     , ("M-s",        gridselect        myGSConfig spawnSystem   >>= spawn . fromMaybe "" )
     , ("M-a",        gridselect        myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
 
-    , ("M1-<Tab>",   cycleRecentNonEmptyWS [xK_Alt_L] xK_Tab xK_grave >> flashCurrentWS)
+    , ("M1-<Tab>",   cycleRecentNonVisible [xK_Alt_L] xK_Tab xK_grave >> flashCurrentWS)
     , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )
     , ("M-S-<Tab>",  windows W.focusDown >> flashCurrentWin )
 
