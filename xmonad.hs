@@ -169,7 +169,7 @@ ncpamixerPos =  customFloating (W.RationalRect nspGapH (nspGapV+nnnH+nspGapV) (n
 myScratchpads = [ 
                    NS "nnn" ("xterm  -T \"nnn\" -e \'bash --init-file <(echo \". ~/.bashrc; nnn\")\' ") (title =? "nnn") nnnPos
                  , NS "1Password" "1password" (className =? "1Password") passPos
-                 , NS "Mixer" "xterm -e 'ncpamixer'" ((stringProperty "WM_NAME") =? "ncpamixer") ncpamixerPos
+                 , NS "Mixer" "xterm -e alsamixer" ((stringProperty "WM_NAME") =? "alsamixer") ncpamixerPos
                 ]
 
 -- ############################################################################
@@ -356,14 +356,14 @@ relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] 
 myKeys = [ 
       ("M-z",        spawn "slock"                                       )
 
-    , ("M-o",        withFocused (toggleTag "i")  )
+    , ("M-o",        withFocused (toggleTag "i") >> flashText showTextConf 0.2 "toggleTag" )
     , ("M-i",        focusDownTaggedGlobal "i")
 
     , ("M-x",        sendMessage $ MT.Toggle FULL  )
     , ("M-v",        withFocused hideWindow  )
     , ("M-S-v",      popNewestHiddenWindow  )
     , ("M-s",        gridselect        myGSConfig spawnSystem   >>= spawn . fromMaybe "" )
-    , ("M-a",        gridselect        myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
+    , ("M-d",        gridselect        myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
 
     , ("M1-<Tab>",   cycleRecentNonVisible [xK_Alt_L] xK_Tab xK_grave >> flashCurrentWS)
     , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )
@@ -372,9 +372,8 @@ myKeys = [
     , ("M-m",        windows W.focusMaster                 )
     , ("M-n",        windows W.swapMaster                    )
 
-    , ("M-S-y",      namedScratchpadAction myScratchpads "nnn"        )
     , ("M-y",        namedScratchpadAction myScratchpads "1Password"  )
-    , ("M1-y",       namedScratchpadAction myScratchpads "Mixer"  )
+    , ("M-a",        namedScratchpadAction myScratchpads "Mixer"  )
 
     , ("M1-<L>",     Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M1-<R>",     Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
@@ -437,12 +436,13 @@ myKeys = [
     ] 
 
 myKeys'= [
-		(  (mod4Mask, xF86XK_AudioRaiseVolume ), spawn "amixer set Master 2db+" )
-		,( (mod4Mask, xF86XK_AudioLowerVolume ), spawn "amixer set Master 2db-" )
-		,( (mod4Mask, xF86XK_AudioMicMute ), spawn "amixer set Capture toggle" )
+		(  (0, xF86XK_AudioRaiseVolume ), spawn "amixer set Master 2db+" )
+		,( (0, xF86XK_AudioLowerVolume ), spawn "amixer set Master 2db-" )
+		,( (0, xF86XK_AudioMicMute ), spawn "amixer set Capture toggle" )
 		,( (mod1Mask, xF86XK_AudioLowerVolume ), spawn "amixer set Capture 2db+" )
 		,( (mod1Mask, xF86XK_AudioRaiseVolume ), spawn "amixer set Capture 2db+" )
-    ,( (mod4Mask, xF86XK_MonBrightnessUp ), spawn "light -A 4" )
-    ,( (mod4Mask, xF86XK_MonBrightnessDown ), spawn "light-U 4" )
-    ,( (mod4Mask, xF86XK_Display ), spawn "xrandr --auto && xrandr --output HDMI-A-0 --left-of eDP --rotate normal && xrandr --auto" )
+    ,( (0, xF86XK_MonBrightnessUp ), spawn "light -A 4" )
+    ,( (0, xF86XK_MonBrightnessDown ), spawn "light-U 4" )
+    ,( (0, xF86XK_Favorites),      namedScratchpadAction myScratchpads "nnn"        )
+    ,( (0, xF86XK_Display ), spawn "xrandr --auto && xrandr --output HDMI-A-0 --left-of eDP --rotate normal && xrandr --auto" )
 				 ]
