@@ -441,11 +441,12 @@ myKeys = [
 myKeys'= [
 		(  (0, xF86XK_AudioRaiseVolume ), spawn "amixer set Master 2db+" )
 		,( (0, xF86XK_AudioLowerVolume ), spawn "amixer set Master 2db-" )
+		,( (0, xF86XK_AudioMute ), spawn "amixer set Master toggle" )
 		,( (0, xF86XK_AudioMicMute ), spawn "amixer set Capture toggle" )
-		,( (mod1Mask, xF86XK_AudioLowerVolume ), spawn "amixer set Capture 2db+" )
-		,( (mod1Mask, xF86XK_AudioRaiseVolume ), spawn "amixer set Capture 2db+" )
-    ,( (0, xF86XK_MonBrightnessUp ), spawn "light -A 4" )
-    ,( (0, xF86XK_MonBrightnessDown ), spawn "light-U 4" )
-    ,( (0, xF86XK_Favorites),      namedScratchpadAction myScratchpads "nnn"        )
+		,( (mod4Mask, xF86XK_AudioLowerVolume ), spawn "amixer set Capture 2db+" )
+		,( (mod4Mask, xF86XK_AudioRaiseVolume ), spawn "amixer set Capture 2db+" )
+    ,( (0, xF86XK_MonBrightnessUp ), spawn "light -A 3.33" )
+    ,( (0, xF86XK_MonBrightnessDown ), spawn "light -U 3.33" )
     ,( (0, xF86XK_Display ), spawn "xrandr --auto && xrandr --output HDMI-A-0 --left-of eDP --rotate normal && xrandr --auto" )
+    ,( (0, xF86XK_WWW ), spawn "evince" )
 				 ]
