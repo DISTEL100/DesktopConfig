@@ -13,6 +13,8 @@ gitfe() {
 
 PS1='[\u@\h \W]\$ '
 
+export ALSA_DEVICE=1
+
 export PATH="$HOME/.local/bin:$PATH"
 
 export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
