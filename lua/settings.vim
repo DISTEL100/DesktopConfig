@@ -12,7 +12,7 @@ au TextYankPost * silent! lua vim.highlight.on_yank()
 set title
 set number
 set nornu
-set cursorline
+hi CursorLine gui=underline cterm=underline
 set termguicolors   
 let g:airline_theme='tomorrow'
 
