@@ -357,6 +357,7 @@ myKeys = [
     , ("M-a",        gridselect        myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
 
     , ("M1-<Tab>",   cycleRecentNonEmptyWS [xK_Alt_L] xK_Tab xK_grave >> flashCurrentWS)
+    , ("S-<Tab>", nextMatch History (return True) >> flashCurrentWS)
     , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )
     , ("M-S-<Tab>",  windows W.focusDown >> flashCurrentWin )
 
@@ -422,8 +423,7 @@ myKeys = [
     , ("M1-s",      GH.splitGroup )
 
     , ("M-c",        kill                                        )
-    , ("M-<Return>", spawnXtermInPath )
-    , ("M-S-<Return>", spawn "xterm -e 'zsh'" )
+    , ("M-<Return>", spawn "xterm -e 'zsh'" )
 	
     ] 
 
@@ -437,5 +437,5 @@ myKeys'= [
     ,( (0, xF86XK_MonBrightnessUp ), spawn "light -A 3.33" )
     ,( (0, xF86XK_MonBrightnessDown ), spawn "light -U 3.33" )
     ,( (0, xF86XK_Display ), spawn "xrandr --auto && xrandr --output HDMI-A-0 --left-of eDP --rotate normal && xrandr --auto" )
-    ,( (0, xF86XK_WWW ), spawn "evince" )
+    ,( (0, xF86XK_WWW ), spawn "" )
 				 ]
