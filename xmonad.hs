@@ -156,6 +156,7 @@ myManageHook =  composeAll
     , className =? "Alert"             --> doAskUrgent
     , title     =? "preview-tui"       --> doF W.focusDown
 		, IP.insertPosition IP.Below IP.Newer 
+		, isDialog        --> doF W.swapUp
     ]
 nspGapH = (1/35)
 nspGapV = nspGapH * (16/9)
