@@ -369,7 +369,7 @@ myKeys = [
     , ("M-s",        gridselect        myGSConfig spawnSystem   >>= spawn . fromMaybe "" )
     , ("M-a",        gridselect        myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
 
-    , ("M5-<Return>", cycleRecentNonVisible [xK_ISO_Level3_Shift] xK_Return xK_grave >> flashCurrentWS)
+    , ("M5-<Return>", cycleRecentNonVisible [xK_ISO_Level3_Shift] xK_Return xK_BackSpace >> flashCurrentWS)
     , ("M1-<Tab>", 	 nextMatch History (return True) >> flashCurrentWS)
     , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )
     , ("M-S-<Tab>",  windows W.focusDown >> flashCurrentWin )
