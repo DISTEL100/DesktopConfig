@@ -9,10 +9,12 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.FadeWindows
 import XMonad.Hooks.DynamicProperty
+import XMonad.Hooks.PositionStoreHooks
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.StatusBar
+import XMonad.Hooks.Place
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.SetWMName
 import qualified XMonad.Hooks.InsertPosition as IP
@@ -121,7 +123,7 @@ myConfig = def
 -- ############################################################################
 --                           EVENT HOOK
 -- ############################################################################
-myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent
+myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent <+> positionStoreEventHook
 
 -- ############################################################################
 --                           LOG HOOK
@@ -144,6 +146,7 @@ myManageHook :: ManageHook
 myManageHook =  composeAll
     [ manageSpawn
     , ( namedScratchpadManageHook myScratchpads )
+		, positionStoreManageHook Nothing
 		, className =? "Gimp"              --> doFloat
     , className =? "SuperCollider"     --> doFloat
     , className =? "1Password"         --> doCenterFloat
@@ -159,12 +162,13 @@ myManageHook =  composeAll
     , title     =? "preview-tui"       --> doF W.focusDown
 		, IP.insertPosition IP.Below IP.Newer 
 		, isDialog        --> doF W.swapUp
+		, placeHook (underMouse (0.5, 0.5))
     ]
 nspGapH = (1/35)
 nspGapV = nspGapH * (16/9)
 nnnW = (1/3) - (1.5 * nspGapH)
 nnnH = (1/2) - (1.5 * nspGapV)
-nnnPos =  customFloating (W.RationalRect nspGapH nspGapV nnnW nnnH )
+nnnPos =  customFloating (W.RationalRect nspGapH nspGapV (nnnW*0.5) (nnnH*1.25) )
 passW = (2/3) - (2 * nspGapH)
 passH = 1 - (2*nspGapV)
 passPos = customFloating (W.RationalRect ((2*nspGapH)+nnnW) nspGapV passW passH )
