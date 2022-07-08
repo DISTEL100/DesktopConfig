@@ -365,13 +365,15 @@ myKeys = [
     , ("M-i",        focusDownTaggedGlobal "i")
 
     , ("M-x",        sendMessage $ MT.Toggle FULL  )
+
     , ("M-v",        withFocused hideWindow  )
     , ("M-S-v",      popNewestHiddenWindow  )
+
     , ("M-s",        gridselect        myGSConfig spawnSystem   >>= spawn . fromMaybe "" )
     , ("M-d",        gridselect        myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
 
-    , ("M1-<Tab>",   cycleRecentNonEmptyWS [xK_Alt_L] xK_Tab xK_grave >> flashCurrentWS)
-    , ("S-<Tab>", nextMatch History (return True) >> flashCurrentWS)
+    , ("M5-<Tab>",   cycleRecentNonEmptyWS [xK_ISO_Level3_Shift] xK_Tab xK_grave >> flashCurrentWS)
+    , ("M1-<Tab>", 	 nextMatch History (return True) >> flashCurrentWS)
     , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )
     , ("M-S-<Tab>",  windows W.focusDown >> flashCurrentWin )
 
@@ -381,29 +383,30 @@ myKeys = [
     , ("M-y",        namedScratchpadAction myScratchpads "1Password"  )
     , ("M-a",        namedScratchpadAction myScratchpads "Mixer"  )
 
-    , ("M1-<L>",     Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
-    , ("M1-<R>",     Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+    , ("M5-<L>",     Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
+    , ("M5-<R>",     Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+    , ("M5-h",       Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
+    , ("M5-l",       Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+    , ("<Page_Up>",  Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+    , ("<Page_Down>",Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
+    , ("M5-j",       Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
+    , ("M5-k",       Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
 
-    , ("M1-h",       Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
-    , ("M1-l",       Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
 
-    , ("M1-S-<L>",   Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
-    , ("M1-S-<R>",   Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
-    , ("M1-S-h",     Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
-    , ("M1-S-l",     Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+    , ("M5-S-<L>",   Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
+    , ("M5-S-<R>",   Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+    , ("M5-S-h",     Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
+    , ("M5-S-l",     Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
 
-    , ("<Page_Up>",  nextWS >> flashCurrentWS)
-    , ("<Page_Down>",prevWS >> flashCurrentWS)
 
     , ("M-j",        N2D.windowGo N2D.D False >> flashCurrentWin      )
     , ("M-k",        N2D.windowGo N2D.U False >> flashCurrentWin                             )
     , ("M-h",        N2D.windowGo N2D.L False >> flashCurrentWin                               )
     , ("M-l",        N2D.windowGo N2D.R False >> flashCurrentWin                               )
 
-    , ("M-S-j",      withFocused hideWindow )
-    , ("M-S-k",      popOldestHiddenWindow )
-
-    , ("M-S-h",      N2D.windowSwap N2D.U False >> flashCurrentWin                                )
+    , ("M-S-j",      N2D.windowSwap N2D.D False >> flashCurrentWin)
+    , ("M-S-k",      N2D.windowSwap N2D.U False >> flashCurrentWin)
+    , ("M-S-h",      N2D.windowSwap N2D.L False >> flashCurrentWin                                )
     , ("M-S-l",      N2D.windowSwap N2D.R False >> flashCurrentWin                          )
 
     , ("M-<D>",      sendMessage ( Go D )   >> flashCurrentWin                            )
@@ -432,8 +435,6 @@ myKeys = [
 
     , ("M-S-g",      bringMenuConfig windowBringerConf)
     , ("M-g",        gotoMenuConfig windowBringerConf >> flashCurrentWS )
-
-    , ("M1-s",      GH.splitGroup )
 
     , ("M-c",        kill                                        )
     , ("M-<Return>", spawn "xterm -e 'zsh'" )
