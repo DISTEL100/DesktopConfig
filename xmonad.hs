@@ -232,10 +232,14 @@ instance SetsAmbiguous AllFloats where
 recentWS' :: (WindowSpace -> Bool) -> WindowSet -> [WorkspaceId]
 recentWS' p w = map W.tag 
               $ filter p
-							(W.hidden w) ++ [ W.workspace (W.current w)]
+							(W.hidden w) ++ [ W.workspace (W.current w) ]
+recentWSS' p w = map W.tag 
+              $ filter p
+							$ reverse $ [ W.workspace (W.current w) ] ++ (W.hidden w) 
 cycleRecentNonVisible = cycleWindowSets $ recentWS' (p)
-	where
-		p ws =  ( "NSP" /= (W.tag ws)) && (not . null . W.stack ) ws
+	where p ws =  ( "NSP" /= (W.tag ws)) && (not . null . W.stack ) ws
+cycleRecentNonVisible' = cycleWindowSets $ recentWSS' (p)
+	where p ws =  ( "NSP" /= (W.tag ws)) && (not . null . W.stack ) ws
 
 showTextConf :: ShowTextConfig
 showTextConf = def {
@@ -373,8 +377,9 @@ myKeys = [
     , ("M-s",        gridselect        myGSConfig spawnSystem   >>= spawn . fromMaybe "" )
     , ("M-d",        gridselect        myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
 
-    , ("M5-<Return>", cycleRecentNonVisible [xK_ISO_Level3_Shift] xK_Return xK_grave >> flashCurrentWS)
-    , ("M1-<Tab>", 	 nextMatch History (return True) >> flashCurrentWS)
+    , ("M5-<Return>",cycleRecentNonVisible [xK_ISO_Level3_Shift] xK_Return xK_BackSpace >> flashCurrentWS)
+    , ("M5-<Backspace>",cycleRecentNonVisible' [xK_ISO_Level3_Shift] xK_BackSpace xK_Return >> flashCurrentWS)
+    , ("S-<Tab>", 	 nextMatch History (return True) >> flashCurrentWS)
     , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )
     , ("M-S-<Tab>",  windows W.focusDown >> flashCurrentWin )
 
@@ -393,12 +398,10 @@ myKeys = [
     , ("M5-j",       Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M5-k",       Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
 
-
     , ("M5-S-<L>",   Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M5-S-<R>",   Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
     , ("M5-S-h",     Cyc.shiftTo Prev relevantWorkspaces >> Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
     , ("M5-S-l",     Cyc.shiftTo Next relevantWorkspaces >> Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
-
 
     , ("M-j",        N2D.windowGo N2D.D False >> flashCurrentWin      )
     , ("M-k",        N2D.windowGo N2D.U False >> flashCurrentWin                             )
