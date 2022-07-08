@@ -226,6 +226,15 @@ instance SetsAmbiguous AllFloats where
 -- ############################################################################
 --                           ACTIONS
 -- ############################################################################
+-- Wie cycleRecentWS nur dass Workspaces, die auf einem anderen Screen sichtbar sind ausgelassen werden
+recentWS' :: (WindowSpace -> Bool) -> WindowSet -> [WorkspaceId]
+recentWS' p w = map W.tag 
+              $ filter p
+							(W.hidden w) ++ [ W.workspace (W.current w)]
+cycleRecentNonVisible = cycleWindowSets $ recentWS' (p)
+	where
+		p ws =  ( "NSP" /= (W.tag ws)) && (not . null . W.stack ) ws
+
 showTextConf :: ShowTextConfig
 showTextConf = def {
 				   st_font = font "23",
@@ -344,6 +353,7 @@ myXmobarPP = workspaceNamesPP def
 --                           KEYBINDINGS
 -- ############################################################################
 relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] )
+nonEmptyNonNSP = recentWS (not . null . W.stack)
 
 myKeys = [ 
       ("M-z",        spawn "slock"                                       )
@@ -359,7 +369,7 @@ myKeys = [
     , ("M-s",        gridselect        myGSConfig spawnSystem   >>= spawn . fromMaybe "" )
     , ("M-a",        gridselect        myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
 
-    , ("M5-<Tab>",   cycleRecentNonEmptyWS [xK_ISO_Level3_Shift] xK_Tab xK_grave >> flashCurrentWS)
+    , ("M5-<Return>", cycleRecentNonVisible [xK_ISO_Level3_Shift] xK_Return xK_grave >> flashCurrentWS)
     , ("M1-<Tab>", 	 nextMatch History (return True) >> flashCurrentWS)
     , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )
     , ("M-S-<Tab>",  windows W.focusDown >> flashCurrentWin )
