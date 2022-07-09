@@ -20,6 +20,7 @@ import XMonad.Hooks.SetWMName
 import qualified XMonad.Hooks.InsertPosition as IP
 import XMonad.Hooks.UrgencyHook
 
+import XMonad.Util.ActionCycle
 import XMonad.Util.EZConfig
 import XMonad.Util.Loggers
 import XMonad.Util.Ungrab
@@ -375,14 +376,14 @@ myKeys = [
 
     , ("M-x",        sendMessage $ MT.Toggle FULL  )
 
-    , ("M-v",        withFocused hideWindow  )
-    , ("M-S-v",      popNewestHiddenWindow  )
+		, ("M-v",        cycleAction "cycleAction" [popNewestHiddenWindow >> popNewestHiddenWindow, withFocused hideWindow]  )
 
     , ("M-s",        gridselect        myGSConfig spawnSystem   >>= spawn . fromMaybe "" )
     , ("M-d",        gridselect        myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
 
     , ("M5-<Return>",cycleRecentNonVisible [xK_ISO_Level3_Shift] xK_Return xK_BackSpace >> flashCurrentWS)
     , ("M5-<Backspace>",cycleRecentNonVisible' [xK_ISO_Level3_Shift] xK_BackSpace xK_Return >> flashCurrentWS)
+    , ("S-<Return>", toggleRecentWS >> flashCurrentWS)
     , ("S-<Tab>", 	 nextMatch History (return True) >> flashCurrentWS)
     , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )
     , ("M-S-<Tab>",  windows W.focusDown >> flashCurrentWin )
