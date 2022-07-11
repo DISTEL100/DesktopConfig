@@ -30,6 +30,7 @@ vim.cmd([[
 	source ~/.config/nvim/lua/settings.vim
 	source ~/.config/nvim/lua/vim-airline.vim
 	source ~/.config/nvim/lua/scnvim.vim
+	source ~/.config/nvim/lua/fzf.vim
 ]])
 
 require('nvim-lspconfig')

@@ -15,8 +15,8 @@ set langremap
 
 nmap <C-ü> <C-]>
 
-nnoremap <silent> <Leader>+ :Rg <C-R><C-W><CR>
-nnoremap <silent> <Leader>r :Rg <CR>
+nnoremap <silent> <Leader>+ :RG <C-R><C-W><CR>
+nnoremap <silent> <Leader>r :RG <CR>
 nnoremap <silent> <Leader>b :Buffers <CR>
 nnoremap <silent> <Leader>h :History <CR>
 nnoremap <silent> <Leader>f :Files <CR>
