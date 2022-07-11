@@ -131,7 +131,7 @@ myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent <+> p
 -- ############################################################################
 fadedOpacity = 0.1
 myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook 
-             >> updatePointer  (0.3, 0.3) (1.25, 1.25)
+             -- >> updatePointer  (0.3, 0.3) (1.25, 1.25)
 			       >> setWMName "LG3D"
 myFadeHook = composeAll 
    [ 
@@ -198,7 +198,7 @@ myGroup = renamed [ Replace "Groups" ]
     $ multiCol [1] 1 0.02 0.3
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
-    $ mastered (1/100) (10/24) $ GV.Grid (15/13)
+    $ mastered (1/100) (17/24) $ GV.Grid (15/13)
 myGrid = renamed [ Replace "Grid" ]
     $ hiddenWindows
     $ spacingWithEdge 3
