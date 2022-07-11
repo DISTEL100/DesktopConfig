@@ -128,7 +128,7 @@ myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent
 -- ############################################################################
 fadedOpacity = 0.1
 myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook 
-             >> updatePointer  (0.3, 0.3) (1.25, 1.25)
+             -- >> updatePointer  (0.3, 0.3) (1.25, 1.25)
 			       >> setWMName "LG3D"
 myFadeHook = composeAll 
    [ 
