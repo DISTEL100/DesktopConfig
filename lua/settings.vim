@@ -35,7 +35,7 @@ set mouse=a
 set wrap linebreak
 set breakindent
 
-set shada=!,'100,<50,s100 
+set shada=!,'1000,<500,s1000 
 
 set tabstop=2
 set shiftwidth=2
