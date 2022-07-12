@@ -169,7 +169,7 @@ nspGapH = (1/35)
 nspGapV = nspGapH * (16/9)
 nnnW = (1/3) - (1.5 * nspGapH)
 nnnH = (1/2) - (1.5 * nspGapV)
-nnnPos =  customFloating (W.RationalRect nspGapH nspGapV (nnnW*0.5) (nnnH*1.25) )
+nnnPos =  customFloating (W.RationalRect (nspGapH) (nspGapV*3) (nnnW*0.85) (nnnH*1.5) )
 passW = (2/3) - (2 * nspGapH)
 passH = 1 - (2*nspGapV)
 passPos = customFloating (W.RationalRect ((2*nspGapH)+nnnW) nspGapV passW passH )
@@ -198,7 +198,7 @@ myGroup = renamed [ Replace "Groups" ]
     $ multiCol [1] 1 0.02 0.3
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
-    $ mastered (1/100) (17/24) $ GV.Grid (15/13)
+    $ mastered (1/100) (13/24) $ GV.Grid (11/13)
 myGrid = renamed [ Replace "Grid" ]
     $ hiddenWindows
     $ spacingWithEdge 3
@@ -383,7 +383,7 @@ myKeys = [
 
     , ("M5-<Return>",cycleRecentNonVisible [xK_ISO_Level3_Shift] xK_Return xK_BackSpace >> flashCurrentWS)
     , ("M5-<Backspace>",cycleRecentNonVisible' [xK_ISO_Level3_Shift] xK_BackSpace xK_Return >> flashCurrentWS)
-    , ("S-<Return>", toggleRecentWS >> flashCurrentWS)
+   -- , ("S-<Return>", toggleRecentWS >> flashCurrentWS)
     , ("S-<Tab>", 	 nextMatch History (return True) >> flashCurrentWS)
     , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )
     , ("M-S-<Tab>",  windows W.focusDown >> flashCurrentWin )
