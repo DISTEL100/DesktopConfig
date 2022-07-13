@@ -163,7 +163,7 @@ myManageHook =  composeAll
     , title     =? "preview-tui"       --> doF W.focusDown
 		, IP.insertPosition IP.Below IP.Newer 
 		, isDialog        --> doF W.swapUp
-		, placeHook (underMouse (0.5, 0.5))
+		--, placeHook (underMouse (0.5, 0.5))
     ]
 nspGapH = (1/35)
 nspGapV = nspGapH * (16/9)
