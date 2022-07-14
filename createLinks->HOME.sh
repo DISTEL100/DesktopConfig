@@ -17,3 +17,4 @@ ln -f lua/nvim-cmp.lua 		    $HOME/.config/nvim/lua/nvim-cmp.lua
 ln -f lua/nvim-lspconfig.lua 	$HOME/.config/nvim/lua/nvim-lspconfig.lua	
 ln -f lua/utilsnips.lua	 	    $HOME/.config/nvim/lua/utilsnips.lua
 ln -f lua/fzf.vim	 	          $HOME/.config/nvim/lua/fzf.vim
+ln -f lua/vimtex.vim	 	      $HOME/.config/nvim/lua/vimtex.vim

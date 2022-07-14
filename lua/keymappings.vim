@@ -24,8 +24,8 @@ nnoremap <silent> <Leader>m :Marks <CR>
 nnoremap <silent> <Leader>e :E <CR>
 nnoremap <silent> <Leader>u :UndotreeT<return>
 
-map [[ ?{<CR>w99[{
-map ][ /}<CR>b99]}
-map ]] j0[[%/{<CR>
-map [] k$][%?}<CR>
+map ÜÜ ?{<CR>w99[{
+map ÄÜ /}<CR>b99]}
+map ÄÄ j0[[%/{<CR>
+map ÜÄ k$][%?}<CR>
 

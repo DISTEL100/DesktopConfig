@@ -4,6 +4,7 @@ Plug( 'junegunn/fzf', { ['do'] = vim.fn['fzf#install'] } )
 Plug( 'junegunn/fzf.vim')
 Plug( 'xolox/vim-misc')
 Plug( 'xolox/vim-colorscheme-switcher')
+Plug( 'ludovicchabant/vim-gutentags' )
 Plug( 'mbbill/undotree')
 Plug( 'lervag/vimtex')
 Plug( 'neovimhaskell/haskell-vim' )
@@ -31,6 +32,7 @@ vim.cmd([[
 	source ~/.config/nvim/lua/vim-airline.vim
 	source ~/.config/nvim/lua/scnvim.vim
 	source ~/.config/nvim/lua/fzf.vim
+	source ~/.config/nvim/lua/vimtex.vim
 ]])
 
 require('nvim-lspconfig')

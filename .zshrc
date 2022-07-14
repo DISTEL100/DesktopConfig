@@ -1,14 +1,15 @@
 
 function zvm_config() {
-ZVM_VI_ESCAPE_BINDKEY=kj
+	ZVM_VI_ESCAPE_BINDKEY=kj
 }
+
 source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Lines configured by zsh-newuser-install
@@ -24,13 +25,15 @@ zstyle :compinstall filename '/home/jonathan/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
-source ./.profile	
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
+function zvm_after_init(){
+	source $HOME/.profile	
+	source /usr/share/fzf/key-bindings.zsh
+	source /usr/share/fzf/completion.zsh
+}
 source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-      typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet

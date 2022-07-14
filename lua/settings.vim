@@ -7,6 +7,9 @@ set writebackup
 set backupcopy=yes
 au BufWritePre * let &bex = '@' . strftime("%F.%H")
 
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete
+
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
 set title

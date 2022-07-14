@@ -198,7 +198,7 @@ myGroup = renamed [ Replace "Groups" ]
     $ multiCol [1] 1 0.02 0.3
 myMasterGrid = renamed [ Replace "MGrid" ]
     $ hiddenWindows
-    $ mastered (1/100) (13/24) $ GV.Grid (11/13)
+    $ mastered (1/100) (11/24) $ GV.Grid (11/13)
 myGrid = renamed [ Replace "Grid" ]
     $ hiddenWindows
     $ spacingWithEdge 3
