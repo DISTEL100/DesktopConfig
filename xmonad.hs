@@ -381,8 +381,10 @@ myKeys = [
     , ("M-s",        gridselect        myGSConfig spawnSystem   >>= spawn . fromMaybe "" )
     , ("M-d",        gridselect        myGSConfig spawnPrograms >>= spawn . fromMaybe "" )
 
-    , ("M5-<Return>",cycleRecentNonVisible [xK_ISO_Level3_Shift] xK_Return xK_BackSpace >> flashCurrentWS)
+    , ("M5-<Return>",   cycleRecentNonVisible [xK_ISO_Level3_Shift] xK_Return xK_BackSpace >> flashCurrentWS)
     , ("M5-<Backspace>",cycleRecentNonVisible' [xK_ISO_Level3_Shift] xK_BackSpace xK_Return >> flashCurrentWS)
+   -- , ("M5-<Return>",   Cyc.moveTo Next relevantWorkspaces >> flashCurrentWS)
+   -- , ("M5-S-<Return>", Cyc.moveTo Prev relevantWorkspaces >> flashCurrentWS)
    -- , ("S-<Return>", toggleRecentWS >> flashCurrentWS)
     , ("S-<Tab>", 	 nextMatch History (return True) >> flashCurrentWS)
     , ("M-<Tab>",    windows W.focusUp >> flashCurrentWin )

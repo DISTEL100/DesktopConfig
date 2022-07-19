@@ -13,7 +13,7 @@ noremap s cl
 set langmap=ü{,Ü[,ä},Ä],#`
 set langremap
 
-nmap <C-ü> <C-]>
+map <C-ü> <C-]>
 
 nnoremap <silent> <Leader>+ :RG <C-R><C-W><CR>
 nnoremap <silent> <Leader>r :RG <CR>

@@ -9,190 +9,125 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	5.9.0	/p5.9.20210905.0/
-<C-l>	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^inoremap <C-l> <esc>la$/;"	m
-<C-ü>	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^nmap <C-ü> <C-]>$/;"	m
-<Leader>+	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^nnoremap <silent> <Leader>+ :RG <C-R><C-W><CR>$/;"	m
-<Leader>b	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^nnoremap <silent> <Leader>b :Buffers <CR>$/;"	m
-<Leader>e	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^nnoremap <silent> <Leader>e :E <CR>$/;"	m
-<Leader>f	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^nnoremap <silent> <Leader>f :Files <CR>$/;"	m
-<Leader>h	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^nnoremap <silent> <Leader>h :History <CR>$/;"	m
-<Leader>m	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^nnoremap <silent> <Leader>m :Marks <CR>$/;"	m
-<Leader>r	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^nnoremap <silent> <Leader>r :RG <CR>$/;"	m
-<Leader>u	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^nnoremap <silent> <Leader>u :UndotreeT<return>$/;"	m
-AllFloats	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^data AllFloats = AllFloats deriving (Read, Show)$/;"	c
-AllFloats	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^data AllFloats = AllFloats deriving (Read, Show)$/;"	t
-AllFloats	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^data AllFloats = AllFloats deriving (Read, Show)$/;"	c
-AllFloats	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^data AllFloats = AllFloats deriving (Read, Show)$/;"	t
-MAGNIFY	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^data MAGNIFY = MAGNIFY deriving (Read, Show, Eq)$/;"	c
-MAGNIFY	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^data MAGNIFY = MAGNIFY deriving (Read, Show, Eq)$/;"	t
-MAGNIFY	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^data MAGNIFY = MAGNIFY deriving (Read, Show, Eq)$/;"	c
-MAGNIFY	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^data MAGNIFY = MAGNIFY deriving (Read, Show, Eq)$/;"	t
-POWERLEVEL9K_DIR_CLASSES=	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/.p10k.zsh	/^  typeset -g POWERLEVEL9K_DIR_CLASSES=()$/;"	f
-RG	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/fzf.vim	/^command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)$/;"	c
-RipgrepFzf	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/fzf.vim	/^function! RipgrepFzf(query, fullscreen)$/;"	f
-blue	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^shadow-blue     = 0.29$/;"	k
-colActive	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^colActive   = "LightGreen"$/;"	f
-colActive	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^colActive   = "LightGreen"$/;"	f
-colBg	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^colBg       = "#202922"$/;"	f
-colBg	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^colBg       = "#202922"$/;"	f
-colBlack	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^colBlack    = "#161716"$/;"	f
-colBlack	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^colBlack    = "#161716"$/;"	f
-colBrown	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^colBrown    = "#936e9c"$/;"	f
-colBrown	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^colBrown    = "#936e9c"$/;"	f
-colFg	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^colFg       = "snow2"$/;"	f
-colFg	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^colFg       = "snow2"$/;"	f
-colGray	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^colGray     = "#74807b"$/;"	f
-colGray	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^colGray     = "#74807b"$/;"	f
-colHigh	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^colHigh     = "#ff0073"$/;"	f
-colHigh	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^colHigh     = "#ff0073"$/;"	f
-colInactive	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^colInactive = "#42403d"$/;"	f
-colInactive	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^colInactive = "#42403d"$/;"	f
-colSep	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^colSep      = "#2b2b2b" $/;"	f
-colSep	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^colSep      = "#2b2b2b" $/;"	f
-colUrgent	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^colUrgent   = "#f58402"$/;"	f
-colUrgent	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^colUrgent   = "#f58402"$/;"	f
-crop	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^xinerama-shadow-crop = true;$/;"	k
-cycleRecentNonVisible	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^cycleRecentNonVisible = cycleWindowSets $ recentWS' (p)$/;"	f
-cycleRecentNonVisible	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^cycleRecentNonVisible = cycleWindowSets $ recentWS' (p)$/;"	f
-cycleRecentNonVisible'	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^cycleRecentNonVisible' = cycleWindowSets $ recentWSS' (p)$/;"	f
-cycleRecentNonVisible'	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^cycleRecentNonVisible' = cycleWindowSets $ recentWSS' (p)$/;"	f
-delta	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^fade-delta = 10$/;"	k
-exclude	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^focus-exclude = "! name~=''"$/;"	k
-exclude	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^rounded-corners-exclude = [$/;"	k
-exclude	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^shadow-exclude = [$/;"	k
-expand	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/nvim-cmp.lua	/^      expand = function(args)$/;"	f
-extractPathFromTitle	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^extractPathFromTitle = foldl (\\s -> \\c -> if c == ':' then "" else s ++ [c] ) ""$/;"	f
-extractPathFromTitle	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^extractPathFromTitle = foldl (\\s -> \\c -> if c == ':' then "" else s ++ [c] ) ""$/;"	f
-fadedOpacity	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^fadedOpacity = 0.1$/;"	f
-fadedOpacity	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^fadedOpacity = 0.1$/;"	f
-fading	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^fading = true $/;"	k
-fixedWidth	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^fixedWidth 0 s      = ""$/;"	f
-fixedWidth	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^fixedWidth x ""     = " " ++ (fixedWidth (x-1) "") $/;"	f
-fixedWidth	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)$/;"	f
-fixedWidth	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^fixedWidth 0 s      = ""$/;"	f
-fixedWidth	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^fixedWidth x ""     = " " ++ (fixedWidth (x-1) "") $/;"	f
-fixedWidth	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)$/;"	f
-flashCurrentWS	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^flashCurrentWS = withWindowSet (pure . W.currentTag) $/;"	f
-flashCurrentWS	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^flashCurrentWS = withWindowSet (pure . W.currentTag) $/;"	f
-flashCurrentWin	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^flashCurrentWin = withFocused $/;"	f
-flashCurrentWin	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^flashCurrentWin = withFocused $/;"	f
-font	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^font size   = "xft:IBMPlexMono:size="++ size ++ ":style=italic"$/;"	f
-font	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^font size   = "xft:IBMPlexMono:size="++ size ++ ":style=italic"$/;"	f
-g:UltiSnipsSnippetDirectories	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/scnvim.vim	/^let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'scnvim-data']$/;"	v
-g:airline_theme	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/settings.vim	/^let g:airline_theme='tomorrow'$/;"	v
-g:netrw_altv	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/settings.vim	/^let g:netrw_altv =1$/;"	v
-g:netrw_banner	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/settings.vim	/^let g:netrw_banner=0$/;"	v
-g:netrw_browse_split	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/settings.vim	/^let g:netrw_browse_split=0$/;"	v
-g:netrw_fastbrowse	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/settings.vim	/^let g:netrw_fastbrowse=0$/;"	v
-g:netrw_liststyle	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/settings.vim	/^let g:netrw_liststyle=0$/;"	v
-g:netrw_preview	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/settings.vim	/^let g:netrw_preview=1$/;"	v
-g:netrw_sizestyle	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/settings.vim	/^let g:netrw_sizestyle='H'$/;"	v
-g:netrw_winsize	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/settings.vim	/^let g:netrw_winsize=80$/;"	v
-g:scnvim_snippet_format	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/scnvim.vim	/^let g:scnvim_snippet_format = "ultisnips"$/;"	v
-g:vimtex_complete_bib	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/vimtex.vim	/^let g:vimtex_complete_bib={ 'simple':1 }$/;"	v
-g:vimtex_view_general_options	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/vimtex.vim	/^let g:vimtex_view_general_options = '--unique file:@pdf\\#src:@line@tex'$/;"	v
-g:vimtex_view_general_viewer	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/vimtex.vim	/^let g:vimtex_view_general_viewer = 'okular'$/;"	v
-green	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^shadow-green    = 0.4$/;"	k
-instant_prompt_example	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/.p10k.zsh	/^  function instant_prompt_example() {$/;"	f
-j	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^noremap j gj$/;"	m
-k	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^nnoremap k gk$/;"	m
-kj	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^inoremap kj <esc>l$/;"	m
-main	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^main = xmonad$/;"	f
-main	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^main = xmonad$/;"	f
-myConfig	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myConfig = def$/;"	f
-myConfig	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myConfig = def$/;"	f
-myEventHook	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent <+> positionStoreEven/;"	f
-myEventHook	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent <+> positionStoreEven/;"	f
-myFadeHook	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myFadeHook = composeAll $/;"	f
-myFadeHook	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myFadeHook = composeAll $/;"	f
-myFull	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myFull = smartBorders$/;"	f
-myFull	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myFull = smartBorders$/;"	f
-myGSConfig	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myGSConfig = def { $/;"	f
-myGSConfig	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myGSConfig = def { $/;"	f
-myGrid	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myGrid = renamed [ Replace "Grid" ]$/;"	f
-myGrid	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myGrid = renamed [ Replace "Grid" ]$/;"	f
-myGroup	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myGroup = renamed [ Replace "Groups" ]$/;"	f
-myGroup	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myGroup = renamed [ Replace "Groups" ]$/;"	f
-myKeys	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myKeys = [ $/;"	f
-myKeys	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myKeys = [ $/;"	f
-myKeys'	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myKeys'= [$/;"	f
-myKeys'	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myKeys'= [$/;"	f
-myLayout	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myLayout = onWorkspace "9" myFull$/;"	f
-myLayout	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myLayout = onWorkspace "9" myFull$/;"	f
-myLogHook	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook $/;"	f
-myLogHook	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook $/;"	f
-myManageHook	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myManageHook =  composeAll$/;"	f
-myManageHook	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myManageHook =  composeAll$/;"	f
-myMasterGrid	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myMasterGrid = renamed [ Replace "MGrid" ]$/;"	f
-myMasterGrid	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myMasterGrid = renamed [ Replace "MGrid" ]$/;"	f
-myModifiers	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myModifiers = MT.mkToggle (MIRROR MT.?? FULL MT.?? NOBORDERS MT.?? MAGNIFY MT.?? MT.EOT)$/;"	f
-myModifiers	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myModifiers = MT.mkToggle (MIRROR MT.?? FULL MT.?? NOBORDERS MT.?? MAGNIFY MT.?? MT.EOT)$/;"	f
-mySDConfig	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^mySDConfig = def { $/;"	f
-mySDConfig	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^mySDConfig = def { $/;"	f
-myScratchpads	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myScratchpads = [ $/;"	f
-myScratchpads	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myScratchpads = [ $/;"	f
-myStartupHook	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myStartupHook = do$/;"	f
-myStartupHook	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myStartupHook = do$/;"	f
-myStatusBar	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myStatusBar = withEasySB (statusBarProp "xmobar" myXmobarPP) defToggleStrutsKey$/;"	f
-myStatusBar	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myStatusBar = withEasySB (statusBarProp "xmobar" myXmobarPP) defToggleStrutsKey$/;"	f
-myXmobarPP	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^myXmobarPP = workspaceNamesPP def$/;"	f
-myXmobarPP	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^myXmobarPP = workspaceNamesPP def$/;"	f
-my_git_formatter	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/.p10k.zsh	/^  function my_git_formatter() {$/;"	f
-ncpamixerPos	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^ncpamixerPos =  customFloating (W.RationalRect nspGapH (nspGapV+nnnH+nspGapV) (nnnW*2) nnnH )$/;"	f
-ncpamixerPos	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^ncpamixerPos =  customFloating (W.RationalRect nspGapH (nspGapV+nnnH+nspGapV) (nnnW*2) nnnH )$/;"	f
-nnnH	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^nnnH = (1\/2) - (1.5 * nspGapV)$/;"	f
-nnnH	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^nnnH = (1\/2) - (1.5 * nspGapV)$/;"	f
-nnnPos	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^nnnPos =  customFloating (W.RationalRect (nspGapH) (nspGapV*3) (nnnW*0.85) (nnnH*1.5) )$/;"	f
-nnnPos	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^nnnPos =  customFloating (W.RationalRect (nspGapH) (nspGapV*3) (nnnW*0.85) (nnnH*1.5) )$/;"	f
-nnnW	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^nnnW = (1\/3) - (1.5 * nspGapH)$/;"	f
-nnnW	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^nnnW = (1\/3) - (1.5 * nspGapH)$/;"	f
-nonEmptyNonNSP	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^nonEmptyNonNSP = recentWS (not . null . W.stack)$/;"	f
-nonEmptyNonNSP	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^nonEmptyNonNSP = recentWS (not . null . W.stack)$/;"	f
-nspGapH	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^nspGapH = (1\/35)$/;"	f
-nspGapH	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^nspGapH = (1\/35)$/;"	f
-nspGapV	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^nspGapV = nspGapH * (16\/9)$/;"	f
-nspGapV	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^nspGapV = nspGapH * (16\/9)$/;"	f
-on_attach	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/nvim-lspconfig.lua	/^local on_attach = function(client, bufnr)$/;"	f
-opacity	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^shadow-opacity = 0.8958$/;"	k
-passH	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^passH = 1 - (2*nspGapV)$/;"	f
-passH	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^passH = 1 - (2*nspGapV)$/;"	f
-passPos	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^passPos = customFloating (W.RationalRect ((2*nspGapH)+nnnW) nspGapV passW passH )$/;"	f
-passPos	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^passPos = customFloating (W.RationalRect ((2*nspGapH)+nnnW) nspGapV passW passH )$/;"	f
-passW	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^passW = (2\/3) - (2 * nspGapH)$/;"	f
-passW	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^passW = (2\/3) - (2 * nspGapH)$/;"	f
-prompt_example	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/.p10k.zsh	/^  function prompt_example() {$/;"	f
-radius	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^corner-radius = 10;$/;"	k
-radius	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^shadow-radius = 40$/;"	k
-recentWS'	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^recentWS' p w = map W.tag $/;"	f
-recentWS'	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^recentWS' p w = map W.tag $/;"	f
-recentWSS'	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^recentWSS' p w = map W.tag $/;"	f
-recentWSS'	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^recentWSS' p w = map W.tag $/;"	f
-red	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^shadow-red      = 0.24$/;"	k
-reg	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^shadow-exclude-reg = "x21+0+0"$/;"	k
-relevantWorkspaces	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] )$/;"	f
-relevantWorkspaces	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] )$/;"	f
-s	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^noremap s cl$/;"	m
-shadow	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^shadow = true$/;"	k
-showTextConf	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^showTextConf = def {$/;"	f
-showTextConf	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^showTextConf = def {$/;"	f
-spawnPrograms	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^spawnPrograms = [$/;"	f
-spawnPrograms	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^spawnPrograms = [$/;"	f
-spawnSystem	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^spawnSystem = [$/;"	f
-spawnSystem	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^spawnSystem = [$/;"	f
-spawnXtermInPath	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^spawnXtermInPath = withFocused (\\win -> do $/;"	f
-spawnXtermInPath	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^spawnXtermInPath = withFocused (\\win -> do $/;"	f
-toggleTag	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^toggleTag tag win = do$/;"	f
-toggleTag	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^toggleTag tag win = do$/;"	f
-windowBringerConf	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^windowBringerConf = def { $/;"	f
-windowBringerConf	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^windowBringerConf = def { $/;"	f
-wintypes	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^wintypes:$/;"	k
-x	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^shadow-offset-x = -40$/;"	k
-xActions	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/xmonad.hs	/^xActions = [$/;"	f
-xActions	/home/jonathan/Projekte/DesktopConfig.git/distel/xmonad.hs	/^xActions = [$/;"	f
-y	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/picom.conf	/^shadow-offset-y = -40$/;"	k
-ÄÄ	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^map ÄÄ j0[[%\/{<CR>$/;"	m
-ÄÜ	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^map ÄÜ \/}<CR>b99]}$/;"	m
-Ö	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^nnoremap Ö :$/;"	m
-ÜÄ	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^map ÜÄ k$][%?}<CR>$/;"	m
-ÜÜ	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^map ÜÜ ?{<CR>w99[{$/;"	m
-ö	/home/jonathan/.config/nnn/bookmarks/DesktopConfig/distel/lua/keymappings.vim	/^nnoremap ö :w<return>$/;"	m
+<C-l>	lua/keymappings.vim	/^inoremap <C-l> <esc>la$/;"	m
+<C-ü>	lua/keymappings.vim	/^map <C-ü> <C-]>$/;"	m
+<Leader>+	lua/keymappings.vim	/^nnoremap <silent> <Leader>+ :RG <C-R><C-W><CR>$/;"	m
+<Leader>b	lua/keymappings.vim	/^nnoremap <silent> <Leader>b :Buffers <CR>$/;"	m
+<Leader>e	lua/keymappings.vim	/^nnoremap <silent> <Leader>e :E <CR>$/;"	m
+<Leader>f	lua/keymappings.vim	/^nnoremap <silent> <Leader>f :Files <CR>$/;"	m
+<Leader>h	lua/keymappings.vim	/^nnoremap <silent> <Leader>h :History <CR>$/;"	m
+<Leader>m	lua/keymappings.vim	/^nnoremap <silent> <Leader>m :Marks <CR>$/;"	m
+<Leader>r	lua/keymappings.vim	/^nnoremap <silent> <Leader>r :RG <CR>$/;"	m
+<Leader>u	lua/keymappings.vim	/^nnoremap <silent> <Leader>u :UndotreeT<return>$/;"	m
+AllFloats	xmonad.hs	/^data AllFloats = AllFloats deriving (Read, Show)$/;"	c
+AllFloats	xmonad.hs	/^data AllFloats = AllFloats deriving (Read, Show)$/;"	t
+MAGNIFY	xmonad.hs	/^data MAGNIFY = MAGNIFY deriving (Read, Show, Eq)$/;"	c
+MAGNIFY	xmonad.hs	/^data MAGNIFY = MAGNIFY deriving (Read, Show, Eq)$/;"	t
+POWERLEVEL9K_DIR_CLASSES=	.p10k.zsh	/^  typeset -g POWERLEVEL9K_DIR_CLASSES=()$/;"	f
+RG	lua/fzf.vim	/^command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)$/;"	c
+RipgrepFzf	lua/fzf.vim	/^function! RipgrepFzf(query, fullscreen)$/;"	f
+blue	picom.conf	/^shadow-blue     = 0.29$/;"	k
+colActive	xmonad.hs	/^colActive   = "LightGreen"$/;"	f
+colBg	xmonad.hs	/^colBg       = "#202922"$/;"	f
+colBlack	xmonad.hs	/^colBlack    = "#161716"$/;"	f
+colBrown	xmonad.hs	/^colBrown    = "#936e9c"$/;"	f
+colFg	xmonad.hs	/^colFg       = "snow2"$/;"	f
+colGray	xmonad.hs	/^colGray     = "#74807b"$/;"	f
+colHigh	xmonad.hs	/^colHigh     = "#ff0073"$/;"	f
+colInactive	xmonad.hs	/^colInactive = "#42403d"$/;"	f
+colSep	xmonad.hs	/^colSep      = "#2b2b2b" $/;"	f
+colUrgent	xmonad.hs	/^colUrgent   = "#f58402"$/;"	f
+crop	picom.conf	/^xinerama-shadow-crop = true;$/;"	k
+cycleRecentNonVisible	xmonad.hs	/^cycleRecentNonVisible = cycleWindowSets $ recentWS' (p)$/;"	f
+cycleRecentNonVisible'	xmonad.hs	/^cycleRecentNonVisible' = cycleWindowSets $ recentWSS' (p)$/;"	f
+delta	picom.conf	/^fade-delta = 10$/;"	k
+exclude	picom.conf	/^focus-exclude = "! name~=''"$/;"	k
+exclude	picom.conf	/^rounded-corners-exclude = [$/;"	k
+exclude	picom.conf	/^shadow-exclude = [$/;"	k
+expand	lua/nvim-cmp.lua	/^      expand = function(args)$/;"	f
+extractPathFromTitle	xmonad.hs	/^extractPathFromTitle = foldl (\\s -> \\c -> if c == ':' then "" else s ++ [c] ) ""$/;"	f
+fadedOpacity	xmonad.hs	/^fadedOpacity = 0.1$/;"	f
+fading	picom.conf	/^fading = true $/;"	k
+fixedWidth	xmonad.hs	/^fixedWidth 0 s      = ""$/;"	f
+fixedWidth	xmonad.hs	/^fixedWidth x ""     = " " ++ (fixedWidth (x-1) "") $/;"	f
+fixedWidth	xmonad.hs	/^fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)$/;"	f
+flashCurrentWS	xmonad.hs	/^flashCurrentWS = withWindowSet (pure . W.currentTag) $/;"	f
+flashCurrentWin	xmonad.hs	/^flashCurrentWin = withFocused $/;"	f
+font	xmonad.hs	/^font size   = "xft:IBMPlexMono:size="++ size ++ ":style=italic"$/;"	f
+g:UltiSnipsSnippetDirectories	lua/scnvim.vim	/^let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'scnvim-data']$/;"	v
+g:airline_theme	lua/settings.vim	/^let g:airline_theme='tomorrow'$/;"	v
+g:netrw_altv	lua/settings.vim	/^let g:netrw_altv =1$/;"	v
+g:netrw_banner	lua/settings.vim	/^let g:netrw_banner=0$/;"	v
+g:netrw_browse_split	lua/settings.vim	/^let g:netrw_browse_split=0$/;"	v
+g:netrw_fastbrowse	lua/settings.vim	/^let g:netrw_fastbrowse=0$/;"	v
+g:netrw_liststyle	lua/settings.vim	/^let g:netrw_liststyle=0$/;"	v
+g:netrw_preview	lua/settings.vim	/^let g:netrw_preview=1$/;"	v
+g:netrw_sizestyle	lua/settings.vim	/^let g:netrw_sizestyle='H'$/;"	v
+g:netrw_winsize	lua/settings.vim	/^let g:netrw_winsize=80$/;"	v
+g:scnvim_snippet_format	lua/scnvim.vim	/^let g:scnvim_snippet_format = "ultisnips"$/;"	v
+g:vimtex_view_general_options	lua/vimtex.vim	/^let g:vimtex_view_general_options = '--unique file:@pdf\\#src:@line@tex'$/;"	v
+g:vimtex_view_general_viewer	lua/vimtex.vim	/^let g:vimtex_view_general_viewer = 'okular'$/;"	v
+green	picom.conf	/^shadow-green    = 0.4$/;"	k
+instant_prompt_example	.p10k.zsh	/^  function instant_prompt_example() {$/;"	f
+j	lua/keymappings.vim	/^noremap j gj$/;"	m
+k	lua/keymappings.vim	/^nnoremap k gk$/;"	m
+kj	lua/keymappings.vim	/^inoremap kj <esc>l$/;"	m
+main	xmonad.hs	/^main = xmonad$/;"	f
+myConfig	xmonad.hs	/^myConfig = def$/;"	f
+myEventHook	xmonad.hs	/^myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent <+> positionStoreEven/;"	f
+myFadeHook	xmonad.hs	/^myFadeHook = composeAll $/;"	f
+myFull	xmonad.hs	/^myFull = smartBorders$/;"	f
+myGSConfig	xmonad.hs	/^myGSConfig = def { $/;"	f
+myGrid	xmonad.hs	/^myGrid = renamed [ Replace "Grid" ]$/;"	f
+myGroup	xmonad.hs	/^myGroup = renamed [ Replace "Groups" ]$/;"	f
+myKeys	xmonad.hs	/^myKeys = [ $/;"	f
+myKeys'	xmonad.hs	/^myKeys'= [$/;"	f
+myLayout	xmonad.hs	/^myLayout = onWorkspace "9" myFull$/;"	f
+myLogHook	xmonad.hs	/^myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook $/;"	f
+myManageHook	xmonad.hs	/^myManageHook =  composeAll$/;"	f
+myMasterGrid	xmonad.hs	/^myMasterGrid = renamed [ Replace "MGrid" ]$/;"	f
+myModifiers	xmonad.hs	/^myModifiers = MT.mkToggle (MIRROR MT.?? FULL MT.?? NOBORDERS MT.?? MAGNIFY MT.?? MT.EOT)$/;"	f
+mySDConfig	xmonad.hs	/^mySDConfig = def { $/;"	f
+myScratchpads	xmonad.hs	/^myScratchpads = [ $/;"	f
+myStartupHook	xmonad.hs	/^myStartupHook = do$/;"	f
+myStatusBar	xmonad.hs	/^myStatusBar = withEasySB (statusBarProp "xmobar" myXmobarPP) defToggleStrutsKey$/;"	f
+myXmobarPP	xmonad.hs	/^myXmobarPP = workspaceNamesPP def$/;"	f
+my_git_formatter	.p10k.zsh	/^  function my_git_formatter() {$/;"	f
+ncpamixerPos	xmonad.hs	/^ncpamixerPos =  customFloating (W.RationalRect nspGapH (nspGapV+nnnH+nspGapV) (nnnW*2) nnnH )$/;"	f
+nnnH	xmonad.hs	/^nnnH = (1\/2) - (1.5 * nspGapV)$/;"	f
+nnnPos	xmonad.hs	/^nnnPos =  customFloating (W.RationalRect (nspGapH) (nspGapV*3) (nnnW*0.85) (nnnH*1.5) )$/;"	f
+nnnW	xmonad.hs	/^nnnW = (1\/3) - (1.5 * nspGapH)$/;"	f
+nonEmptyNonNSP	xmonad.hs	/^nonEmptyNonNSP = recentWS (not . null . W.stack)$/;"	f
+nspGapH	xmonad.hs	/^nspGapH = (1\/35)$/;"	f
+nspGapV	xmonad.hs	/^nspGapV = nspGapH * (16\/9)$/;"	f
+on_attach	lua/nvim-lspconfig.lua	/^local on_attach = function(client, bufnr)$/;"	f
+opacity	picom.conf	/^shadow-opacity = 0.8958$/;"	k
+passH	xmonad.hs	/^passH = 1 - (2*nspGapV)$/;"	f
+passPos	xmonad.hs	/^passPos = customFloating (W.RationalRect ((2*nspGapH)+nnnW) nspGapV passW passH )$/;"	f
+passW	xmonad.hs	/^passW = (2\/3) - (2 * nspGapH)$/;"	f
+prompt_example	.p10k.zsh	/^  function prompt_example() {$/;"	f
+radius	picom.conf	/^corner-radius = 10;$/;"	k
+radius	picom.conf	/^shadow-radius = 40$/;"	k
+recentWS'	xmonad.hs	/^recentWS' p w = map W.tag $/;"	f
+recentWSS'	xmonad.hs	/^recentWSS' p w = map W.tag $/;"	f
+red	picom.conf	/^shadow-red      = 0.24$/;"	k
+reg	picom.conf	/^shadow-exclude-reg = "x21+0+0"$/;"	k
+relevantWorkspaces	xmonad.hs	/^relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] )$/;"	f
+s	lua/keymappings.vim	/^noremap s cl$/;"	m
+shadow	picom.conf	/^shadow = true$/;"	k
+showTextConf	xmonad.hs	/^showTextConf = def {$/;"	f
+spawnPrograms	xmonad.hs	/^spawnPrograms = [$/;"	f
+spawnSystem	xmonad.hs	/^spawnSystem = [$/;"	f
+spawnXtermInPath	xmonad.hs	/^spawnXtermInPath = withFocused (\\win -> do $/;"	f
+toggleTag	xmonad.hs	/^toggleTag tag win = do$/;"	f
+windowBringerConf	xmonad.hs	/^windowBringerConf = def { $/;"	f
+wintypes	picom.conf	/^wintypes:$/;"	k
+x	picom.conf	/^shadow-offset-x = -40$/;"	k
+xActions	xmonad.hs	/^xActions = [$/;"	f
+y	picom.conf	/^shadow-offset-y = -40$/;"	k
+ÄÄ	lua/keymappings.vim	/^map ÄÄ j0[[%\/{<CR>$/;"	m
+ÄÜ	lua/keymappings.vim	/^map ÄÜ \/}<CR>b99]}$/;"	m
+Ö	lua/keymappings.vim	/^nnoremap Ö :$/;"	m
+ÜÄ	lua/keymappings.vim	/^map ÜÄ k$][%?}<CR>$/;"	m
+ÜÜ	lua/keymappings.vim	/^map ÜÜ ?{<CR>w99[{$/;"	m
+ö	lua/keymappings.vim	/^nnoremap ö :w<return>$/;"	m
