@@ -1,5 +1,7 @@
-XTerm.vt100.faceName: Iosevka:style=Regular:size=9
-XTerm.vt100.saveLines: 4096
+XTerm*faceName:Flexi IBM VGA True:size=12
+**faceName:Flexi IBM VGA True:size=12
+
+XTerm*saveLines: 4096
 XTerm*renderFont:true
 XTerm*forcePackedFont:true
 XTerm.termName: xterm-256color

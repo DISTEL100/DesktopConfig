@@ -2,27 +2,30 @@ tnoremap <Esc> <C-\><C-n>
 inoremap kj <esc>l
 nnoremap ö :w<return>
 nnoremap Ö :
-nnoremap <tab><tab> :bn<return>
-map <C-B> <Esc>:Buffers<return>
-noremap <F5> :UndotreeT<return>
 
 nnoremap k gk
 noremap j gj
 
-inoremap <C-l> <esc>ea
+inoremap <C-l> <esc>la
 
 noremap s cl
 
 set langmap=ü{,Ü[,ä},Ä],#`
+set langremap
 
-map [[ ?{<CR>w99[{
-map ][ /}<CR>b99]}
-map ]] j0[[%/{<CR>
-map [] k$][%?}<CR>
+map <C-ü> <C-]>
 
-inoremap { {}<Esc>ha
-inoremap ( ()<Esc>ha
-inoremap [ []<Esc>ha
-inoremap " ""<Esc>ha
-inoremap ' ''<Esc>ha
-inoremap ` ``<Esc>ha
+nnoremap <silent> <Leader>+ :RG <C-R><C-W><CR>
+nnoremap <silent> <Leader>r :RG <CR>
+nnoremap <silent> <Leader>b :Buffers <CR>
+nnoremap <silent> <Leader>h :History <CR>
+nnoremap <silent> <Leader>f :Files <CR>
+nnoremap <silent> <Leader>m :Marks <CR>
+nnoremap <silent> <Leader>e :E <CR>
+nnoremap <silent> <Leader>u :UndotreeT<return>
+
+map ÜÜ ?{<CR>w99[{
+map ÄÜ /}<CR>b99]}
+map ÄÄ j0[[%/{<CR>
+map ÜÄ k$][%?}<CR>
+

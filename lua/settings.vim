@@ -7,14 +7,16 @@ set writebackup
 set backupcopy=yes
 au BufWritePre * let &bex = '@' . strftime("%F.%H")
 
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete
+
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
 set title
 set number
 set nornu
-set cursorline
+hi CursorLine gui=underline cterm=underline
 set termguicolors   
-colorscheme desert
 let g:airline_theme='tomorrow'
 
 highlight Cursor guifg=white guibg=black
@@ -27,13 +29,19 @@ set guicursor+=i:blinkwait1
 
 set clipboard=unnamedplus
 
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+set foldlevelstart=4
+
 set mps+=<:>
 set mouse=a
 set wrap linebreak
 set breakindent
 
-set tabstop=4
-set shiftwidth=4
+set shada=!,'1000,<500,s1000 
+
+set tabstop=2
+set shiftwidth=2
 set smarttab
 
 let g:netrw_liststyle=0
