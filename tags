@@ -1,14 +1,10 @@
 !_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
 !_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
-!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
-!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
 !_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
-!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
-!_TAG_PROC_CWD	/home/jonathan/Projekte/DesktopConfig.git/distel/	//
 !_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
-!_TAG_PROGRAM_VERSION	5.9.0	/p5.9.20210905.0/
+!_TAG_PROGRAM_VERSION	0.0.0	//
 <C-l>	lua/keymappings.vim	/^inoremap <C-l> <esc>la$/;"	m
 <C-ü>	lua/keymappings.vim	/^map <C-ü> <C-]>$/;"	m
 <Leader>+	lua/keymappings.vim	/^nnoremap <silent> <Leader>+ :RG <C-R><C-W><CR>$/;"	m
@@ -19,41 +15,17 @@
 <Leader>m	lua/keymappings.vim	/^nnoremap <silent> <Leader>m :Marks <CR>$/;"	m
 <Leader>r	lua/keymappings.vim	/^nnoremap <silent> <Leader>r :RG <CR>$/;"	m
 <Leader>u	lua/keymappings.vim	/^nnoremap <silent> <Leader>u :UndotreeT<return>$/;"	m
-AllFloats	xmonad.hs	/^data AllFloats = AllFloats deriving (Read, Show)$/;"	c
-AllFloats	xmonad.hs	/^data AllFloats = AllFloats deriving (Read, Show)$/;"	t
-MAGNIFY	xmonad.hs	/^data MAGNIFY = MAGNIFY deriving (Read, Show, Eq)$/;"	c
-MAGNIFY	xmonad.hs	/^data MAGNIFY = MAGNIFY deriving (Read, Show, Eq)$/;"	t
 POWERLEVEL9K_DIR_CLASSES=	.p10k.zsh	/^  typeset -g POWERLEVEL9K_DIR_CLASSES=()$/;"	f
 RG	lua/fzf.vim	/^command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)$/;"	c
 RipgrepFzf	lua/fzf.vim	/^function! RipgrepFzf(query, fullscreen)$/;"	f
 blue	picom.conf	/^shadow-blue     = 0.29$/;"	k
-colActive	xmonad.hs	/^colActive   = "LightGreen"$/;"	f
-colBg	xmonad.hs	/^colBg       = "#202922"$/;"	f
-colBlack	xmonad.hs	/^colBlack    = "#161716"$/;"	f
-colBrown	xmonad.hs	/^colBrown    = "#936e9c"$/;"	f
-colFg	xmonad.hs	/^colFg       = "snow2"$/;"	f
-colGray	xmonad.hs	/^colGray     = "#74807b"$/;"	f
-colHigh	xmonad.hs	/^colHigh     = "#ff0073"$/;"	f
-colInactive	xmonad.hs	/^colInactive = "#42403d"$/;"	f
-colSep	xmonad.hs	/^colSep      = "#2b2b2b" $/;"	f
-colUrgent	xmonad.hs	/^colUrgent   = "#f58402"$/;"	f
 crop	picom.conf	/^xinerama-shadow-crop = true;$/;"	k
-cycleRecentNonVisible	xmonad.hs	/^cycleRecentNonVisible = cycleWindowSets $ recentWS' (p)$/;"	f
-cycleRecentNonVisible'	xmonad.hs	/^cycleRecentNonVisible' = cycleWindowSets $ recentWSS' (p)$/;"	f
 delta	picom.conf	/^fade-delta = 10$/;"	k
 exclude	picom.conf	/^focus-exclude = "! name~=''"$/;"	k
 exclude	picom.conf	/^rounded-corners-exclude = [$/;"	k
 exclude	picom.conf	/^shadow-exclude = [$/;"	k
 expand	lua/nvim-cmp.lua	/^      expand = function(args)$/;"	f
-extractPathFromTitle	xmonad.hs	/^extractPathFromTitle = foldl (\\s -> \\c -> if c == ':' then "" else s ++ [c] ) ""$/;"	f
-fadedOpacity	xmonad.hs	/^fadedOpacity = 0.1$/;"	f
 fading	picom.conf	/^fading = true $/;"	k
-fixedWidth	xmonad.hs	/^fixedWidth 0 s      = ""$/;"	f
-fixedWidth	xmonad.hs	/^fixedWidth x ""     = " " ++ (fixedWidth (x-1) "") $/;"	f
-fixedWidth	xmonad.hs	/^fixedWidth x (s:sw) = [s] ++ (fixedWidth (x-1) sw)$/;"	f
-flashCurrentWS	xmonad.hs	/^flashCurrentWS = withWindowSet (pure . W.currentTag) $/;"	f
-flashCurrentWin	xmonad.hs	/^flashCurrentWin = withFocused $/;"	f
-font	xmonad.hs	/^font size   = "xft:IBMPlexMono:size="++ size ++ ":style=italic"$/;"	f
 g:UltiSnipsSnippetDirectories	lua/scnvim.vim	/^let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'scnvim-data']$/;"	v
 g:airline_theme	lua/settings.vim	/^let g:airline_theme='tomorrow'$/;"	v
 g:netrw_altv	lua/settings.vim	/^let g:netrw_altv =1$/;"	v
@@ -72,58 +44,18 @@ instant_prompt_example	.p10k.zsh	/^  function instant_prompt_example() {$/;"	f
 j	lua/keymappings.vim	/^noremap j gj$/;"	m
 k	lua/keymappings.vim	/^nnoremap k gk$/;"	m
 kj	lua/keymappings.vim	/^inoremap kj <esc>l$/;"	m
-main	xmonad.hs	/^main = xmonad$/;"	f
-myConfig	xmonad.hs	/^myConfig = def$/;"	f
-myEventHook	xmonad.hs	/^myEventHook = hintsEventHook <+> fadeWindowsEventHook <+> handleTimerEvent <+> positionStoreEven/;"	f
-myFadeHook	xmonad.hs	/^myFadeHook = composeAll $/;"	f
-myFull	xmonad.hs	/^myFull = smartBorders$/;"	f
-myGSConfig	xmonad.hs	/^myGSConfig = def { $/;"	f
-myGrid	xmonad.hs	/^myGrid = renamed [ Replace "Grid" ]$/;"	f
-myGroup	xmonad.hs	/^myGroup = renamed [ Replace "Groups" ]$/;"	f
-myKeys	xmonad.hs	/^myKeys = [ $/;"	f
-myKeys'	xmonad.hs	/^myKeys'= [$/;"	f
-myLayout	xmonad.hs	/^myLayout = onWorkspace "9" myFull$/;"	f
-myLogHook	xmonad.hs	/^myLogHook = historyHook <+> fadeWindowsLogHook myFadeHook $/;"	f
-myManageHook	xmonad.hs	/^myManageHook =  composeAll$/;"	f
-myMasterGrid	xmonad.hs	/^myMasterGrid = renamed [ Replace "MGrid" ]$/;"	f
-myModifiers	xmonad.hs	/^myModifiers = MT.mkToggle (MIRROR MT.?? FULL MT.?? NOBORDERS MT.?? MAGNIFY MT.?? MT.EOT)$/;"	f
-mySDConfig	xmonad.hs	/^mySDConfig = def { $/;"	f
-myScratchpads	xmonad.hs	/^myScratchpads = [ $/;"	f
-myStartupHook	xmonad.hs	/^myStartupHook = do$/;"	f
-myStatusBar	xmonad.hs	/^myStatusBar = withEasySB (statusBarProp "xmobar" myXmobarPP) defToggleStrutsKey$/;"	f
-myXmobarPP	xmonad.hs	/^myXmobarPP = workspaceNamesPP def$/;"	f
 my_git_formatter	.p10k.zsh	/^  function my_git_formatter() {$/;"	f
-ncpamixerPos	xmonad.hs	/^ncpamixerPos =  customFloating (W.RationalRect nspGapH (nspGapV+nnnH+nspGapV) (nnnW*2) nnnH )$/;"	f
-nnnH	xmonad.hs	/^nnnH = (1\/2) - (1.5 * nspGapV)$/;"	f
-nnnPos	xmonad.hs	/^nnnPos =  customFloating (W.RationalRect (nspGapH) (nspGapV*3) (nnnW*0.85) (nnnH*1.5) )$/;"	f
-nnnW	xmonad.hs	/^nnnW = (1\/3) - (1.5 * nspGapH)$/;"	f
-nonEmptyNonNSP	xmonad.hs	/^nonEmptyNonNSP = recentWS (not . null . W.stack)$/;"	f
-nspGapH	xmonad.hs	/^nspGapH = (1\/35)$/;"	f
-nspGapV	xmonad.hs	/^nspGapV = nspGapH * (16\/9)$/;"	f
 on_attach	lua/nvim-lspconfig.lua	/^local on_attach = function(client, bufnr)$/;"	f
 opacity	picom.conf	/^shadow-opacity = 0.8958$/;"	k
-passH	xmonad.hs	/^passH = 1 - (2*nspGapV)$/;"	f
-passPos	xmonad.hs	/^passPos = customFloating (W.RationalRect ((2*nspGapH)+nnnW) nspGapV passW passH )$/;"	f
-passW	xmonad.hs	/^passW = (2\/3) - (2 * nspGapH)$/;"	f
 prompt_example	.p10k.zsh	/^  function prompt_example() {$/;"	f
 radius	picom.conf	/^corner-radius = 10;$/;"	k
 radius	picom.conf	/^shadow-radius = 40$/;"	k
-recentWS'	xmonad.hs	/^recentWS' p w = map W.tag $/;"	f
-recentWSS'	xmonad.hs	/^recentWSS' p w = map W.tag $/;"	f
 red	picom.conf	/^shadow-red      = 0.24$/;"	k
 reg	picom.conf	/^shadow-exclude-reg = "x21+0+0"$/;"	k
-relevantWorkspaces	xmonad.hs	/^relevantWorkspaces =  (( Cyc.Not emptyWS ) :&: hiddenWS :&: ignoringWSs ["NSP"] )$/;"	f
 s	lua/keymappings.vim	/^noremap s cl$/;"	m
 shadow	picom.conf	/^shadow = true$/;"	k
-showTextConf	xmonad.hs	/^showTextConf = def {$/;"	f
-spawnPrograms	xmonad.hs	/^spawnPrograms = [$/;"	f
-spawnSystem	xmonad.hs	/^spawnSystem = [$/;"	f
-spawnXtermInPath	xmonad.hs	/^spawnXtermInPath = withFocused (\\win -> do $/;"	f
-toggleTag	xmonad.hs	/^toggleTag tag win = do$/;"	f
-windowBringerConf	xmonad.hs	/^windowBringerConf = def { $/;"	f
 wintypes	picom.conf	/^wintypes:$/;"	k
 x	picom.conf	/^shadow-offset-x = -40$/;"	k
-xActions	xmonad.hs	/^xActions = [$/;"	f
 y	picom.conf	/^shadow-offset-y = -40$/;"	k
 ÄÄ	lua/keymappings.vim	/^map ÄÄ j0[[%\/{<CR>$/;"	m
 ÄÜ	lua/keymappings.vim	/^map ÄÜ \/}<CR>b99]}$/;"	m
