@@ -6,7 +6,7 @@
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	0.0.0	//
 <C-l>	lua/keymappings.vim	/^inoremap <C-l> <esc>la$/;"	m
-<C-ü>	lua/keymappings.vim	/^map <C-ü> <C-]>$/;"	m
+<C-p>	lua/keymappings.vim	/^map <C-p> <C-]>$/;"	m
 <Leader>+	lua/keymappings.vim	/^nnoremap <silent> <Leader>+ :RG <C-R><C-W><CR>$/;"	m
 <Leader>b	lua/keymappings.vim	/^nnoremap <silent> <Leader>b :Buffers <CR>$/;"	m
 <Leader>e	lua/keymappings.vim	/^nnoremap <silent> <Leader>e :E <CR>$/;"	m
@@ -57,9 +57,9 @@ shadow	picom.conf	/^shadow = true$/;"	k
 wintypes	picom.conf	/^wintypes:$/;"	k
 x	picom.conf	/^shadow-offset-x = -40$/;"	k
 y	picom.conf	/^shadow-offset-y = -40$/;"	k
-ÄÄ	lua/keymappings.vim	/^map ÄÄ j0[[%\/{<CR>$/;"	m
-ÄÜ	lua/keymappings.vim	/^map ÄÜ \/}<CR>b99]}$/;"	m
+ÄÄ	lua/keymappings.vim	/^map ÄÄ ?}<CR>$/;"	m
+ÄÜ	lua/keymappings.vim	/^map ÄÜ \/}<CR>$/;"	m
 Ö	lua/keymappings.vim	/^nnoremap Ö :$/;"	m
-ÜÄ	lua/keymappings.vim	/^map ÜÄ k$][%?}<CR>$/;"	m
-ÜÜ	lua/keymappings.vim	/^map ÜÜ ?{<CR>w99[{$/;"	m
+ÜÄ	lua/keymappings.vim	/^map ÜÄ \/{<CR>$/;"	m
+ÜÜ	lua/keymappings.vim	/^map ÜÜ ?{<CR>$/;"	m
 ö	lua/keymappings.vim	/^nnoremap ö :w<return>$/;"	m

@@ -13,7 +13,7 @@ noremap s cl
 set langmap=ü{,Ü[,ä},Ä],#`
 set langremap
 
-map <C-ü> <C-]>
+map <C-p> <C-]>
 
 nnoremap <silent> <Leader>+ :RG <C-R><C-W><CR>
 nnoremap <silent> <Leader>r :RG <CR>
@@ -24,8 +24,7 @@ nnoremap <silent> <Leader>m :Marks <CR>
 nnoremap <silent> <Leader>e :E <CR>
 nnoremap <silent> <Leader>u :UndotreeT<return>
 
-map ÜÜ ?{<CR>w99[{
-map ÄÜ /}<CR>b99]}
-map ÄÄ j0[[%/{<CR>
-map ÜÄ k$][%?}<CR>
-
+map ÜÜ ?{<CR>
+map ÜÄ /{<CR>
+map ÄÄ ?}<CR>
+map ÄÜ /}<CR>
