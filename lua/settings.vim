@@ -19,13 +19,14 @@ hi CursorLine gui=underline cterm=underline
 set termguicolors   
 let g:airline_theme='tomorrow'
 
-highlight Cursor guifg=white guibg=black
-highlight iCursor guifg=white guibg=orange
-highlight rCursor guifg=orange guibg=magenta
+highlight Cursor guifg=blue guibg=black
+highlight iCursor guifg=red guibg=orange
+highlight rCursor guifg=green guibg=magenta
 set guicursor=n-v-c:block-Cursor
 set guicursor+=i:ver100-iCursor
 set guicursor+=n-v-c:blinkon100
 set guicursor+=i:blinkwait1
+
 
 set clipboard=unnamedplus
 

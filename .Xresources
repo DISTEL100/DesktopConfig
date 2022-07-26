@@ -1,5 +1,5 @@
-XTerm*faceName:Flexi IBM VGA True:size=12
-**faceName:Flexi IBM VGA True:size=12
+XTerm*faceName:IBM Plex Mono:size=10
+**faceName:IBM Plex Mono:size=10
 
 XTerm*saveLines: 4096
 XTerm*renderFont:true

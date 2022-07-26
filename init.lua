@@ -2,6 +2,7 @@ local Plug = vim.fn['plug#']
 vim.call('plug#begin', '~/.config/nvim/plugged')
 Plug( 'junegunn/fzf', { ['do'] = vim.fn['fzf#install'] } )
 Plug( 'junegunn/fzf.vim')
+Plug( 'tpope/vim-surround')
 Plug( 'xolox/vim-misc')
 Plug( 'xolox/vim-colorscheme-switcher')
 Plug( 'ludovicchabant/vim-gutentags' )
@@ -30,7 +31,6 @@ vim.cmd([[
 	source ~/.config/nvim/lua/keymappings.vim
 	source ~/.config/nvim/lua/settings.vim
 	source ~/.config/nvim/lua/vim-airline.vim
-	source ~/.config/nvim/lua/scnvim.vim
 	source ~/.config/nvim/lua/fzf.vim
 	source ~/.config/nvim/lua/vimtex.vim
 ]])
@@ -40,6 +40,5 @@ require('nvim-cmp')
 require('utilsnips')
 require('gitsigns').setup()
 require('nvim-treesitter.configs').setup { 
-	highlight = { enable = true },
-	indent = { enable = true }
+	highlight = { enable = true }
 }

@@ -329,9 +329,11 @@ extractPathFromTitle = foldl (\s -> \c -> if c == ':' then "" else s ++ [c] ) ""
 --                           ON STARTUP
 -- ############################################################################
 myStartupHook = do
-        spawnOnce "xsetroot -solid Black"
-        spawnOnce "picom"
+        spawnOnce "bin/bash -c xsetroot -solid Black"
+        spawnOnce "bin/bash -c xmobar"
+        spawnOnce "bin/bash -c picom"
         spawnOnOnce "9" "thunderbird"
+        spawnOnOnce "8" "slack"
 
 -- ############################################################################
 --                           XMOBAR SETTINGS

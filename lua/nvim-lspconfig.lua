@@ -31,8 +31,9 @@ end
 
  -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'hls', 'ltex', 'pyright', 'html', 'cssls', 'tsserver', 'jdtls' }
+local servers = { 'angularls', 'hls', 'ltex', 'pyright', 'html', 'cssls', 'tsserver', 'jdtls' }
  -- Install cssls + html server with: npm i -g vscode-langservers-extracted
+ -- Install angular server with: npm i -g @angular/language-server
  -- Install tsserver with: npm install -g typescript typescript-language-server
  -- Install pyright with: pip install pyright
 
